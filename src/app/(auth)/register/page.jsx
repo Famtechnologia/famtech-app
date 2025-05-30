@@ -41,7 +41,7 @@ export default function RegisterPage() {
       });
 
       toast.success('Account created successfully!');
-      router.push('/dashboard/farmer/admin');
+      router.push(`farm/${userCredential.user.uid}`);
     } catch (error) {
       toast.error(error.message);
     } finally {

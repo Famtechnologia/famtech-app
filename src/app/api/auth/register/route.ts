@@ -1,37 +1,57 @@
 // app/api/auth/register/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase/admin';
-import { FieldValue } from 'firebase-admin/firestore';
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const { email, password, name, role = 'user' } = await req.json();
+    const { uid, name, email, role, subRole, farmName } = await request.json();
 
-    if (!email || !password || !name) {
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+    // Set custom claims
+    await adminAuth.setCustomUserClaims(uid, { role, subRole });
+
+    // Create user document
+    const userData = {
+      uid,
+      name,
+      email,
+      role,
+      subRole,
+      createdAt: new Date(),
+      isActive: true,
+    };
+
+    await adminDb.collection('users').doc(uid).set(userData);
+
+    // Create farm if user is a farmer
+    if (role === 'farmer') {
+      const farmData = {
+        id: `farm_${uid}`,
+        name: farmName,
+        ownerId: uid,
+        members: [uid],
+        location: {
+          latitude: 0,
+          longitude: 0,
+          address: '',
+          country: 'Nigeria',
+          state: '',
+        },
+        size: 0,
+        cropTypes: [],
+        createdAt: new Date(),
+        isActive: true,
+        subscriptionPlan: 'free',
+      };
+
+      await adminDb.collection('farms').doc(`farm_${uid}`).set(farmData);
+      
+      // Update user with farmId
+      await adminDb.collection('users').doc(uid).update({ farmId: `farm_${uid}` });
     }
 
-    const userRecord = await adminAuth.createUser({
-      email,
-      password,
-      displayName: name,
-    });
-
-    const uid = userRecord.uid;
-
-    await adminAuth.setCustomUserClaims(uid, { role });
-
-    await adminDb.collection('users').doc(uid).set({
-      uid,
-      email,
-      name,
-      role,
-      createdAt: FieldValue.serverTimestamp(),
-    });
-
-    return NextResponse.json({ uid }, { status: 201 });
-
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Registration error:', error);
+    return NextResponse.json({ error: 'Registration failed' }, { status: 500 });
   }
 }
