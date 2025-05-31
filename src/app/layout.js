@@ -1,4 +1,4 @@
-import './globals.css';
+import './styles/special.css'
 import { Inter } from 'next/font/google';
 import { AuthProvider } from '../lib/hooks/useAuth';
 import { Toaster } from 'react-hot-toast';
