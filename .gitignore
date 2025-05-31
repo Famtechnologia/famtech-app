@@ -40,8 +40,4 @@ pnpm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Firebase Admin service account key
-serviceAccount*.json
 
-# Firebase debug logs
-firebase-debug.log*
