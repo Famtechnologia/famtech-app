@@ -4,21 +4,15 @@ import Image from 'next/image';
 
 const CardComponent: React.FC = () => {
   return (
-    <section className='flex flex-col md:flex-row md:justify-center lg:justify-center lg:items-center  md:space-x-2
-     space-y-4 mx-auto lg:mt-12'>
-
+    <section className='grid grid-rows md:gap-2 lg:gap-4  gap-4 mx-4 lg:mt-12 
+    md:grid-cols-[repeat(3,1fr)] max-w-7xl lg:mx-auto  lg:mx-28'>
+ 
     <div
-      className="
-        relative flex flex-col items-center 
-         h-[250px] w-[250px] 
-        sm:h-[250px] sm:w-[280px] 
-        md:h-[250px] md:w-[220px] 
-        lg:h-[300px] lg:w-[250px] 
-        rounded-2xl p-4 
-        overflow-hidden
-        text-center 
-          mx-auto md:mx-2
-      "
+      className="relative flex flex-col items-center rounded-2xl p-4 
+                overflow-hidden
+                text-center 
+                  mx-auto h-[250px] lg:h-[300px]"
+        
       style={{
         backgroundColor: '#F4F4F4', 
       }}
@@ -44,17 +38,10 @@ const CardComponent: React.FC = () => {
     </div>
 
     <div
-      className="
-        relative flex flex-col items-center 
-         h-[250px] w-[250px] 
-        sm:h-[250px] sm:w-[280px] 
-        md:h-[250px] md:w-[220px] 
-        lg:h-[300px] lg:w-[250px] 
-        rounded-2xl p-4 
-        overflow-hidden
-        text-center 
-          mx-auto md:mx-2 lg:mb-2 
-      "
+      className="relative flex flex-col items-center rounded-2xl p-4 
+                overflow-hidden
+                text-center  h-[250px] lg:h-[300px]
+                  mx-auto"
       style={{
         backgroundColor: '#F4F4F4', 
       }}
@@ -80,17 +67,10 @@ const CardComponent: React.FC = () => {
     </div>
     
      <div
-      className="
-        relative flex flex-col items-center 
-        h-[250px] w-[250px] 
-        sm:h-[250px] sm:w-[280px] 
-        md:h-[250px] md:w-[220px] 
-        lg:h-[300px] lg:w-[250px] 
-        rounded-2xl p-4 
-        overflow-hidden
-        text-center 
-          mx-auto md:mx-2 lg:mb-3
-      "
+      className="relative flex flex-col items-center rounded-2xl p-4 
+                overflow-hidden
+                text-center lg:h-[300px]
+                  mx-auto h-[250px]"
       style={{
         backgroundColor: '#F4F4F4', 
       }}
@@ -114,9 +94,6 @@ const CardComponent: React.FC = () => {
         </h3>
       </div>
     </div>
-
-    
-    
     </section>
   );
 };

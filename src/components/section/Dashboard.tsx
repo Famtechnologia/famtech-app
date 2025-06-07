@@ -5,7 +5,7 @@ import { FaAngleRight } from 'react-icons/fa';
 import SectionTitle from './SectionTitle';
 const Dashboard:React.FC = () => {
   return (
-    <div className= 'mx-4 my-16 md:mx-12 md:space-y-6 lg:mx-24 flex flex-col space-y-4'>
+    <div className= 'max-w-7xl xl:mx-auto lg:px-28 mx-4 my-10 md:my-15 md:mx-12 md:space-y-6  lg:my:24 flex flex-col space-y-4'>
        <SectionTitle title='Dashboard'/>
        <div className='md:flex flex-col-reverse'>
         <Image 
@@ -17,7 +17,7 @@ const Dashboard:React.FC = () => {
     />
 
     <div className='flex flex-col md:flex-row mx-auto md:mx-0
-     items-center justify-center md:mb-4 space-y-4
+     items-center justify-center md:mb-4 space-y-4 lg:mx-8 lg:mt-4
      md:justify-between'>
         <h2 className='text-center text-xs md:text-left
          md:text-base md:max-w-[500px] lg:max-w-[600px]'>Digitize your daily operations with 

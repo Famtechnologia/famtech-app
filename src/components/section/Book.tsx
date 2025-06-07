@@ -6,8 +6,8 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 const Book:React.FC = () => {
   return (
-    <div  className='bg-gray-100 flex flex-col mb-16 md:mb-20 rounded-lg lg:mx-28
-    md:flex-row-reverse'>
+    <div  className='bg-gray-100 flex flex-col mb-16 md:mb-20 rounded-lg lg:mx-28 lg:my-24
+    md:flex-row-reverse rounded-lg max-w-7xl lg:mx-auto'>
         <Image 
         src='/agritech-robot-farming.jpg'
         alt='interface displaying Plant science data and metrics like CO2 and H2O, illustrating advanced agri-tech and automated precision farming'
