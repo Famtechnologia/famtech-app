@@ -18,10 +18,10 @@ const Join: React.FC = () => {
         lg:mx-28
       "
     >
-      {/* Overlay */}
+
       <div className="absolute inset-0 bg-black opacity-50 h-full md:rounded-lg"></div>
 
-      {/* Content Container - z-index ensures it's above the overlay */}
+      
       <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-4">
         <h2 className='font-bold text-xl lg:text-2xl'>Stay Ahead</h2>
         <p className='font-light text-sm md:max-w-[500px] lg:max-w-[700px]'>
@@ -33,21 +33,21 @@ const Join: React.FC = () => {
                      items-center justify-center mt-6 md:mt-4'> 
                      <form className=''>
                         <input type="email" placeholder='Enter your email..' 
-                        className='p-4  bg-white text-gray-100  rounded-lg'
+                        className='py-2 px-4 border-1 border-green-600 text-gray-100  rounded-lg'
                         />
                      </form>
          
           <a
             href="#"
             className='
-              bg-white text-xs text-black 
+              text-xs text-black 
               flex items-center justify-center 
-              px-4 py-2 rounded-xl
-              font-light w-auto md:w-48 lg:w-52 
+               rounded-xl
+              font-light w-fit 
               hover:bg-gray-100 transition-colors
             '
           >
-            <MdKeyboardDoubleArrowRight size={24} className='text-black mr-1 rounded-lg p-2 bg-green-600' />
+            <MdKeyboardDoubleArrowRight size={24} className='text-black mr-1  p-2 bg-green-600' />
             
           </a>
           

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getAllPosts, PostListItem, BLOG_CATEGORIES } from '@/lib/post'; // Corrected import from '@/lib/post' to '@/lib/posts'
+import { getAllPosts, PostListItem, BLOG_CATEGORIES } from '@/lib/post'; 
 import SearchInput from '@/components/blog/SearchInput';
 import CategoryFilter from '@/components/blog/CategoryFilter';
 import BlogCard from '@/components/blog/BlogCard';
@@ -11,7 +11,7 @@ import TrendingSection from '@/components/blog/TrendingSection';
 import PaginationControls from '@/components/blog/PaginationControls';
 import Navbar from '@/components/section/Navbar2';
 import Footer from '@/components/section/Footer';
-
+import Join from '@/components/blog/Join'
 
 export default function BlogPage() {
   const [allPosts, setAllPosts] = useState<PostListItem[]>([]);
@@ -51,7 +51,7 @@ export default function BlogPage() {
         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-    setCurrentPage(1); // Reset to first page on filter/search change
+    setCurrentPage(1); 
     return currentPosts;
   }, [allPosts, selectedCategory, searchQuery]);
 
@@ -91,15 +91,15 @@ export default function BlogPage() {
     <div>
       <Navbar/>
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 lg:py-16 mt-16 md:mt-24 lg:mt-32"> {/* Adjusted mt- values */}
-        <h2 className="text-center text-3xl sm:text-4xl font-bold mb-8">Check out our latest blogs</h2> {/* Centered heading, responsive size */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 lg:py-16 mt-16 md:mt-24 lg:mt-32"> 
+        <h2 className="text-left md:text-center text-2xl md:text-3xl font-bold mb-8">Check out our latest blogs</h2>
 
-        {/* Search Bar container */}
-        <div className="mb-8 mt-8"> {/* Added mt-8 back for spacing */}
+
+        <div className="mb-8 mt-8"> 
           <SearchInput value={searchQuery} onChange={setSearchQuery} />
         </div>
 
-        {/* Categories container */}
+
         <div className="mb-12">
           <CategoryFilter
             categories={BLOG_CATEGORIES}
@@ -108,10 +108,10 @@ export default function BlogPage() {
           />
         </div>
 
-        {/* Main Blog Content Grid: two columns on large screens (1fr for posts, 350px for trending) */}
+        
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8 lg:gap-8">
-          {/* Main Posts Column: two columns on medium screens, one on small */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> {/* Adjusted gap to 6 for 24px consistent with design */}
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> 
             {currentPosts.length > 0 ? (
               currentPosts.map((post) => (
                 <BlogCard key={post.id} post={post} />
@@ -123,13 +123,13 @@ export default function BlogPage() {
             )}
           </div>
 
-          {/* Trending Sidebar: ordered last on large screens, stacks naturally on small */}
+          
           <div className="lg:order-last"> 
             <TrendingSection />
           </div>
         </div>
 
-        {/* Pagination Controls: only show if there's more than one page */}
+        
         {filteredPosts.length > postsPerPage && (
           <PaginationControls
             currentPage={currentPage}
@@ -138,6 +138,7 @@ export default function BlogPage() {
           />
         )}
       </div>
+      
       <Footer/>
     </div>
   );

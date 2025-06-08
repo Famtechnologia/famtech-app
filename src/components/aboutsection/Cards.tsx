@@ -96,12 +96,12 @@ const ArrowOutwardIconSVG = (props) => (
 );
 
 
-// Reusable Card Component adapted for this section
+
 const FeatureCard = ({ icon: Icon, title, description, isDark = false }) => {
   const bgColor = isDark ? 'bg-green-600' : 'bg-white';
   const textColor = isDark ? 'text-white' : 'text-gray-800';
   const descriptionColor = isDark ? 'text-gray-200' : 'text-gray-600';
-  const iconColor = isDark ? 'text-white' : 'text-green-700'; // Icon color based on background
+  const iconColor = isDark ? 'text-white' : 'text-green-700'; 
   const arrowColor = isDark ? 'text-white' : 'text-green-700';
 
   return (
@@ -129,7 +129,7 @@ const FeatureCard = ({ icon: Icon, title, description, isDark = false }) => {
         {description}
       </p>
 
-      {/* Arrow icon positioned at bottom right */}
+    
       <div className={`absolute bottom-4 right-4 ${arrowColor}`}>
         <ArrowOutwardIconSVG className="w-7 h-5" />
       </div>
@@ -179,7 +179,7 @@ const WhyChooseFamtechSection = () => {
             isDark={true}
           />
           <FeatureCard
-            icon={ SiDavinciresolve} // Placeholder, replace with actual icon if available
+            icon={ SiDavinciresolve} 
             title="Future-Ready Solutions"
             description="Preparing agriculture for tomorrow's challenges with innovative and adaptive technologies."
           />

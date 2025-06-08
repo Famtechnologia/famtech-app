@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const HarnessTechnologySection = () => {
+const Hero:React.FC = () => {
   return (
     <div className="bg-white py-8 pb-4 mx-4 md:mx-15 sm:px-6  lg:mt-28 mt-8 md:mt-12">
       <div className="max-w-7xl mx-auto rounded-xl overflow-hidden bg-green-50 md:bg-white">
@@ -23,14 +23,13 @@ const HarnessTechnologySection = () => {
             </div>
           </div>
 
-          {/* Right Column: Image with slanted green background */}
           <div className="lg:w-1/2 relative rounded-xl lg:rounded-none md:rounded-bl-xl overflow-hidden">
-            {/* The slanted shape container for the image */}
+         
             <div className="
-              relative w-full h-full md:h-[480px] lg:h-full
+              relative w-full h-full md:h-[480px]
               rounded-xl">
                 <img
-                    src="agricultural-technology.png"
+                    src="/Agricultural-technology.png"
                     alt="A person interacting with a tablet in a farm setting"
                     className="w-full h-full object-cover rounded-xl"
                     onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/C0C0C0/FFFFFF?text=Error'; e.currentTarget.onerror = null; }}
@@ -43,4 +42,4 @@ const HarnessTechnologySection = () => {
   );
 };
 
-export default HarnessTechnologySection;
+export default Hero;

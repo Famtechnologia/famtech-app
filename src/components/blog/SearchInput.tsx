@@ -9,7 +9,7 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ value, onChange, placeholder = 'Search Famtech' }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ value, onChange, placeholder = 'Search for latest blogs' }) => {
   return (
     <div className="relative w-full max-w-lg mx-auto">
       <input
@@ -17,7 +17,8 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, onChange, placeholder 
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-700"
+        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-full
+         focus:outline-none focus:ring-1 focus:ring-green-400 text-gray-700 text-xs"
       />
       <svg
         xmlns="http://www.w3.org/2000/svg"

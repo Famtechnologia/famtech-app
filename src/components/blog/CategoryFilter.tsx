@@ -10,7 +10,7 @@ interface CategoryFilterProps {
 
 const CategoryFilter: React.FC<CategoryFilterProps> = ({ categories, selectedCategory, onSelectCategory }) => {
   return (
-    <div className="flex flex-wrap justify-center gap-2 mb-8">
+    <div className="flex flex-wrap justify-start md:justify-center gap-2 mb-8 md:flex-row">
       {categories.map((category) => (
         <button
           key={category}

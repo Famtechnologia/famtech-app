@@ -1,12 +1,12 @@
-// components/BlogViewPage.tsx
 'use client';
 
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation'; // Correct import for useRouter
+import { useRouter } from 'next/navigation'; 
 import Link from 'next/link';
 
-// --- Type Definitions ---
+
+
 interface BlogPost {
   id: string;
   category: BlogCategory;
@@ -16,7 +16,7 @@ interface BlogPost {
   date: string;
   isHero?: boolean;
   isTrending?: boolean;
-  // Added fullContent for the detailed blog post
+  
   fullContent: string; 
 }
 
@@ -355,18 +355,19 @@ const BlogViewPage: React.FC<BlogViewPageProps> = ({ params }) => {
   const router = useRouter();
   const { id } = params;
 
-  // Find the blog post based on the ID
+  
   const blogPost = allBlogPosts.find(post => post.id === id);
 
-  // If no blog post is found, display a message and a link back
+
   if (!blogPost) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-16 px-4 sm:px-6 lg:px-8 text-center">
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-16 px-4
+       sm:px-6 lg:px-8 text-center">
         <p className="text-2xl text-gray-700 mb-6">
           Blog post will be available in a minute, kindly go back to the blog post page.
         </p>
         <Link href='/blog'
-          onClick={() => router.push('/blogs')} // Link back to the main blog page
+          onClick={() => router.push('/blogs')} 
           className="py-3 px-6 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 transition-colors duration-200"
         >
           Go Back to Blog Posts
@@ -376,8 +377,11 @@ const BlogViewPage: React.FC<BlogViewPageProps> = ({ params }) => {
   }
 
   return (
+
+
+
     <div className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
+      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden text-lg">
         
         <div className="relative h-64 sm:h-80 md:h-96 w-full">
           <Image
@@ -390,28 +394,31 @@ const BlogViewPage: React.FC<BlogViewPageProps> = ({ params }) => {
           />
         </div>
 
-        {/* Blog Content */}
+        
         <div className="p-6 sm:p-8 md:p-10">
           <span className="inline-block text-green-700 text-sm font-semibold mb-3 py-1 
           px-3 rounded-full bg-green-100">
             {blogPost.category}
           </span>
-          <h1 className="text-lg md:text-4xl mt-24 font-extrabold text-gray-900 leading-tight mb-4">
+          
+          <h1 className="text-base md:text-2xl mt-24 font-extrabold text-gray-900 leading-tight mb-4">
             {blogPost.title}
           </h1>
+          
           <div className="flex items-center text-gray-500 text-sm mb-6">
+            
             <span className="mr-4">Published: {blogPost.date}</span>
-            {/* You could add author here if available */}
+            
           </div>
 
           <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-            {/* Display the full content of the blog post */}
+            
             <p>{blogPost.fullContent}</p>
           </div>
 
           <div className="mt-8">
             <button
-              onClick={() => router.push('/blogs')} // Link back to the main blog page
+              onClick={() => router.push('/blogs')} 
               className="py-2 px-5 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors duration-200 text-sm font-medium"
             >
               &larr; Back to all blogs
@@ -420,6 +427,8 @@ const BlogViewPage: React.FC<BlogViewPageProps> = ({ params }) => {
         </div>
       </div>
     </div>
+
+   
   );
 };
 

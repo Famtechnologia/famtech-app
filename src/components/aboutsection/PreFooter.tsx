@@ -18,10 +18,10 @@ const PreFooter: React.FC = () => {
         lg:mx-28
       "
     >
-      {/* Overlay */}
+    
       <div className="absolute inset-0 bg-black opacity-50 h-full md:rounded-lg"></div>
 
-      {/* Content Container - z-index ensures it's above the overlay */}
+      
       <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-4">
         <h2 className='font-bold text-xl lg:text-2xl'>Join the Future of Farming</h2>
         <p className='font-light text-sm md:max-w-[500px] lg:max-w-[700px]'>

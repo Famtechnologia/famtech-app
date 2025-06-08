@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { getPostById, Post } from '@/lib/post';
+import Navbar from '@/components/section/Navbar2';
+import Footer from '@/components/section/Footer'
 
 export default function BlogPostPage() {
   const { slug } = useParams();
@@ -73,8 +75,11 @@ export default function BlogPostPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <h1 className="text-4xl font-bold text-center mb-4">{post.title}</h1>
+      <section>
+      <Navbar/>
+    <div className="container mx-auto px-4 py-8 max-w-3xl mt-20">
+
+      <h1 className="text-xl md:text-3xl font-bold text-center mb-4">{post.title}</h1>
       
       {post.imageUrl && (
         <div className="relative w-full h-96 mb-8 overflow-hidden rounded-md shadow-md">
@@ -97,12 +102,12 @@ export default function BlogPostPage() {
         {post.readingTime && <span>&bull; {post.readingTime}</span>}
       </div>
 
-      <p className="text-lg text-gray-800 leading-relaxed mt-8">
+      <p className="text-sm md:text-lg text-gray-800 leading-relaxed mt-8">
         {post.body}
       </p>
 
       <div className="mt-12 text-center">
-        <Link href="/blog" className="inline-flex items-center text-blue-600 hover:underline font-medium">
+        <Link href="/blog" className="inline-flex items-center text-blue-600 hover:underline font-medium text-sm md:text-base">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 mr-1">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
           </svg>
@@ -110,5 +115,7 @@ export default function BlogPostPage() {
         </Link>
       </div>
     </div>
+    <Footer/>
+    </section>
   );
 }
