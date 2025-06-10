@@ -67,7 +67,7 @@ export default function BlogPostPage() {
       <div className="container mx-auto px-4 py-16 text-center text-gray-700">
         <h1 className="text-4xl font-bold mb-4">Blog Post Not Found</h1>
         <p>The post you are looking for might have been removed or does not exist.</p>
-        <Link href="/blog" className="text-blue-600 hover:underline mt-4 inline-block">
+        <Link href="/blog" className="text-blue-600 hover:underline mt-4 inline-block" aria-label='bacck to all posts'>
           &larr; Back to all posts
         </Link>
       </div>
@@ -82,7 +82,7 @@ export default function BlogPostPage() {
       <h1 className="text-xl md:text-3xl font-bold text-center mb-4">{post.title}</h1>
       
       {post.imageUrl && (
-        <div className="relative w-full h-96 mb-8 overflow-hidden rounded-md shadow-md">
+        <div className="relative w-full h-96 mb-8 overflow-hidden rounded-md shadow-md fetchpriority-high loading-lazy">
           <Image
             src={post.imageUrl}
             alt={post.title}
@@ -107,7 +107,7 @@ export default function BlogPostPage() {
       </p>
 
       <div className="mt-12 text-center">
-        <Link href="/blog" className="inline-flex items-center text-blue-600 hover:underline font-medium text-sm md:text-base">
+        <Link href="/blog" className="inline-flex items-center text-blue-600 hover:underline font-medium text-sm md:text-base" aria-label='blog page'>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 mr-1">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
           </svg>

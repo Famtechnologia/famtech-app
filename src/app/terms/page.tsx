@@ -7,7 +7,7 @@ const TermsAndConditions: React.FC = () => {
   return (
     <div className="flex flex-col space-y-4">
       <Navbar/>
-      <div className='max-w-7xl xl:mx-auto px-4 md:mx-20 lg:mx-28 mt-24  py-12 sm:py-8 mx-4'>
+      <div className='max-w-5xl xl:mx-auto px-4 md:mx-20 lg:mx-28 mt-24  py-12 sm:py-8 mx-4'>
       <h1 className="text-3xl sm:text-4xl font-bold mb-8 text-left md:text-center lg:mt-28">Famtech Terms and Conditions</h1>
 
       <section className="mb-12">

@@ -40,7 +40,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, isHighlighted =
         ${isHighlighted ? 'scale-102 shadow-xl' : 'hover:shadow-xl hover:scale-102 hover:ring-2 hover:ring-green-500 '} 
       `}
     >
-      <div className="w-48 h-48 rounded-sm overflow-hidden mb-4">
+      <div className="w-48 h-48 rounded-sm overflow-hidden mb-4 loading-lazy">
         <img
           src={member.imageUrl}
           alt={member.name}

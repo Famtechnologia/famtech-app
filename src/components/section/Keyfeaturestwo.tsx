@@ -17,7 +17,7 @@ const KeyFeatures = () => {
     alt='ten million image'
     height={359}
     width={358}
-    className="h-auto w-48 md:w-48 items-center mx-auto pt-10 object-cover" 
+    className="h-auto w-48 md:w-48 items-center mx-auto pt-10 object-cover loading-lazy" 
     />
         </div>
         <div className='absolute inset-0 flex flex-col  justify-center space-y-4

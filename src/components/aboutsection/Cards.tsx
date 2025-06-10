@@ -3,12 +3,11 @@
 import React from 'react';
 import SectionTitle from '../section/SectionTitle';
 import { AiOutlineGlobal } from "react-icons/ai";
-import { FaRegLightbulb, FaConnectdevelop  } from "react-icons/fa";
+import { FaRegLightbulb, FaConnectdevelop } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
 import { TbBrandGoogleAnalytics } from "react-icons/tb";
 import { SiDavinciresolve } from "react-icons/si";
-
-
+import { motion } from 'framer-motion';
 
 
 const GlobalIconSVG = (props) => (
@@ -95,30 +94,43 @@ const ArrowOutwardIconSVG = (props) => (
   </svg>
 );
 
-
+const featureCardItemVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: 'easeOut',
+    },
+  },
+};
 
 const FeatureCard = ({ icon: Icon, title, description, isDark = false }) => {
   const bgColor = isDark ? 'bg-green-600' : 'bg-white';
   const textColor = isDark ? 'text-white' : 'text-gray-800';
   const descriptionColor = isDark ? 'text-gray-200' : 'text-gray-600';
-  const iconColor = isDark ? 'text-white' : 'text-green-700'; 
+  const iconColor = isDark ? 'text-white' : 'text-green-700';
   const arrowColor = isDark ? 'text-white' : 'text-green-700';
 
   return (
-    <div className={`
-      relative
-      ${bgColor}
-      rounded-lg
-      shadow-md
-      p-6
-      flex items-center justify-center
-      flex-col
-      items-start
-      min-h-[14rem]
-      transition-all
-      duration-300  
-      hover:shadow-lg 
-    `}>
+    <motion.div
+      className={`
+        relative
+        ${bgColor}
+        rounded-lg
+        shadow-md
+        p-6
+        flex items-center justify-center
+        flex-col
+        items-start
+        min-h-[14rem]
+        transition-all
+        duration-300
+        hover:shadow-lg
+      `}
+      variants={featureCardItemVariants}
+    >
       <div className={`mb-4 ${iconColor}`}>
         {Icon && <Icon className="w-8 h-8" />}
       </div>
@@ -129,27 +141,59 @@ const FeatureCard = ({ icon: Icon, title, description, isDark = false }) => {
         {description}
       </p>
 
-    
       <div className={`absolute bottom-4 right-4 ${arrowColor}`}>
         <ArrowOutwardIconSVG className="w-7 h-5" />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 
 const WhyChooseFamtechSection = () => {
-  return (
-    <div className=" my-10  px-4 sm:px-6 lg:px-28 md:mx-15 md:my-15 lg:my-30">
-      <div className="max-w-7xl mx-auto">
-        <SectionTitle title='Why Join Famtech'/>
-        <h2 className="md:text-3xl text-2xl lg:text-4xl font-semibold text-gray-900 text-left
-         md:text-center mt-8 lg:mt-8 mb-12">
-          Smart Farming Starts Here – <span className='text-green-500'> Innovate, Optimize,</span> and<span className='text-green-500'> Grow</span>
-        </h2>
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      },
+    },
+  };
 
-        {/* Grid for Feature Cards */}
-        <div className="grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:mt-4 ">
+  const textVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: 'easeOut',
+      },
+    },
+  };
+
+  return (
+    <motion.div
+      className="my-10 px-4 sm:px-6 lg:px-28 md:mx-15 md:my-15 lg:my-30"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.1 }}
+      variants={containerVariants}
+    >
+      <div className="max-w-7xl mx-auto">
+        <motion.div variants={textVariants}>
+          <SectionTitle title='Why Join Famtech'/>
+        </motion.div>
+        <motion.h2
+          className="md:text-3xl text-2xl lg:text-4xl font-semibold text-gray-900 text-left
+          md:text-center mt-8 lg:mt-8 mb-12"
+          variants={textVariants}
+        >
+          Smart Farming Starts Here – <span className='text-green-500'> Innovate, Optimize,</span> and<span className='text-green-500'> Grow</span>
+        </motion.h2>
+
+        <motion.div className="grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:mt-4 " variants={containerVariants}>
           <FeatureCard
             icon={AiOutlineGlobal}
             title="Global Reach"
@@ -173,19 +217,19 @@ const WhyChooseFamtechSection = () => {
             description="Whether you're a smallholder or a commercial farm, our tools grow with your business."
           />
           <FeatureCard
-            icon={FaConnectdevelop }
+            icon={FaConnectdevelop}
             title="Data-Driven Farming"
             description="We turn raw farm data into actionable insights that drive better productivity and profitability."
             isDark={true}
           />
           <FeatureCard
-            icon={ SiDavinciresolve} 
+            icon={ SiDavinciresolve}
             title="Future-Ready Solutions"
             description="Preparing agriculture for tomorrow's challenges with innovative and adaptive technologies."
           />
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

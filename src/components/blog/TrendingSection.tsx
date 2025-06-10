@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { getTrendingPosts, PostListItem } from '@/lib/post'; // Import getTrendingPosts
-import TrendingPostItem from './TrendingPostItem';
+import { getTrendingPosts, PostListItem } from '@/lib/post';
+import TrendingPostItem from './TrendingPostItem'; // Re-import from its original file
 
 const TrendingSection: React.FC = () => {
   const [trendingPosts, setTrendingPosts] = useState<PostListItem[]>([]);

@@ -2,9 +2,9 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
+import { motion } from 'framer-motion';
 
 
 interface BlogPost {
@@ -17,7 +17,7 @@ interface BlogPost {
   isHero?: boolean;
   isTrending?: boolean;
   
-  fullContent: string; 
+  fullContent: string;
 }
 
 type BlogCategory = 'All' | 'AgriTech' | 'Climate' | 'Livestock' | 'Innovation' | 'Crop Health';
@@ -94,8 +94,7 @@ const allBlogPosts: BlogPost[] = [
 
       The integration of AI into drone technology for agriculture represents a significant leap forward.
       It enables farmers to move from reactive problem-solving to proactive management, fostering more resilient,
-      efficient, and environmentally friendly food production systems. As the technology continues to evolve,
-      we can expect AI-powered drones to play an even more central role in shaping the future of farming.`
+      efficient, and environmentally friendly food production systems.`
   },
   {
     id: 'main-1',
@@ -284,12 +283,12 @@ const allBlogPosts: BlogPost[] = [
       The benefits of AI-driven early disease detection are profound:
 
       * **Reduced Crop Loss:** By identifying diseases early, farmers can apply targeted treatments, preventing
-          widespread damage and preserving yields.
+        widespread damage and preserving yields.
       * **Optimized Pesticide Use:** Targeted intervention reduces the need for broad-spectrum pesticides,
-          leading to more sustainable and environmentally friendly farming practices.
+        leading to more sustainable and environmentally friendly farming practices.
       * **Cost Savings:** Lower pesticide use and reduced crop loss translate directly into economic benefits for farmers.
       * **Improved Decision-Making:** Farmers receive actionable insights, enabling them to make timely and informed
-          decisions regarding crop management.
+        decisions regarding crop management.
 
       AI is empowering farmers with a powerful new weapon in the fight against crop diseases, paving the way for more
       resilient and productive agricultural systems globally.`
@@ -332,12 +331,12 @@ const allBlogPosts: BlogPost[] = [
       intervene quickly and precisely. This proactive approach leads to:
 
       * **Earlier Disease Detection:** Catching illnesses in their initial stages means faster treatment, reducing
-          the severity of the disease and improving recovery rates.
+        the severity of the disease and improving recovery rates.
       * **Reduced Medication Use:** Targeted treatment based on early detection can minimize the overall use of antibiotics.
       * **Improved Animal Welfare:** Healthier animals experience less stress and discomfort, leading to a better quality of life.
       * **Increased Productivity:** Healthy cattle are more productive, whether in terms of milk yield, weight gain, or reproductive success.
       * **Labor Efficiency:** Farmers can spend less time on routine health checks and more time on other critical tasks,
-          as the sensors provide continuous oversight.
+        as the sensors provide continuous oversight.
 
       Smart sensors are transforming cattle farming into a more data-driven, efficient, and humane industry,
       benefiting both animals and farmers.`
@@ -355,80 +354,131 @@ const BlogViewPage: React.FC<BlogViewPageProps> = ({ params }) => {
   const router = useRouter();
   const { id } = params;
 
-  
   const blogPost = allBlogPosts.find(post => post.id === id);
 
+  const textVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: 'easeOut',
+      },
+    },
+  };
+
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: 'easeOut',
+      },
+    },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      },
+    },
+  };
 
   if (!blogPost) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-16 px-4
-       sm:px-6 lg:px-8 text-center">
-        <p className="text-2xl text-gray-700 mb-6">
+      <motion.div
+        className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-16 px-4
+          sm:px-6 lg:px-8 text-center"
+        initial="hidden"
+        animate="visible" // Animates on mount
+        variants={containerVariants}
+      >
+        <motion.p className="text-2xl text-gray-700 mb-6" variants={textVariants}>
           Blog post will be available in a minute, kindly go back to the blog post page.
-        </p>
-        <Link href='/blog'
-          onClick={() => router.push('/blogs')} 
-          className="py-3 px-6 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 transition-colors duration-200"
-        >
-          Go Back to Blog Posts
-        </Link>
-      </div>
+        </motion.p>
+        <motion.div variants={textVariants}>
+          <Link href='/blog'
+            onClick={() => router.push('/blogs')}
+            className="py-3 px-6 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 transition-colors duration-200"
+            aria-label='blog page'>
+            Go Back to Blog Posts
+          </Link>
+        </motion.div>
+      </motion.div>
     );
   }
 
   return (
-
-
-
-    <div className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
+    <motion.div
+      className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.1 }}
+      variants={containerVariants}
+    >
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden text-lg">
-        
-        <div className="relative h-64 sm:h-80 md:h-96 w-full">
+        <motion.div
+          className="relative h-64 sm:h-80 md:h-96 w-full"
+          variants={imageVariants}
+        >
           <Image
             src={blogPost.imageUrl}
             alt={blogPost.title}
             layout="fill"
             objectFit="cover"
-            className="rounded-t-lg"
+            className="rounded-t-lg fetchpriority-high loading-lazy"
             onError={(e) => { e.currentTarget.src = 'https://placehold.co/800x500/cccccc/333333?text=Image+Error'; e.currentTarget.onerror = null; }}
           />
-        </div>
+        </motion.div>
 
-        
         <div className="p-6 sm:p-8 md:p-10">
-          <span className="inline-block text-green-700 text-sm font-semibold mb-3 py-1 
-          px-3 rounded-full bg-green-100">
+          <motion.span
+            className="inline-block text-green-700 text-sm font-semibold mb-3 py-1
+            px-3 rounded-full bg-green-100"
+            variants={textVariants}
+          >
             {blogPost.category}
-          </span>
+          </motion.span>
           
-          <h1 className="text-base md:text-2xl mt-24 font-extrabold text-gray-900 leading-tight mb-4">
+          <motion.h1
+            className="text-base md:text-2xl mt-24 font-extrabold text-gray-900 leading-tight mb-4"
+            variants={textVariants}
+          >
             {blogPost.title}
-          </h1>
+          </motion.h1>
           
-          <div className="flex items-center text-gray-500 text-sm mb-6">
-            
+          <motion.div
+            className="flex items-center text-gray-500 text-sm mb-6"
+            variants={textVariants}
+          >
             <span className="mr-4">Published: {blogPost.date}</span>
-            
-          </div>
+          </motion.div>
 
-          <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-            
+          <motion.div
+            className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+            variants={textVariants}
+          >
             <p>{blogPost.fullContent}</p>
-          </div>
+          </motion.div>
 
-          <div className="mt-8">
+          <motion.div className="mt-8" variants={textVariants}>
             <button
-              onClick={() => router.push('/blogs')} 
+              onClick={() => router.push('/blogs')}
               className="py-2 px-5 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors duration-200 text-sm font-medium"
             >
               &larr; Back to all blogs
             </button>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </div>
-
-   
+    </motion.div>
   );
 };
 

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { MdArrowDropDown } from "react-icons/md";
-
+<meta name="description" content="Put your description here."></meta>
 
 const BarsIconSVG = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -124,7 +124,7 @@ const Navbar: React.FC = () => {
                 alt="FAMTECH Smart Farming logo - White"
                 width={1600} 
                 height={1600} 
-                className="h-[150px] w-[150px]" 
+                className="h-[150px] w-[150px] loading-lazy fetchpriority-high" 
               />
             ) : (
               
@@ -182,13 +182,17 @@ const Navbar: React.FC = () => {
                 : 'border-green-700 text-gray-700 hover:bg-green-800 hover:text-white'}
             `}
           >
-            <button className="flex items-center text-sm">
-              Request A Demo{' '}
-              <ArrowRightCircleIconSVG 
-                className={`ml-2 w-5 h-5 
-                  ${isTransparentState ? 'text-green-600' : 'text-green-600 hover:text-white'}`} 
-              />
-            </button>
+         <a
+     href="mailto:famtechnologia@gmail.com"
+     className="flex items-center text-sm" 
+     aria-label="Request a demo via email"
+>
+  Request A Demo{' '}
+  <ArrowRightCircleIconSVG 
+    className={`ml-2 w-5 h-5 
+      ${isTransparentState ? 'text-green-600' : 'text-green-600 hover:text-white'}`} 
+  />
+</a>
           </div>
         </div>
 
@@ -198,6 +202,7 @@ const Navbar: React.FC = () => {
             className="rounded-md p-1 focus:outline-none"
             aria-controls="mobile-menu"
             aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
+            aria-label='menu-button'
           >
             {isMobileMenuOpen ? (
               <TimesIconSVG className="h-7 w-7 text-black" />

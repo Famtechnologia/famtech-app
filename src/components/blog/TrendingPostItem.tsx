@@ -14,7 +14,7 @@ const TrendingPostItem: React.FC<TrendingPostItemProps> = ({ post }) => {
       {/* Small dot icon from design */}
       <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
       <div className="flex-grow">
-        <Link href={`/blog/${post.id}`}>
+        <Link href={`/blog/${post.id}`} aria-label='blog post id'>
           <h4 className="text-sm font-semibold text-gray-800 hover:text-green-700 transition-colors leading-tight">
             {post.title}
           </h4>
