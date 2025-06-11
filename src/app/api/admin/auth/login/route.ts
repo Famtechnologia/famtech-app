@@ -1,20 +1,15 @@
+// app/api/admin/login/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase/admin';
 import { FieldValue } from 'firebase-admin/firestore';
-
-interface SuperAdminRegistration {
-  name: string;
-  email: string;
-  password: string;
-}
 
 const ADMIN_SECRET = process.env.ADMIN_SECRET_KEY as string;
 const ALLOWLIST = ['founder@domain.com', 'famtechnologia@gmail.com', 'onaneyeayodeji@gmail.com', 'onaneyeadedire@gmail.com'];
 const rateLimitMap = new Map<string, { count: number; timestamp: number; banned?: boolean }>();
 const RATE_LIMIT = 5;
-const RATE_WINDOW = 10 * 60 * 1000; // 10 minutes
+const RATE_WINDOW = 10 * 60 * 1000;
 const BAN_THRESHOLD = 10;
-const BAN_DURATION = 60 * 60 * 1000; // 1 hour
+const BAN_DURATION = 60 * 60 * 1000;
 
 function rateLimitExceeded(ip: string): boolean {
   const now = Date.now();
@@ -25,7 +20,6 @@ function rateLimitExceeded(ip: string): boolean {
   }
 
   if (entry.banned && now - entry.timestamp < BAN_DURATION) return true;
-
   if (entry.banned && now - entry.timestamp >= BAN_DURATION) {
     rateLimitMap.set(ip, { count: 1, timestamp: now });
     return false;
@@ -49,11 +43,7 @@ function rateLimitExceeded(ip: string): boolean {
 
 async function logBlockedAttempt(ip: string, reason: string) {
   const logRef = adminDb.collection('securityLogs').doc();
-  await logRef.set({
-    ip,
-    reason,
-    timestamp: FieldValue.serverTimestamp()
-  });
+  await logRef.set({ ip, reason, timestamp: FieldValue.serverTimestamp() });
 }
 
 export async function POST(request: NextRequest) {
@@ -64,51 +54,36 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Too many requests or temporarily banned' }, { status: 429 });
     }
 
-    const incomingToken = request.headers.get('x-admin-token');
-    if (!incomingToken || incomingToken !== ADMIN_SECRET) {
+    const token = request.headers.get('x-admin-token');
+    if (!token || token !== ADMIN_SECRET) {
       await logBlockedAttempt(ip, 'Invalid or missing admin token');
       return NextResponse.json({ error: 'Unauthorized request' }, { status: 401 });
     }
 
-    const data: SuperAdminRegistration = await request.json();
-
-    const requiredFields: (keyof SuperAdminRegistration)[] = ['name', 'email', 'password'];
-    for (const field of requiredFields) {
-      if (!data[field] || data[field].trim() === '') {
-        await logBlockedAttempt(ip, `Missing field: ${field}`);
-        return NextResponse.json({ error: `${field} is required` }, { status: 400 });
-      }
+    const { email, password } = await request.json();
+    if (!email || !password) {
+      await logBlockedAttempt(ip, 'Missing email or password');
+      return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
     }
 
-    if (!ALLOWLIST.includes(data.email.toLowerCase().trim())) {
+    const trimmedEmail = email.toLowerCase().trim();
+    if (!ALLOWLIST.includes(trimmedEmail)) {
       await logBlockedAttempt(ip, 'Email not allowed');
       return NextResponse.json({ error: 'Access denied for this email' }, { status: 403 });
     }
 
-    const userRecord = await adminAuth.createUser({
-      displayName: data.name.trim(),
-      email: data.email.toLowerCase().trim(),
-      password: data.password.trim()
-    });
+    const user = await adminAuth.getUserByEmail(trimmedEmail);
+    const claims = user.customClaims || {};
+    if (claims.role !== 'superadmin') {
+      await logBlockedAttempt(ip, 'Not a superadmin');
+      return NextResponse.json({ error: 'Unauthorized role' }, { status: 403 });
+    }
 
-    await adminAuth.setCustomUserClaims(userRecord.uid, { role: 'superadmin' });
-
-    const userRef = adminDb.collection('admin').doc(userRecord.uid);
-    await userRef.set({
-      uid: userRecord.uid,
-      name: data.name.trim(),
-      email: data.email.toLowerCase().trim(),
-      role: 'superadmin',
-      isActive: true,
-      createdAt: FieldValue.serverTimestamp(),
-      updatedAt: FieldValue.serverTimestamp()
-    });
-
-    return NextResponse.json({ message: 'Superadmin registration successful' }, { status: 201 });
+    return NextResponse.json({ message: 'Login successful', uid: user.uid }, { status: 200 });
   } catch (error) {
-    console.error('Superadmin registration error:', error);
+    console.error('Admin login error:', error);
     return NextResponse.json(
-      { error: 'Registration failed', details: error instanceof Error ? error.message : String(error) },
+      { error: 'Login failed', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }

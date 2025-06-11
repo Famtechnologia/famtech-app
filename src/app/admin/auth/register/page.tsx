@@ -1,12 +1,14 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import OnboardLayout from '@/components/auth/layout/onboardLayout'
 import logo from '../../../../../public/logo.png'
 import Image from 'next/image'
+import {useRouter} from 'next/navigation'
 
 const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY || '' // This should be injected securely
 
 const Page = () => {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -45,8 +47,12 @@ const Page = () => {
       if (!res.ok) {
         setError(data.error || 'Registration failed');
       } else {
+        const role = data.role || 'superadmin'
+        const userId = data.uid
         setSuccessMsg('Registration successful!');
         setFormData({ name: '', email: '', password: '' });
+        router.push(`/admin/${userId}`)
+        console.log(userId)
       }
     } catch (err) {
       setError('Network or unexpected error');
