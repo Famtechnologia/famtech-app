@@ -1,12 +1,13 @@
 // components/layout/DashboardLayout.tsx
 'use client';
+
 import { useState } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { 
-  Home, 
-  Users, 
-  BarChart3, 
-  Settings, 
+import {
+  Home,
+  Users,
+  BarChart3,
+  Settings,
   LogOut,
   Menu,
   X,
@@ -25,18 +26,24 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children, title }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { userData, signOut } = useAuth();
+  const { user, claims, reset } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   const handleSignOut = async () => {
-    await signOut();
-    router.push('/login');
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' }); // or your actual logout endpoint
+    } catch (err) {
+      console.error('Logout failed:', err);
+    } finally {
+      reset(); // reset auth state
+      router.push('/auth/login');
+    }
   };
 
   const getNavItems = () => {
-    const role = userData?.role;
-    const subRole = userData?.subRole;
+    const role = claims?.role || '';
+    const subRole = claims?.subRole || '';
 
     if (role === 'farmer') {
       const baseItems = [
@@ -77,20 +84,17 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
       <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
         <div className="flex items-center justify-between h-16 px-4 border-b">
           <h1 className="text-xl font-bold text-primary-600">Famtech</h1>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden"
-          >
+          <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
             <X size={24} />
           </button>
         </div>
-        
+
         <nav className="mt-8">
           <div className="px-4 space-y-2">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
-              
+
               return (
                 <Link
                   key={item.name}
@@ -113,12 +117,14 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
               <span className="text-white text-sm font-medium">
-                {userData?.name?.charAt(0).toUpperCase()}
+                {user?.email?.charAt(0).toUpperCase() || 'U'}
               </span>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-900">{userData?.name}</p>
-              <p className="text-xs text-gray-500 capitalize">{userData?.role} {userData?.subRole && `- ${userData.subRole}`}</p>
+              <p className="text-sm font-medium text-gray-900">{user?.fullName || 'User'}</p>
+              <p className="text-xs text-gray-500 capitalize">
+                {claims?.role} {claims?.subRole && `- ${claims?.subRole}`}
+              </p>
             </div>
           </div>
           <button
@@ -137,10 +143,7 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
         <header className="bg-white shadow-sm border-b">
           <div className="flex items-center justify-between h-16 px-4">
             <div className="flex items-center">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden mr-4"
-              >
+              <button onClick={() => setSidebarOpen(true)} className="lg:hidden mr-4">
                 <Menu size={24} />
               </button>
               <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
@@ -150,15 +153,13 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
 
         {/* Page content */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
-          <div className="p-6">
-            {children}
-          </div>
+          <div className="p-6">{children}</div>
         </main>
       </div>
 
       {/* Sidebar overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />

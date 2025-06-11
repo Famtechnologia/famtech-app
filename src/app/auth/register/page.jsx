@@ -138,19 +138,22 @@ export default function ModernFarmRegistration() {
         formData.email, 
         formData.password
       );
-
+      const farmId = `farm_${userCredential.user.uid}`;
       // Set custom claims and create user document
       await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           uid: userCredential.user.uid,
+          farmId,
           ...formData
         })
       });
+      console.log('User UID:', userCredential.user.uid);
+      console.log('Farm ID:', farmId);
 
       toast.success('Account created successfully!');
-      router.push(`farm/${userCredential.user.uid}`);
+      router.push(`/farm/${farmId}`);
     } catch (error) {
       toast.error(error.message);
     } finally {
