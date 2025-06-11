@@ -10,18 +10,18 @@ import Image from 'next/image';
 
 const KeyFeatures = () => {
   return (
-    <div className="relative w-full max-w-md mx-auto rounded-lg overflow-hidden lg:w-[350px]  p-4 pt-2">
+    <div className="relative w-full max-w-md mx-auto rounded-lg overflow-hidden lg:max-w-[350px]  p-4 pt-2">
         <div>
     <Image
     src='/ten-million.png'
     alt='ten million image'
     height={359}
     width={358}
-    className="h-auto w-48 md:w-48 items-center mx-auto pt-10 object-cover" 
+    className="h-auto w-48 md:w-48 items-center mx-auto pt-10 object-cover loading-lazy" 
     />
         </div>
-        <div className='absolute inset-0 flex flex-col items-ccenter justify-center space-y-4 
-         px-4 pt-4 pb-2 z-10'>
+        <div className='absolute inset-0 flex flex-col  justify-center space-y-4
+         px-0 lg:px-2 pt-4 pb-2 z-10'>
         <div >
            <p className='inline-flex items-center px-4 py-2 bg-gray-100 text-gray-800
             text-[9px] font-medium shadow-md rounded-xl whitespace-nowrap border border-gray-200 space-x-2 '>

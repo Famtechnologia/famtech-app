@@ -29,7 +29,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
 }) => {
   return (
     
-    <div className="inline-flex flex-col md:items-start md:text-left items-center text-center lg:max-w-[450px] lg:my-auto  md:text-left space-y-4  mx-auto md:mx-0"> 
+    <div className="max-w-7xl mx-auto inline-flex flex-col md:items-start md:text-left items-center text-center lg:max-w-[500px] lg:my-auto  md:text-left space-y-4  mx-auto md:mx-0"> 
       <p
         className={`
           px-4 py-2  flex-shrink-0 rounded-lg inline-flex items-center justify-center 

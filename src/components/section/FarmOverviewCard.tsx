@@ -51,7 +51,7 @@ const FarmOverviewCard: React.FC<FarmOverviewCardProps> = ({
   return (
     <div
       className="
-        relative
+        relative max-w-7xl mx-auto
         flex  max-w-sm flex-col space-y-3 rounded-xl p-4
         bg-transparent bg-opacity-80 
         backdrop-blur-md     

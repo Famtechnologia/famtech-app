@@ -1,14 +1,15 @@
 'use client';
 import React from 'react'
-import Navbar from './section/Navbar';
+import Navbar from './section/Navbar2';
 import Home from './section/Home';
 import FirstSection from './section/FirstSection';
 import SecondSection from './section/SecondSection';
-import Service from './section/Service';
+import Service from './section/Service'
 import Dashboard from './section/Dashboard';
-import ThirdSection from './section/ThirdSection';
 import Book from './section/Book';
 import Footer from './section/Footer';
+import Team from './section/Team';
+import FourthSection from './section/FourthSection'
 const App = () => {
   return (
     <div>
@@ -18,10 +19,11 @@ const App = () => {
       <SecondSection/>
       <Service/>
       <Dashboard/>
-      <ThirdSection/>
+      <FourthSection/>
+      <Team/>
       <Book/>
       <Footer/>
-    </div>
+</div>
   )
 }
 
