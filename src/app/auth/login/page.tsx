@@ -1,44 +1,47 @@
-// ================================
-// AUTHENTICATION PAGES
-// ================================
-
-// app/(auth)/login/page.tsx
+// /app/(auth)/login/page.tsx
 'use client';
-import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../lib/firebase/config';
+
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import Link from 'next/link';
+import { useAuthStore } from '@/store/authStore';
+
+interface LoginFormInputs {
+  email: string;
+  password: string;
+}
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const fetchSession = useAuthStore((s) => s.fetchSession);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormInputs>();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
+  const onSubmit = async (data: LoginFormInputs) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const idTokenResult = await userCredential.user.getIdTokenResult();
-      const role = idTokenResult.claims.role;
-      const subRole = idTokenResult.claims.subRole;
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-      // Redirect based on role
-      if (role === 'farmer') {
-        router.push(`/dashboard/farmer/${subRole || 'admin'}`);
-      } else {
-        router.push(`/dashboard/${role}`);
+      if (!res.ok) {
+        const result = await res.json();
+        toast.error(result.error || 'Login failed');
+        return;
       }
-      
+
+      await fetchSession(); // Hydrate Zustand with user and claims
+
+      const { farmId } = useAuthStore.getState().claims;
       toast.success('Login successful!');
-    } catch (error) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
+      router.push(`/farm/${farmId || ''}`);
+    } catch (error: any) {
+      toast.error(error?.message || 'Login failed');
     }
   };
 
@@ -53,49 +56,45 @@ export default function LoginPage() {
             Revolutionizing Agriculture with Smart Technology
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
               <label htmlFor="email" className="sr-only">Email address</label>
               <input
                 id="email"
-                name="email"
                 type="email"
-                required
+                {...register('email', { required: 'Email is required' })}
                 className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                 placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
               />
+              {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>}
             </div>
             <div>
               <label htmlFor="password" className="sr-only">Password</label>
               <input
                 id="password"
-                name="password"
                 type="password"
-                required
+                {...register('password', { required: 'Password is required' })}
                 className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
               />
+              {errors.password && <p className="text-sm text-red-600 mt-1">{errors.password.message}</p>}
             </div>
           </div>
 
           <div>
             <button
               type="submit"
-              disabled={loading}
+              disabled={isSubmitting}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
 
           <div className="text-center">
             <Link href="/register" className="text-primary-600 hover:text-primary-500">
-              Don't have an account? Sign up
+              Don&apos;t have an account? Sign up
             </Link>
           </div>
         </form>

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/auth/layout/DashboardLayout';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { 
   Cloud, 
   Activity, 
@@ -41,6 +42,9 @@ interface DashboardStats {
 }
 
 export default function FarmerAdminDashboard() {
+  const router = useRouter();
+  const { farmID: farmId } = useParams();
+  console.log(farmId);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
