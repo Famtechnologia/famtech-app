@@ -5,6 +5,7 @@ import { FaAngleRight } from 'react-icons/fa';
 import FarmOverviewCard from './FarmOverviewCard';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const Home: React.FC = () => {
   const fadeUp = {
@@ -22,10 +23,18 @@ const Home: React.FC = () => {
   return (
     <main
       className="relative w-full px-4 md:px-5 lg:px-16 pt-32 lg:pt-28 md:py-32
-        bg-[url('/images/home/agriculture-healthy-food.jpg')] lg:grid-cols-[500px_1fr_auto] lg:grid lg:grid-row-[1fr_1fr_1fr_200px_1fr]
-        bg-cover bg-center h-screen lg:h-auto lg:pb-24 lg:justify-start max-w-9xl mx-auto
-        m-auto lg:ml-0 md:h-auto fetchpriority-high"
+        lg:grid-cols-[500px_1fr_auto] lg:grid lg:grid-row-[1fr_1fr_1fr_200px_1fr]
+        h-screen lg:h-auto lg:pb-24 lg:justify-start max-w-9xl mx-auto
+        m-auto lg:ml-0 md:h-auto "
     >
+      <Image
+            src='/images/home/agriculture-healthy-food.jpg'
+            alt='background'
+            fill
+            priority
+            className='object-cover z-0'
+      
+           />
       <div className="absolute inset-0 bg-black opacity-40 h-full md:rounded-lg"></div>
 
       <motion.div

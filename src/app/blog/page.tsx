@@ -1,5 +1,4 @@
 'use client';
-import { FixedSizeList } from 'react-window';
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,11 +7,10 @@ import SearchInput from '@/components/blog/SearchInput';
 import CategoryFilter from '@/components/blog/CategoryFilter';
 import BlogCard from '@/components/blog/BlogCard';
 import TrendingSection from '@/components/blog/TrendingSection';
-import PaginationControls from '@/components/blog/PaginationControls';
+import PaginationControls from '@/components/blog/PaginationControls'; 
 import Navbar from '@/components/section/Navbar2';
 import Footer from '@/components/section/Footer';
 import Join from '@/components/blog/Join';
-import type { Metadata } from 'next';
 
 export default function BlogPage() {
   const [allPosts, setAllPosts] = useState<PostListItem[]>([]);
@@ -52,19 +50,21 @@ export default function BlogPage() {
         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
+    // Reset to first page when filters/search change
+    setCurrentPage(1);
     return currentPosts;
   }, [allPosts, selectedCategory, searchQuery]);
 
-  const BlogCardRow = ({ index, style }) => {
-    const post = filteredPosts[index];
-    if (!post) return null;
+  const totalPages = useMemo(() => {
+    return Math.ceil(filteredPosts.length / postsPerPage);
+  }, [filteredPosts.length, postsPerPage]);
 
-    return (
-      <div style={style}>
-        <BlogCard key={post.id} post={post} />
-      </div>
-    );
-  };
+  const paginatedPosts = useMemo(() => {
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    return filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  }, [filteredPosts, currentPage, postsPerPage]);
+
 
   if (loading) {
     return (
@@ -83,9 +83,6 @@ export default function BlogPage() {
       </div>
     );
   }
-
-  const listHeight = 600;
-  const itemHeight = 350;
 
   return (
     <div>
@@ -108,15 +105,10 @@ export default function BlogPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8 lg:gap-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredPosts.length > 0 ? (
-              <FixedSizeList
-                height={listHeight}
-                itemCount={filteredPosts.length}
-                itemSize={itemHeight}
-                width="100%"
-              >
-                {BlogCardRow}
-              </FixedSizeList>
+            {paginatedPosts.length > 0 ? (
+              paginatedPosts.map(post => (
+                <BlogCard key={post.id} post={post} />
+              ))
             ) : (
               <div className="col-span-full text-center text-gray-700 py-12">
                 <p>No blog posts found matching your criteria.</p>
@@ -128,9 +120,16 @@ export default function BlogPage() {
             <TrendingSection />
           </div>
         </div>
-      </div>
 
-   
+        {totalPages > 1 && (
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}
+      </div>
+         <Join/>
       <Footer />
     </div>
   );

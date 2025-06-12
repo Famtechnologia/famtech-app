@@ -30,18 +30,24 @@ const Team: React.FC = () => {
       
       imageUrl: '/images/home/Founder.jpg'
     },
-
-    {
+     {
       id: '2',
-      name: 'Akinwunmi T. Adebayo ',
-      title: 'Chief Administrative Officer',
-      description: 'Connecting farmers with our innovative solutions globally.',
-      fullDescription: `AKINWUNMI T. ADEBAYO (CAO) is a Christocentric data analyst and certified Microsoft Power BI Associate with a degree in agricultural economics from Olabisi Onabanjo University, Nigeria. Originally trained in animal science, Akinwunmi transitioned to agricultural economics to align with his passion for data analytics and tech-driven solutions in agriculture. With experience across over 300 academic projects, he brings premium expertise in MS Excel, SPSS, statistical modeling, and data visualization, helping students and businesses to unlock actionable insights in the agritech space. In his professional journey, he has worked with SideHustle (now Terra Learning), an edtech platform for training in digital skills.
-      Akinwunmi has offered consultancy services in which he supports data-driven decision-making and business intelligence initiatives. Beyond analytics, he has over a decade of hands-on experience in livestock farming and is deeply committed to agricultural investment and agritech innovations. Passionate about advancing agriculture through the power of technology and data analytics, Akinwunmi upholds strong Christian values at the core of his personal and professional life.
-`,
+      name: 'Samuel Oluwatobi',
+      title: ' Chief Operating  Officer',
+      description: 'Developing robust software solutions for scalable agriculture.',
+      fullDescription: `SAMUEL OLUWATOBI (COO) Oluwatobi has consistently empowered farmers, cooperatives, 
+      and agribusinesses to increase productivity, improve operational efficiency, and build more resilient
+       and profitable enterprises. He holds a Master’s degree in agronomy and has close to a decade of hands-on 
+       experience in farm establishment, management, and agricultural consulting. 
+     Oluwatobi is a strategic thinker and values-driven leader who believes that Africa holds the potential 
+     for true economic liberation if the continent fully harnesses the vast opportunities within its agricultural sector. The Founder/CEO of Farmdev Consult, a trailblazing agricultural consulting firm dedicated to transforming Africa’s agribusiness landscape through innovation, sustainability, and technology-driven solutions, his values-driven approach is rooted in excellence, integrity, 
+     productivity, and inclusive growth, making him a respected voice in Africa’s agricultural transformation.`,
       
-      imageUrl: '/images/home/Tolu.jpg'
+      imageUrl: '/images/home/tobiii.jpg'
     },
+    
+
+    
 
     {
       id: '3',
@@ -70,20 +76,17 @@ const Team: React.FC = () => {
       
       imageUrl: '/images/home/joseph.jpg'
     },
-     {
+
+    {
       id: '5',
-      name: 'Samuel Oluwatobi',
-      title: ' Chief Operating  Officer',
-      description: 'Developing robust software solutions for scalable agriculture.',
-      fullDescription: `SAMUEL OLUWATOBI (COO) Oluwatobi has consistently empowered farmers, cooperatives, 
-      and agribusinesses to increase productivity, improve operational efficiency, and build more resilient
-       and profitable enterprises. He holds a Master’s degree in agronomy and has close to a decade of hands-on 
-       experience in farm establishment, management, and agricultural consulting. 
-     Oluwatobi is a strategic thinker and values-driven leader who believes that Africa holds the potential 
-     for true economic liberation if the continent fully harnesses the vast opportunities within its agricultural sector. The Founder/CEO of Farmdev Consult, a trailblazing agricultural consulting firm dedicated to transforming Africa’s agribusiness landscape through innovation, sustainability, and technology-driven solutions, his values-driven approach is rooted in excellence, integrity, 
-     productivity, and inclusive growth, making him a respected voice in Africa’s agricultural transformation.`,
+      name: 'Akinwunmi T. Adebayo ',
+      title: 'Chief Agriculture Officer',
+      description: 'Connecting farmers with our innovative solutions globally.',
+      fullDescription: `AKINWUNMI T. ADEBAYO (CAO) is a Christocentric data analyst and certified Microsoft Power BI Associate with a degree in agricultural economics from Olabisi Onabanjo University, Nigeria. Originally trained in animal science, Akinwunmi transitioned to agricultural economics to align with his passion for data analytics and tech-driven solutions in agriculture. With experience across over 300 academic projects, he brings premium expertise in MS Excel, SPSS, statistical modeling, and data visualization, helping students and businesses to unlock actionable insights in the agritech space. In his professional journey, he has worked with SideHustle (now Terra Learning), an edtech platform for training in digital skills.
+      Akinwunmi has offered consultancy services in which he supports data-driven decision-making and business intelligence initiatives. Beyond analytics, he has over a decade of hands-on experience in livestock farming and is deeply committed to agricultural investment and agritech innovations. Passionate about advancing agriculture through the power of technology and data analytics, Akinwunmi upholds strong Christian values at the core of his personal and professional life.
+`,
       
-      imageUrl: '/images/home/tobiii.jpg'
+      imageUrl: '/images/home/Tolu.png'
     },
     
     

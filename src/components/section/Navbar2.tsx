@@ -165,11 +165,13 @@ const Navbar: React.FC = () => {
             </li>
             <li>
               <Link href="/contact"
-                className={ `flex items-center ${getNavLinkClasses('/contact')}`}> 
+                className={ ` ${getNavLinkClasses('/contact')}`}> 
                 Contact Us
-                <MdArrowDropDown className="ml-1 w-6 h-6" />
+                
               </Link>
-            </li>
+            </li>  
+              
+
           </ul>
 
           <div
@@ -251,12 +253,15 @@ const Navbar: React.FC = () => {
           </Link>
           <Link
             href="/contact"
-            className={ `flex flex-row items-center justify-center ${getMobileNavLinkClasses('/contact')} `} 
+            className={ ` ${getMobileNavLinkClasses('/contact')} `} 
             onClick={handleToggleMenu}
           >
             Contact Us
-            <MdArrowDropDown className="ml-1 w-6 h-6" />
+            
           </Link>
+        
+
+            
           <button
             className={`
               mt-2 rounded-full bg-green-700 px-6 py-3

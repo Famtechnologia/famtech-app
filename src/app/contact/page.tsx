@@ -72,7 +72,7 @@ const ContactSection: React.FC = () => {
 
   return (
     <>
-      <div className='flex flex-col space-y-2 max-w-7xl mx-auto bg-gray-100'>
+      <div className='flex flex-col space-y-2 max-w-7xl mx-auto '>
         <Navbar/>
         <motion.div
           variants={imageHeroVariants}
@@ -86,7 +86,7 @@ const ContactSection: React.FC = () => {
             width={1440}
             height={457}
             priority
-            className=" md:h-fill filter brightness-50 loading-lazy bg-black  fetchpriority-high mt-4"
+            className=" md:h-fill filter brightness-50 loading-lazy bg-black   mt-4"
           />
         </motion.div>
         
@@ -143,13 +143,13 @@ const ContactSection: React.FC = () => {
           <motion.div
             className="
               w-full md:w-1/2
-              flex flex-col gap-6 bg-gray-100
+              flex flex-col gap-6 
             "
             variants={columnVariants}
           >
             <motion.form
               className="
-                bg-gray-100 rounded-lg
+                 rounded-lg
                 flex flex-col gap-3 md:gap-6
               "
               action=""
@@ -159,7 +159,7 @@ const ContactSection: React.FC = () => {
                 name="email"
                 type="email"
                 placeholder="Email"
-                className=" p-4
+                className=" p-4 border border-green-500
                   md:p-6 text-[#9EA2AD] bg-white w-full text-sm
                   rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500
                 "
@@ -169,7 +169,7 @@ const ContactSection: React.FC = () => {
               <motion.textarea
                 name="message"
                 placeholder="Message"
-                className=" p-4 text-sm
+                className=" p-4 text-sm border border-green-500
                     md:pb-36 md:p-6 text-[#9EA2AD] bg-white w-full
                   rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-green-500
                 "

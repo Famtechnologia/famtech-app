@@ -2,7 +2,7 @@
 import React from 'react' 
 import { MdKeyboardDoubleArrowRight } from "react-icons/md"; 
 import { motion } from 'framer-motion'; 
-
+import Image from 'next/image'
 const PreFooter: React.FC = () => { 
 
   const textVariants = { 
@@ -47,7 +47,7 @@ const PreFooter: React.FC = () => {
         flex flex-col items-center justify-center 
         space-y-4 text-white 
         my-10 lg:my-30 
-        bg-[url('/hero-section-image-spraying-tractor.jpg')] bg-cover bg-center loading-lazy 
+         
         h-96 md:h-80 lg:h-96 
         px-6 py-10 
         md:mx-20 
@@ -59,6 +59,14 @@ const PreFooter: React.FC = () => {
       viewport={{ once: false, amount: 0.3 }} 
       variants={containerVariants} 
     > 
+    <Image
+          src='/images/blog/strawberry-field.jpg'
+          alt='background'
+          fill
+          priority
+          className='object-cover z-0'
+    
+         />
       <div className="absolute inset-0 bg-black opacity-50 h-full md:rounded-lg"></div> 
 
       <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-4"> 
