@@ -22,11 +22,11 @@ const Home: React.FC = () => {
   return (
     <main
       className="relative w-full px-4 md:px-5 lg:px-16 pt-32 lg:pt-28 md:py-32
-        bg-[url('/agriculture-healthy-food.jpg')] lg:grid-cols-[500px_1fr_auto] lg:grid lg:grid-row-[1fr_1fr_1fr_200px_1fr]
+        bg-[url('/images/home/agriculture-healthy-food.jpg')] lg:grid-cols-[500px_1fr_auto] lg:grid lg:grid-row-[1fr_1fr_1fr_200px_1fr]
         bg-cover bg-center h-screen lg:h-auto lg:pb-24 lg:justify-start max-w-9xl mx-auto
         m-auto lg:ml-0 md:h-auto fetchpriority-high"
     >
-      <div className="absolute inset-0 bg-black opacity-10 h-full md:rounded-lg"></div>
+      <div className="absolute inset-0 bg-black opacity-40 h-full md:rounded-lg"></div>
 
       <motion.div
         className='relative flex flex-col sm:px-2 sm:py-4 space-y-4
@@ -52,7 +52,7 @@ const Home: React.FC = () => {
           variants={fadeUp}
           custom={0.2}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl lg:leading-16 text-center lg:text-left text-white lg:mb-2">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl lg:leading-16 xl:leading-18 text-center lg:text-left text-white lg:mb-2">
             <span className="text-gray-400">Bridging</span> Tradition
             <span className="text-gray-400"> and</span> Technology
           </h1>

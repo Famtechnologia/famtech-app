@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 const SecondSection:React.FC = () => {
 
   const textVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 1, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
@@ -19,7 +19,7 @@ const SecondSection:React.FC = () => {
   };
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
@@ -48,7 +48,7 @@ const SecondSection:React.FC = () => {
         We build <span className='text-green-400'>Powerful SaaS solutions</span> that help farmers
       </motion.h1>
       <motion.p
-        className='text-xs lg:text-lg lg: max-w-[1000px] mx-auto lg:mb-8 text-black-400 text-center px-6'
+        className='text-base lg:text-lg lg: max-w-[1000px] mx-auto lg:mb-8 text-black-400 text-center px-6'
         variants={textVariants}
       >
         Whether you're running a small farm or managing large-scale agribusiness,

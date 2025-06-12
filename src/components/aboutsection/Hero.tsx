@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-
+import Image from 'next/image';
 const Hero:React.FC = () => {
   const textVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 1, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
@@ -30,7 +30,7 @@ const Hero:React.FC = () => {
   };
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
@@ -74,10 +74,13 @@ const Hero:React.FC = () => {
             variants={imageVariants}
           >
             <div className="relative w-full h-full md:h-[480px] rounded-xl">
-                <img
-                    src="/Agricultural-technology.jpg"
+                <Image
+                    src="/images/about/Agricultural-technology.jpg"
                     alt="A person interacting with a tablet in a farm setting"
-                    className="w-full h-full object-cover rounded-xl loading-lazy fetchpriority-high"
+                    width={824}
+                    height={719}
+                    priority
+                    className="w-full h-full object-cover rounded-xl  fetchpriority-high"
                     onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/C0C0C0/FFFFFF?text=Error'; e.currentTarget.onerror = null; }}
                 />
             </div>

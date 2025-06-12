@@ -62,7 +62,7 @@ const Service = () => {
       
       <div className='space-y-6'>
         <motion.div
-          className="flex flex-col rounded-xl p-8 space-y-2 bg-[url('/FamOS.jpg')]
+          className="flex flex-col rounded-xl p-8 space-y-2 bg-[url('/images/home/FamOS.jpg')]
           bg-cover mx-auto lg:px-12
           bg-center md:grid md:gap-8 lg:py-12
           h-auto md:h-auto md:grid-cols-[repeat(2,auto)]"
@@ -87,7 +87,7 @@ const Service = () => {
         </motion.div>
 
         <motion.div
-          className="flex flex-col rounded-xl p-8 space-y-2 bg-[url('/FamOS.jpg')]
+          className="flex flex-col rounded-xl p-8 space-y-2 bg-[url('/images/home/FamOS.jpg')]
           bg-cover mx-auto lg:px-12 lg:py-12
           bg-center md:grid md:gap-8
           h-auto md:h-auto md:grid-cols-[repeat(2,auto)]"
@@ -97,7 +97,7 @@ const Service = () => {
           viewport={{ once: false, amount: 0.4 }}
         >
           <Image
-            src='/features.png'
+            src='/images/home/features.png'
             alt='features'
             height={518}
             width={454}
@@ -116,7 +116,7 @@ const Service = () => {
         </motion.div>
 
         <motion.div
-          className="flex flex-col rounded-xl p-8 space-y-2 bg-[url('/FamOS.jpg')]
+          className="flex flex-col rounded-xl p-8 space-y-2 bg-[url('/images/home/FamOS.jpg')]
           bg-cover mx-auto lg:px-12 lg:py-12
           bg-center md:grid md:gap-8
           h-auto md:h-auto md:grid-cols-[repeat(2,auto)]"
@@ -126,7 +126,7 @@ const Service = () => {
           viewport={{ once: false, amount: 0.4 }}
         >
           <Image
-            src='/market-cart.jpg'
+            src='/images/home/market-cart-image.png'
             alt='features'
             height={518}
             width={454}

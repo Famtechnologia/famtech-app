@@ -50,7 +50,7 @@ const CardComponent: React.FC = () => {
       >
         <div className="relative z-10 flex h-2/3 w-full items-center justify-center ">
           <Image
-            src="/data-management-hub.png"
+            src="/images/home/data-management-hub.png"
             alt="Abstract graphic representing tracking and managing operations"
             width={400}
             height={400}
@@ -78,7 +78,7 @@ const CardComponent: React.FC = () => {
       >
         <div className="relative z-10 flex h-2/3 w-full items-center justify-center ">
           <Image
-            src="/healthy-crop-monitoring.png"
+            src="/images/home/healthy-crop-monitoring.png"
             alt=" healthy crop monitoring and technology in agriculture."
             width={400}
             height={400}
@@ -106,7 +106,7 @@ const CardComponent: React.FC = () => {
       >
         <div className="relative z-10 flex h-2/3 w-full items-center justify-center ">
           <Image
-            src="/market-access-cart.png"
+            src="/images/home/market-access-cart.png"
             alt=" Illustrated shopping cart"
             width={400}
             height={400}

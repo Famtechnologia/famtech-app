@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '../components/auth/AuthProvider';
 
-const inter = Inter({ subsets: ['latin'], display: 'swap' });
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter', });
 
 export const metadata = {
   title: 'Famtech - Smart Agriculture Platform',
@@ -13,8 +13,8 @@ export const metadata = {
 
 export default function RootLayout({children}) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={inter.className} >
+      <body >
         <AuthProvider>
           {children}
           <Toaster position="top-right" />

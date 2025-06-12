@@ -17,10 +17,11 @@ const Footer:React.FC = () => {
         <div className='md:flex flex-col md:max-w-[400px] lg:max-w-[350px] '>
         <div className="flex-shrink-0">
                    <Image
-                        src="/famtech-smart-farming-logoss.png"
+                        src="/images/home/famtech-logo-two.png"
                         alt="FAMTECH Smart Farming logo, symbolizing agricultural technology and growth"
                         width={1600} 
                         height={1600} 
+                        priority
                         className="w-[120px] h-[120px] px-0 py-0 fetchpriority-high  " 
                     />
                 </div>

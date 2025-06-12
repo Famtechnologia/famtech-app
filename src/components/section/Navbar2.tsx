@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
 
   const navbarBgClass = isTransparentState ? 'bg-transparent' : 'bg-white shadow-sm';
   
-  const desktopNavLinkBaseColor = isTransparentState ? 'text-black' : 'text-gray-700';
+  const desktopNavLinkBaseColor = isTransparentState ? 'text-white' : 'text-gray-700';
   const navLinkHoverActiveColor = 'text-green-600'; 
 
   const mobileMenuBgColor = isTransparentState ? 'bg-white bg-opacity-80' : 'bg-white shadow-lg'; 
@@ -99,7 +99,7 @@ const Navbar: React.FC = () => {
 
   const getMobileNavLinkClasses = (path: string) =>
     `block w-full text-center py-3 px-4 text-base font-semibold transition-colors duration-200 
-      ${pathname === path ? 'bg-green-100 text-green-700' : `${mobileNavLinkColor} hover:bg-gray-100`}`;
+      ${pathname === path ? 'bg-white text-green-700' : `${mobileNavLinkColor} hover:bg-gray-100`}`;
 
   return (
     <nav className={`fixed left-0 top-0 z-50 w-full h-18 md:h-22 pt-2 md:pt-0 items-center justify-center lg:h-23 ${navbarBgClass} transition-all duration-300`}>
@@ -120,19 +120,21 @@ const Navbar: React.FC = () => {
             {isTransparentState ? (
 
               <Image
-                src="/famtech-white-logo.png" 
+                src="/images/home/famtech-white-logo.png" 
                 alt="FAMTECH Smart Farming logo - White"
                 width={1600} 
                 height={1600} 
+                priority
                 className="h-[150px] w-[150px] loading-lazy fetchpriority-high" 
               />
             ) : (
               
               <Image
-                src="/famtech-smart-farming-logoss.png"
+                src="/images/home/famtech-logo-two.png"
                 alt="FAMTECH Smart Farming logo"
                 width={1600} 
                 height={1600} 
+                priority
                 className="h-[150px] w-[150px]" 
               />
             )}
@@ -178,8 +180,8 @@ const Navbar: React.FC = () => {
               transition-colors duration-200
               md:px-4 md:py-2
               ${isTransparentState
-                ? 'border-green-700 text-black hover:bg-white hover:text-green-700 border-2' 
-                : 'border-green-700 text-gray-700 hover:bg-green-800 hover:text-white'}
+                ? 'border-green-700 text-white hover:bg-white hover:text-green-700 border-2' 
+                : 'border-green-700 text-black text-gray-700 hover:bg-green-800 hover:text-white'}
             `}
           >
          <a
@@ -205,9 +207,11 @@ const Navbar: React.FC = () => {
             aria-label='menu-button'
           >
             {isMobileMenuOpen ? (
-              <TimesIconSVG className="h-7 w-7 text-black" />
+              <TimesIconSVG className={` w-7 h-7 
+      ${isTransparentState ? 'text-white' : 'text-black'}`}  />
             ) : (
-              <BarsIconSVG className="h-7 w-7 text-black" />
+              <BarsIconSVG className={` w-7 h-7 
+      ${isTransparentState ? 'text-white' : 'text-black'}`} />
             )}
           </button>
         </div>

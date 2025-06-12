@@ -28,7 +28,7 @@ const Team: React.FC = () => {
          intelligent tools that enable farmers to optimize operations, improve traceability, and increase 
          market access through a data-powered decision-making process.`,
       
-      imageUrl: '/Founder.jpg'
+      imageUrl: '/images/home/Founder.jpg'
     },
 
     {
@@ -40,7 +40,7 @@ const Team: React.FC = () => {
       Akinwunmi has offered consultancy services in which he supports data-driven decision-making and business intelligence initiatives. Beyond analytics, he has over a decade of hands-on experience in livestock farming and is deeply committed to agricultural investment and agritech innovations. Passionate about advancing agriculture through the power of technology and data analytics, Akinwunmi upholds strong Christian values at the core of his personal and professional life.
 `,
       
-      imageUrl: '/Tolu.jpg'
+      imageUrl: '/images/home/Tolu.jpg'
     },
 
     {
@@ -58,7 +58,7 @@ const Team: React.FC = () => {
         (ICBC), and the Chartered Institute of Management Accountants (CIMA). He holds an MBA from 
         the University of Calabar, Nigeria.`,
       
-      imageUrl: '/cfo.png'
+      imageUrl: '/images/home/cfo.png'
     },
     {
       id: '4',
@@ -68,7 +68,22 @@ const Team: React.FC = () => {
       fullDescription: `JOSEPH A. ONANEYE (CTO) is a dynamic software engineer with many years of technology experience, specializing in crafting responsive, user-centric applications. With a robust foundation in WordPress, JavaScript, React, and Next.js, he has led the development of high-performance web solutions across diverse industries, including healthcare, e-commerce, and social engagement platforms. Deeply committed to delivering seamless user experiences, while adhering to best practices and modern development standards, Onaneye is a passionate, forward-thinking certified full stack developer who enjoys building seamless, user-friendly web applications, with a keen interest in technology-driven business solutions. 
       His skill-set cuts across programming languages, frameworks and libraries, styling, tools and platforms, deployment, and API integration and automation. Known for his significant contributions to UI/UX design, Onaneye has worked on multiple projects, including gifting platforms, eCommerce sites, and social media engagement apps. He also played a pivotal role in the development of Iyewo, an eHealth software solution designed to serve market women and elderly individuals. A skilled communicator and strategic thinker, Onaneye thrives at translating complex client requirements into robust, scalable technical solutions. His passion lies in using technology to bridge human connection gaps and to improve quality of life. As the Founder/CEO of TechsspaceX, he prioritizes security and performance optimization, driven by a clear vision that encompasses innovation and impact.`,
       
-      imageUrl: '/joseph.jpg'
+      imageUrl: '/images/home/joseph.jpg'
+    },
+     {
+      id: '5',
+      name: 'Samuel Oluwatobi',
+      title: ' Chief Operating  Officer',
+      description: 'Developing robust software solutions for scalable agriculture.',
+      fullDescription: `SAMUEL OLUWATOBI (COO) Oluwatobi has consistently empowered farmers, cooperatives, 
+      and agribusinesses to increase productivity, improve operational efficiency, and build more resilient
+       and profitable enterprises. He holds a Master’s degree in agronomy and has close to a decade of hands-on 
+       experience in farm establishment, management, and agricultural consulting. 
+     Oluwatobi is a strategic thinker and values-driven leader who believes that Africa holds the potential 
+     for true economic liberation if the continent fully harnesses the vast opportunities within its agricultural sector. The Founder/CEO of Farmdev Consult, a trailblazing agricultural consulting firm dedicated to transforming Africa’s agribusiness landscape through innovation, sustainability, and technology-driven solutions, his values-driven approach is rooted in excellence, integrity, 
+     productivity, and inclusive growth, making him a respected voice in Africa’s agricultural transformation.`,
+      
+      imageUrl: '/images/home/tobiii.jpg'
     },
     
     
@@ -97,9 +112,16 @@ const Team: React.FC = () => {
   };
 
   return (
-    <div className="min-h-auto py-12 px-4 sm:px-6 lg:px-28 font-sans">
+    <div className="min-h-auto py-12 px-4 sm:px-6 lg:px-28 font-sans bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <SectionTitle title='Our Team'/>
+         <h2
+                  className="text-3xl sm:text-3xl md:text-3xl lg:text-4xl lg:mt-8
+                  text-black text-center md:text-center mt-4 mb-4 md:mb-12"
+                  
+                >
+            Meet the Visionaries behind Famtech 
+                </h2>
         <div className="relative mt-10 md:mt-16">
           
           <button
@@ -107,7 +129,7 @@ const Team: React.FC = () => {
             className="
               absolute left-0 top-1/2 -translate-y-1/2 
               bg-white rounded-full p-2 shadow-md 
-              hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 
+              hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-green-500 
               z-10 
               md:block 
               transition-transform duration-200 hover:scale-110
@@ -123,7 +145,7 @@ const Team: React.FC = () => {
             className="
               absolute right-0 top-1/2 -translate-y-1/2 
               bg-white rounded-full p-2 shadow-md 
-              hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 
+              hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-green-500 
               z-10 
               md:block
               transition-transform duration-200 hover:scale-110
@@ -143,10 +165,10 @@ const Team: React.FC = () => {
               snap-x
               snap-mandatory        
               pb-4                 
-              space-x-6             
+              space-x-4            
               px-4
               md:px-8               
-              lg:space-x-8          
+              lg:space-x-4         
               scrollbar-hide        
             "
           >

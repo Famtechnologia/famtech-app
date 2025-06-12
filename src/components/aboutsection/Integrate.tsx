@@ -3,6 +3,7 @@
 import React from 'react';
 import SectionTitle from '../section/SectionTitle';
 import { motion } from 'framer-motion';
+import Image from 'next/image'
 
 const itemFadeUpVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -130,37 +131,45 @@ const FarmTechGlobalSection = () => {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-4">
               <motion.div className="relative overflow-hidden rounded-lg shadow-md aspect-w-16 aspect-h-9 y" variants={imageGridItemVariants}>
-                <img
-                  src="/famtech-farmer-monitoring-crops-tablet.jpg"
+                <Image
+                  src="/images/about/famtech-farmer-monitoring-crops-tablet.jpg"
                   alt="Farmer using technology"
+                  width={369}
+                  height={270}
                   className="w-full h-full object-cover loading-lazy fetchpriority-high"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/C0C0C0/FFFFFF?text=Error'; e.currentTarget.onerror = null; }}
                 />
               </motion.div>
 
               <motion.div className="relative overflow-hidden rounded-lg shadow-md aspect-w-16 aspect-h-9 loading-lazy" variants={imageGridItemVariants}>
-                <img
-                  src="/community-planting-seedling.jpg"
+                <Image
+                  src="/images/about/community-planting-seedling.jpg"
                   alt="Hands holding a plant"
+                  width={369}
+                  height={270}
                   className="w-full h-full object-cover loading-lazy fetchpriority-high"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/A0A0A0/FFFFFF?text=Error'; e.currentTarget.onerror = null; }}
                 />
               </motion.div>
 
               <motion.div className="relative overflow-hidden rounded-lg shadow-md aspect-w-16 aspect-h-9" variants={imageGridItemVariants}>
-                <img
-                  src="/sustainable-investment-growth.png"
+                <Image
+                  src="/images/about/sustainable-investment-growth.png"
                   alt="Small plants growing"
-                  className="w-full h-full object-cover loading-lazy fetchpriority-high"
+                  width={369}
+                  height={270}
+                  className="w-full h-full object-cover  fetchpriority-high"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/808080/FFFFFF?text=Error'; e.currentTarget.onerror = null; }}
                 />
               </motion.div>
 
               <motion.div className="relative overflow-hidden rounded-lg shadow-md aspect-w-16 aspect-h-9 loading-lazy" variants={imageGridItemVariants}>
-                <img
-                  src="/farming-indoor-crops.jpg"
+                <Image
+                  src="/images/about/farming-indoor-crops.jpg"
                   alt="Vertical farming"
-                  className="w-full h-full object-cover loading-lazy fetchpriority-high"
+                  width={369}
+                  height={270}
+                  className="w-full h-full object-cover fetchpriority-high"
                   onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/606060/FFFFFF?text=Error'; e.currentTarget.onerror = null; }}
                 />
               </motion.div>

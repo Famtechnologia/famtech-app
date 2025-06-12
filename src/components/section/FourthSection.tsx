@@ -80,7 +80,7 @@ const FourthSection = () => {
         </div>
         <p className='text-base text-left'>How to control the cost of curing rice pest today farm...</p>
         <Image
-          src='/fresh-vegetable-market.png'
+          src='/images/home/fresh-vegetable-market.png'
           alt='ripe vegetables including red tomatoes, yellow bell peppers, and green leafy lettuce'
           height={100}
           width={300}

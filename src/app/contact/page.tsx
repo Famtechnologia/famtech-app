@@ -11,7 +11,7 @@ const ContactSection: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const textVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 1, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
@@ -23,7 +23,7 @@ const ContactSection: React.FC = () => {
   };
 
   const formItemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 1, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
@@ -35,7 +35,7 @@ const ContactSection: React.FC = () => {
   };
 
   const imageHeroVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
+    hidden: { opacity: 1, scale: 0.95 },
     visible: {
       opacity: 1,
       scale: 1,
@@ -47,7 +47,7 @@ const ContactSection: React.FC = () => {
   };
 
   const sectionContainerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
@@ -58,7 +58,7 @@ const ContactSection: React.FC = () => {
   };
 
   const columnVariants = {
-    hidden: { opacity: 0, x: 50 },
+    hidden: { opacity: 1, x: 50 },
     visible: {
       opacity: 1,
       x: 0,
@@ -81,11 +81,12 @@ const ContactSection: React.FC = () => {
           viewport={{ once: false, amount: 0.1 }}
         >
           <Image
-            src="/Contact-us-image.jpg"
+            src="/images/contact/Contact-us-image.jpg"
             alt="Farmland view"
             width={1440}
             height={457}
-            className="h-fill filter brightness-50 loading-lazy fetchpriority-high"
+            priority
+            className=" md:h-fill filter brightness-50 loading-lazy bg-black  fetchpriority-high mt-4"
           />
         </motion.div>
         
