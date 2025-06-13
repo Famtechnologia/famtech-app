@@ -1,17 +1,15 @@
+
 'use client';
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, User, Building2, MapPin, Settings, CheckCircle, Eye, EyeOff } from 'lucide-react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../lib/firebase/config';
+import { ChevronLeft, ChevronRight, User, Building2, MapPin, Settings, CheckCircle, Eye, EyeOff, Sparkles, Star, Trophy, Gift, Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
-import Link from 'next/link';
 
 export default function ModernFarmRegistration() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [showCongrats, setShowCongrats] = useState(false);
 
   const [formData, setFormData] = useState({
     // Personal Information
@@ -48,10 +46,10 @@ export default function ModernFarmRegistration() {
   const [errors, setErrors] = useState({});
 
   const steps = [
-    { id: 1, title: 'Personal Info', icon: User, description: 'Your basic information' },
+    { id: 1, title: 'Personal', icon: User, description: 'Your information' },
     { id: 2, title: 'Farm Details', icon: Building2, description: 'About your farm' },
-    { id: 3, title: 'Location', icon: MapPin, description: 'Where is your farm' },
-    { id: 4, title: 'Preferences', icon: Settings, description: 'Farm settings' }
+    { id: 3, title: 'Location', icon: MapPin, description: 'Farm location' },
+    { id: 4, title: 'Preferences', icon: Settings, description: 'Customize settings' }
   ];
 
   const cropOptions = [
@@ -124,43 +122,24 @@ export default function ModernFarmRegistration() {
     setCurrentStep(prev => Math.max(prev - 1, 1));
   };
 
-  
-
-
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateStep(currentStep)) return;
+    
     setLoading(true);
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth, 
-        formData.email, 
-        formData.password
-      );
-      const farmId = `farm_${userCredential.user.uid}`;
-      // Set custom claims and create user document
-      await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          uid: userCredential.user.uid,
-          farmId,
-          ...formData
-        })
-      });
-      console.log('User UID:', userCredential.user.uid);
-      console.log('Farm ID:', farmId);
-
-      toast.success('Account created successfully!');
-      router.push(`/farm/${farmId}`);
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Show congratulations page instead of routing
+      setShowCongrats(true);
     } catch (error) {
-      toast.error(error.message);
+      console.error('Registration error:', error);
     } finally {
       setLoading(false);
     }
   };
-
 
   const toggleCrop = (crop) => {
     const current = formData.primaryCrops;
@@ -178,24 +157,157 @@ export default function ModernFarmRegistration() {
     updateFormData('farmingMethods', updated);
   };
 
+  // Congratulations Page Component
+  const CongratulationsPage = () => (
+    <div className="min-h-screen bg-gradient-to-br from-emerald-400 via-green-400 to-blue-500 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/5 rounded-full animate-bounce"></div>
+        <div className="absolute top-1/2 left-1/4 w-32 h-32 bg-yellow-300/20 rounded-full animate-ping"></div>
+      </div>
+
+      <div className="relative z-10 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-16 max-w-2xl w-full text-center">
+        {/* Success Animation */}
+        <div className="relative mb-8">
+          <div className="w-24 h-24 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto animate-bounce">
+            <CheckCircle className="w-12 h-12 text-white" />
+          </div>
+          <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center animate-spin">
+            <Sparkles className="w-4 h-4 text-white" />
+          </div>
+        </div>
+
+        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-4">
+          Congratulations!
+        </h1>
+        
+        <p className="text-xl text-gray-600 mb-2">
+          Welcome to <span className="font-bold text-emerald-600">FarmTech</span>, {formData.firstName}!
+        </p>
+        
+        <p className="text-gray-500 mb-8">
+          Your farm account has been successfully created. You're now part of a community revolutionizing agriculture and you've been added to our waitlist. We will keep you update about when we fully launch
+        </p>
+
+        {/* Feature highlights */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-2xl">
+            <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
+              <Zap className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="font-semibold text-gray-800 mb-2">Smart Analytics</h3>
+            <p className="text-sm text-gray-600">AI-powered insights for your farm</p>
+          </div>
+          
+          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-2xl">
+            <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
+              <Trophy className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="font-semibold text-gray-800 mb-2">Expert Support</h3>
+            <p className="text-sm text-gray-600">24/7 agricultural guidance</p>
+          </div>
+          
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl">
+            <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
+              <Gift className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="font-semibold text-gray-800 mb-2">Premium Tools</h3>
+            <p className="text-sm text-gray-600">Advanced farming features</p>
+          </div>
+        </div>
+
+        {/* Farm Details Summary */}
+        <div className="bg-gray-50 rounded-2xl p-6 mb-8 text-left">
+          <h3 className="font-semibold text-gray-800 mb-4 text-center">Your Farm Profile</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <span className="text-gray-500">Farm Name:</span>
+              <p className="font-medium text-gray-800">{formData.farmName || 'Not specified'}</p>
+            </div>
+            <div>
+              <span className="text-gray-500">Location:</span>
+              <p className="font-medium text-gray-800">{formData.city}, {formData.state}</p>
+            </div>
+            <div>
+              <span className="text-gray-500">Size:</span>
+              <p className="font-medium text-gray-800">{formData.farmSize} {formData.farmSizeUnit}</p>
+            </div>
+            <div>
+              <span className="text-gray-500">Type:</span>
+              <p className="font-medium text-gray-800 capitalize">{formData.farmType} farming</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* <button 
+            onClick={() => setShowCongrats(false)}
+            className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold rounded-2xl hover:from-emerald-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+          >
+            Explore Dashboard
+          </button> */}
+          <button 
+            onClick={router.push('/')}
+            className="px-8 py-4 bg-white text-gray-700 font-semibold rounded-2xl hover:bg-gray-50 transform hover:scale-105 transition-all duration-200 shadow-lg border-2 border-gray-200"
+          >
+            Hompage
+          </button>
+        </div>
+
+        {/* Social proof */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+            <Star className="w-4 h-4 text-yellow-400 fill-current" />
+            <span>Join 10,000+ farmers already using FarmTech</span>
+            <Star className="w-4 h-4 text-yellow-400 fill-current" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Show congratulations page if registration is complete
+  if (showCongrats) {
+    return <CongratulationsPage />;
+  }
+
   const renderStepIndicator = () => (
-    <div className="flex items-center justify-center mb-8">
+    <div className="flex items-center justify-center mb-12">
       {steps.map((step, index) => (
         <div key={step.id} className="flex items-center">
-          <div className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all duration-300 ${
+          <div className={`group relative flex items-center justify-center w-16 h-16 rounded-2xl border-2 transition-all duration-300 ${
             currentStep >= step.id 
-              ? 'bg-blue-600 border-blue-600 text-white' 
-              : 'border-gray-300 text-gray-400'
+              ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 border-emerald-500 text-white shadow-lg shadow-emerald-500/25' 
+              : currentStep === step.id
+              ? 'border-emerald-300 text-emerald-600 bg-emerald-50'
+              : 'border-gray-200 text-gray-400 bg-white'
           }`}>
             {currentStep > step.id ? (
-              <CheckCircle size={20} />
+              <CheckCircle size={24} />
             ) : (
-              <step.icon size={20} />
+              <step.icon size={24} />
+            )}
+            {currentStep === step.id && (
+              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-2xl blur opacity-30 animate-pulse"></div>
             )}
           </div>
+          
+          <div className="ml-4 mr-8 hidden md:block">
+            <p className={`font-semibold text-sm ${
+              currentStep >= step.id ? 'text-emerald-600' : 'text-gray-400'
+            }`}>
+              {step.title}
+            </p>
+            <p className="text-xs text-gray-500">{step.description}</p>
+          </div>
+          
           {index < steps.length - 1 && (
-            <div className={`w-20 h-1 mx-2 transition-all duration-300 ${
-              currentStep > step.id ? 'bg-blue-600' : 'bg-gray-200'
+            <div className={`w-16 h-1 mx-4 rounded-full transition-all duration-300 ${
+              currentStep > step.id 
+                ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' 
+                : 'bg-gray-200'
             }`} />
           )}
         </div>
@@ -204,78 +316,83 @@ export default function ModernFarmRegistration() {
   );
 
   const renderPersonalInfo = () => (
-    <div className="space-y-6">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Personal Information</h2>
-        <p className="text-gray-600">Tell us about yourself</p>
+    <div className="space-y-8">
+      <div className="text-center mb-10">
+        <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-green-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <User className="w-10 h-10 text-white" />
+        </div>
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
+          Personal Information
+        </h2>
+        <p className="text-gray-500 text-lg">Tell us about yourself to get started</p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">First Name</label>
           <input
             type="text"
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-              errors.firstName ? 'border-red-300' : 'border-gray-300'
+            className={`w-full px-5 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
+              errors.firstName ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
             }`}
             placeholder="Enter your first name"
             value={formData.firstName}
             onChange={(e) => updateFormData('firstName', e.target.value)}
           />
-          {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+          {errors.firstName && <p className="text-red-500 text-sm font-medium">{errors.firstName}</p>}
         </div>
         
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">Last Name</label>
           <input
             type="text"
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-              errors.lastName ? 'border-red-300' : 'border-gray-300'
+            className={`w-full px-5 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
+              errors.lastName ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
             }`}
             placeholder="Enter your last name"
             value={formData.lastName}
             onChange={(e) => updateFormData('lastName', e.target.value)}
           />
-          {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
+          {errors.lastName && <p className="text-red-500 text-sm font-medium">{errors.lastName}</p>}
         </div>
       </div>
       
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">Email Address</label>
         <input
           type="email"
-          className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-            errors.email ? 'border-red-300' : 'border-gray-300'
+          className={`w-full px-5 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
+            errors.email ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
           }`}
           placeholder="Enter your email address"
           value={formData.email}
           onChange={(e) => updateFormData('email', e.target.value)}
         />
-        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+        {errors.email && <p className="text-red-500 text-sm font-medium">{errors.email}</p>}
       </div>
       
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">Phone Number</label>
         <input
           type="tel"
-          className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-            errors.phoneNumber ? 'border-red-300' : 'border-gray-300'
+          className={`w-full px-5 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
+            errors.phoneNumber ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
           }`}
           placeholder="+234 XXX XXX XXXX"
           value={formData.phoneNumber}
           onChange={(e) => updateFormData('phoneNumber', e.target.value)}
         />
-        {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
+        {errors.phoneNumber && <p className="text-red-500 text-sm font-medium">{errors.phoneNumber}</p>}
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">Password</label>
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
-              className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12 ${
-                errors.password ? 'border-red-300' : 'border-gray-300'
+              className={`w-full px-5 py-4 pr-14 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
+                errors.password ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
               }`}
               placeholder="Create a strong password"
               value={formData.password}
@@ -283,89 +400,94 @@ export default function ModernFarmRegistration() {
             />
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-          {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+          {errors.password && <p className="text-red-500 text-sm font-medium">{errors.password}</p>}
         </div>
         
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">Confirm Password</label>
           <input
             type="password"
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-              errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+            className={`w-full px-5 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
+              errors.confirmPassword ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
             }`}
             placeholder="Confirm your password"
             value={formData.confirmPassword}
             onChange={(e) => updateFormData('confirmPassword', e.target.value)}
           />
-          {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+          {errors.confirmPassword && <p className="text-red-500 text-sm font-medium">{errors.confirmPassword}</p>}
         </div>
       </div>
     </div>
   );
 
   const renderFarmDetails = () => (
-    <div className="space-y-6">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Farm Information</h2>
-        <p className="text-gray-600">Tell us about your farm</p>
+    <div className="space-y-8">
+      <div className="text-center mb-10">
+        <div className="w-20 h-20 bg-gradient-to-r from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <Building2 className="w-10 h-10 text-white" />
+        </div>
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
+          Farm Information
+        </h2>
+        <p className="text-gray-500 text-lg">Tell us about your farming operation</p>
       </div>
       
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Farm Name</label>
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">Farm Name</label>
         <input
           type="text"
-          className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-            errors.farmName ? 'border-red-300' : 'border-gray-300'
+          className={`w-full px-5 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
+            errors.farmName ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
           }`}
           placeholder="Enter your farm name"
           value={formData.farmName}
           onChange={(e) => updateFormData('farmName', e.target.value)}
         />
-        {errors.farmName && <p className="text-red-500 text-sm mt-1">{errors.farmName}</p>}
+        {errors.farmName && <p className="text-red-500 text-sm font-medium">{errors.farmName}</p>}
       </div>
       
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Farm Type</label>
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">Farm Type</label>
         <select
-          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          className="w-full px-5 py-4 border-2 border-gray-200 bg-gray-50 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 hover:bg-white hover:border-gray-300 transition-all duration-200"
           value={formData.farmType}
           onChange={(e) => updateFormData('farmType', e.target.value)}
         >
-          <option value="crop">Crop Farming</option>
-          <option value="livestock">Livestock</option>
-          <option value="mixed">Mixed Farming</option>
-          <option value="aquaculture">Aquaculture</option>
-          <option value="poultry">Poultry</option>
+          <option value="crop">🌾 Crop Farming</option>
+          <option value="livestock">🐄 Livestock</option>
+          <option value="mixed">🌾🐄 Mixed Farming</option>
+          <option value="aquaculture">🐟 Aquaculture</option>
+          <option value="poultry">🐔 Poultry</option>
         </select>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Farm Size</label>
+        <div className="md:col-span-2 space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">Farm Size</label>
           <input
             type="number"
             min="0"
             step="0.1"
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-              errors.farmSize ? 'border-red-300' : 'border-gray-300'
+            className={`w-full px-5 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
+              errors.farmSize ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
             }`}
             placeholder="Enter farm size"
             value={formData.farmSize}
             onChange={(e) => updateFormData('farmSize', e.target.value)}
           />
-          {errors.farmSize && <p className="text-red-500 text-sm mt-1">{errors.farmSize}</p>}
+          {errors.farmSize && <p className="text-red-500 text-sm font-medium">{errors.farmSize}</p>}
         </div>
         
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Unit</label>
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">Unit</label>
           <select
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-5 py-4 border-2 border-gray-200 bg-gray-50 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 hover:bg-white hover:border-gray-300 transition-all duration-200"
             value={formData.farmSizeUnit}
             onChange={(e) => updateFormData('farmSizeUnit', e.target.value)}
           >
@@ -376,24 +498,24 @@ export default function ModernFarmRegistration() {
         </div>
       </div>
       
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Established Year</label>
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">Established Year</label>
         <input
           type="number"
           min="1900"
           max={new Date().getFullYear()}
-          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          className="w-full px-5 py-4 border-2 border-gray-200 bg-gray-50 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 hover:bg-white hover:border-gray-300 transition-all duration-200"
           value={formData.establishedYear}
           onChange={(e) => updateFormData('establishedYear', parseInt(e.target.value))}
         />
       </div>
       
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Farm Description (Optional)</label>
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">Farm Description <span className="text-gray-400 font-normal">(Optional)</span></label>
         <textarea
-          rows="3"
-          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
-          placeholder="Brief description of your farm..."
+          rows="4"
+          className="w-full px-5 py-4 border-2 border-gray-200 bg-gray-50 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 hover:bg-white hover:border-gray-300 transition-all duration-200 resize-none"
+          placeholder="Brief description of your farm operations..."
           value={formData.description}
           onChange={(e) => updateFormData('description', e.target.value)}
         />
@@ -402,162 +524,289 @@ export default function ModernFarmRegistration() {
   );
 
   const renderLocation = () => (
-    <div className="space-y-6">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Farm Location</h2>
-        <p className="text-gray-600">Where is your farm located?</p>
+    <div className="space-y-8 max-w-4xl mx-auto">
+      <div className="text-center mb-10">
+        <div className="w-20 h-20 bg-gradient-to-r from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <MapPin className="w-10 h-10 text-white" />
+        </div>
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
+          Farm Location
+        </h2>
+        <p className="text-gray-500 text-lg">Tell us where your farm is located</p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
-          <select
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-              errors.state ? 'border-red-300' : 'border-gray-300'
-            }`}
-            value={formData.state}
-            onChange={(e) => updateFormData('state', e.target.value)}
-          >
-            <option value="">Select State</option>
-            {nigerianStates.map(state => (
-              <option key={state} value={state}>{state}</option>
-            ))}
-          </select>
-          {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
+      <div className="p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="group">
+            <label className="block text-sm font-semibold text-gray-800 mb-3 tracking-wide">State</label>
+            <div className="relative">
+              <select
+                className={`w-full px-5 py-4 bg-white border-2 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 appearance-none cursor-pointer shadow-sm hover:shadow-md ${
+                  errors.state ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200 hover:border-gray-300'
+                }`}
+                value={formData.state}
+                onChange={(e) => updateFormData('state', e.target.value)}
+              >
+                <option value="">Choose your state</option>
+                {nigerianStates.map(state => (
+                  <option key={state} value={state}>{state}</option>
+                ))}
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            {errors.state && (
+              <p className="text-red-500 text-sm mt-2 flex items-center">
+                <span className="mr-1">⚠️</span>
+                {errors.state}
+              </p>
+            )}
+          </div>
+          
+          <div className="group">
+            <label className="block text-sm font-semibold text-gray-800 mb-3 tracking-wide">City/Town</label>
+            <input
+              type="text"
+              className={`w-full px-5 py-4 bg-white border-2 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md placeholder-gray-400 ${
+                errors.city ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200 hover:border-gray-300'
+              }`}
+              placeholder="Enter your city or town"
+              value={formData.city}
+              onChange={(e) => updateFormData('city', e.target.value)}
+            />
+            {errors.city && (
+              <p className="text-red-500 text-sm mt-2 flex items-center">
+                <span className="mr-1">⚠️</span>
+                {errors.city}
+              </p>
+            )}
+          </div>
         </div>
         
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">City/Town</label>
+        <div className="mb-8">
+          <label className="block text-sm font-semibold text-gray-800 mb-3 tracking-wide">Street Address</label>
           <input
             type="text"
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-              errors.city ? 'border-red-300' : 'border-gray-300'
+            className={`w-full px-5 py-4 bg-white border-2 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md placeholder-gray-400 ${
+              errors.address ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200 hover:border-gray-300'
             }`}
-            placeholder="Enter city or town"
-            value={formData.city}
-            onChange={(e) => updateFormData('city', e.target.value)}
+            placeholder="Enter your complete street address"
+            value={formData.address}
+            onChange={(e) => updateFormData('address', e.target.value)}
           />
-          {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
-        </div>
-      </div>
-      
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
-        <input
-          type="text"
-          className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-            errors.address ? 'border-red-300' : 'border-gray-300'
-          }`}
-          placeholder="Enter street address"
-          value={formData.address}
-          onChange={(e) => updateFormData('address', e.target.value)}
-        />
-        {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Latitude (Optional)</label>
-          <input
-            type="number"
-            step="any"
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="e.g., 6.5244"
-            value={formData.coordinates.lat}
-            onChange={(e) => updateFormData('coordinates', { ...formData.coordinates, lat: e.target.value })}
-          />
+          {errors.address && (
+            <p className="text-red-500 text-sm mt-2 flex items-center">
+              <span className="mr-1">⚠️</span>
+              {errors.address}
+            </p>
+          )}
         </div>
         
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Longitude (Optional)</label>
-          <input
-            type="number"
-            step="any"
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="e.g., 3.3792"
-            value={formData.coordinates.lng}
-            onChange={(e) => updateFormData('coordinates', { ...formData.coordinates, lng: e.target.value })}
-          />
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100 mb-8">
+          <div className="flex items-center mb-4">
+            <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+            <h3 className="text-lg font-semibold text-gray-800">GPS Coordinates</h3>
+            <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">Optional</span>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
+              <input
+                type="number"
+                step="any"
+                className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md placeholder-gray-400"
+                placeholder="e.g., 6.5244"
+                value={formData.coordinates.lat}
+                onChange={(e) => updateFormData('coordinates', { ...formData.coordinates, lat: e.target.value })}
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
+              <input
+                type="number"
+                step="any"
+                className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md placeholder-gray-400"
+                placeholder="e.g., 3.3792"
+                value={formData.coordinates.lng}
+                onChange={(e) => updateFormData('coordinates', { ...formData.coordinates, lng: e.target.value })}
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      
-      <div className="bg-blue-50 p-4 rounded-xl">
-        <p className="text-sm text-blue-700">
-          💡 <strong>Tip:</strong> Adding GPS coordinates helps with weather data, soil information, and location-based insights.
-        </p>
+        
+        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <div className="ml-4">
+              <h4 className="text-lg font-semibold text-gray-800 mb-2">Why location matters</h4>
+              <p className="text-gray-600 leading-relaxed">
+                Providing accurate location data enables personalized weather forecasts, soil analysis, 
+                crop recommendations, and connects you with local agricultural resources.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 
   const renderPreferences = () => (
-    <div className="space-y-6">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Farm Preferences</h2>
-        <p className="text-gray-600">Customize your farm management settings</p>
+    <div className="space-y-8 max-w-4xl mx-auto">
+      <div className="text-center mb-10">
+        <div className="w-20 h-20 bg-gradient-to-r from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <MapPin className="w-10 h-10 text-white" />
+        </div>
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
+           Farm Preferences
+        </h2>
+        <p className="text-gray-500 text-lg">Customize your farm management settings to get personalized recommendations</p>
       </div>
-      
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">Primary Crops</label>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {cropOptions.map(crop => (
-            <label key={crop} className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="checkbox"
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                checked={formData.primaryCrops.includes(crop)}
-                onChange={() => toggleCrop(crop)}
-              />
-              <span className="text-sm text-gray-700">{crop}</span>
+      <div className="p-4 space-y-8">
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100">
+          <label className="block text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <svg className="w-5 h-5 text-emerald-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            Primary Crops
+          </label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {cropOptions.map(crop => (
+              <label key={crop} className="flex items-center space-x-3 cursor-pointer group">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={formData.primaryCrops.includes(crop)}
+                    onChange={() => toggleCrop(crop)}
+                  />
+                  <div className={`w-5 h-5 rounded-lg border-2 transition-all duration-300 flex items-center justify-center ${
+                    formData.primaryCrops.includes(crop) 
+                      ? 'bg-emerald-500 border-emerald-500 shadow-lg' 
+                      : 'border-gray-300 group-hover:border-emerald-400 bg-white'
+                  }`}>
+                    {formData.primaryCrops.includes(crop) && (
+                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+                <span className="text-sm font-medium text-gray-700 group-hover:text-emerald-700 transition-colors">
+                  {crop}
+                </span>
+              </label>
+            ))}
+          </div>
+          {errors.primaryCrops && (
+            <p className="text-red-500 text-sm mt-3 flex items-center">
+              <span className="mr-1">⚠️</span>
+              {errors.primaryCrops}
+            </p>
+          )}
+        </div>
+  
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+          <label className="block text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+            Farming Methods
+          </label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {farmingMethodOptions.map(method => (
+              <label key={method} className="flex items-center space-x-3 cursor-pointer group">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={formData.farmingMethods.includes(method)}
+                    onChange={() => toggleMethod(method)}
+                  />
+                  <div className={`w-5 h-5 rounded-lg border-2 transition-all duration-300 flex items-center justify-center ${
+                    formData.farmingMethods.includes(method) 
+                      ? 'bg-blue-500 border-blue-500 shadow-lg' 
+                      : 'border-gray-300 group-hover:border-blue-400 bg-white'
+                  }`}>
+                    {formData.farmingMethods.includes(method) && (
+                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+                <span className="text-sm font-medium text-gray-700 group-hover:text-blue-700 transition-colors">
+                  {method}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+  
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="group">
+            <label className="block text-sm font-semibold text-gray-800 mb-3 tracking-wide flex items-center">
+              <svg className="w-4 h-4 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+              </svg>
+              Currency
             </label>
-          ))}
-        </div>
-        {errors.primaryCrops && <p className="text-red-500 text-sm mt-1">{errors.primaryCrops}</p>}
-      </div>
-      
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">Farming Methods</label>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {farmingMethodOptions.map(method => (
-            <label key={method} className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="checkbox"
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                checked={formData.farmingMethods.includes(method)}
-                onChange={() => toggleMethod(method)}
-              />
-              <span className="text-sm text-gray-700">{method}</span>
+            <div className="relative">
+              <select
+                className="w-full px-5 py-4 bg-white border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 appearance-none cursor-pointer shadow-sm hover:shadow-md"
+                value={formData.currency}
+                onChange={(e) => updateFormData('currency', e.target.value)}
+              >
+                <option value="NGN">Nigerian Naira (₦)</option>
+                <option value="USD">US Dollar ($)</option>
+                <option value="EUR">Euro (€)</option>
+                <option value="GBP">British Pound (£)</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+  
+          <div className="group">
+            <label className="block text-sm font-semibold text-gray-800 mb-3 tracking-wide flex items-center">
+              <svg className="w-4 h-4 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Seasonal Pattern
             </label>
-          ))}
-        </div>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Currency</label>
-          <select
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            value={formData.currency}
-            onChange={(e) => updateFormData('currency', e.target.value)}
-          >
-            <option value="NGN">Nigerian Naira (₦)</option>
-            <option value="USD">US Dollar ($)</option>
-            <option value="EUR">Euro (€)</option>
-            <option value="GBP">British Pound (£)</option>
-          </select>
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Seasonal Pattern</label>
-          <select
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            value={formData.seasonalPattern}
-            onChange={(e) => updateFormData('seasonalPattern', e.target.value)}
-          >
-            <option value="year-round">Year-round Production</option>
-            <option value="dry-season">Dry Season Only</option>
-            <option value="rainy-season">Rainy Season Only</option>
-            <option value="both-seasons">Both Seasons</option>
-          </select>
+            <div className="relative">
+              <select
+                className="w-full px-5 py-4 bg-white border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 appearance-none cursor-pointer shadow-sm hover:shadow-md"
+                value={formData.seasonalPattern}
+                onChange={(e) => updateFormData('seasonalPattern', e.target.value)}
+              >
+                <option value="year-round">Year-round Production</option>
+                <option value="dry-season">Dry Season Only</option>
+                <option value="rainy-season">Rainy Season Only</option>
+                <option value="both-seasons">Both Seasons</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -576,10 +825,15 @@ export default function ModernFarmRegistration() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to FarmTech</h1>
-          <p className="text-xl text-gray-600">Join thousands of farmers revolutionizing agriculture</p>
-        </div>
+      <h2 className="text-4xl text-center md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-900 via-emerald-800 to-slate-900 bg-clip-text text-transparent mb-6 leading-tight">
+              Welcome to 
+              <span className=" text-emerald-600"> FamTech</span>
+            </h2>
+            
+            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed text-center mb-8">
+              Our diverse team of experts combines decades of experience in agriculture, technology, 
+              and business to revolutionize farming through innovation.
+            </p>
         
         {renderStepIndicator()}
         
@@ -607,7 +861,7 @@ export default function ModernFarmRegistration() {
             {currentStep < steps.length ? (
               <button
                 onClick={nextStep}
-                className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-all"
+                className="flex items-center space-x-2 bg-green-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-700 transition-all"
               >
                 <span>Next</span>
                 <ChevronRight size={20} />
@@ -634,14 +888,14 @@ export default function ModernFarmRegistration() {
           </div>
         </div>
         
-        <div className="text-center mt-6">
+        {/* <div className="text-center mt-6">
           <p className="text-gray-600">
             Already have an account?{' '}
-            <a href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+            <a href="/auth/login" className="text-blue-600 hover:text-blue-700 font-medium">
               Sign in here
             </a>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

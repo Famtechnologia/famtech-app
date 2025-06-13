@@ -4,17 +4,17 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { MdArrowDropDown } from "react-icons/md";
-<meta name="description" content="Put your description here."></meta>
 
 const BarsIconSVG = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
-    fill="currentColor"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
     className={props.className}
   >
-    <path fillRule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
+    <path d="M3 12h18M3 6h18M3 18h18" />
   </svg>
 );
 
@@ -22,35 +22,27 @@ const TimesIconSVG = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
-    fill="currentColor"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
     className={props.className}
   >
-    <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+    <path d="M18 6L6 18M6 6l12 12" />
   </svg>
 );
 
-const ArrowDropDownIconSVG = (props: React.SVGProps<SVGSVGElement>) => (
+const ArrowRightIconSVG = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
-    fill="currentColor"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
     className={props.className}
   >
-    <path fillRule="evenodd" d="M11.47 4.72a.75.75 0 0 1 1.06 0l3.75 3.75a.75.75 0 0 1-1.06 1.06L12 6.31l-3.22 3.22a.75.75 0 0 1-1.06-1.06l3.75-3.75Z" clipRule="evenodd" />
+    <path d="M5 12h14m-7-7 7 7-7 7" />
   </svg>
 );
-
-const ArrowRightCircleIconSVG = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className={props.className}
-  >
-    <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm14.007-.47a.75.75 0 0 0-.012-1.056l-3.75-3.75a.75.75 0 1 0-1.06 1.06l2.47 2.47H8.25a.75.75 0 0 0 0 1.5h5.586l-2.47 2.47a.75.75 0 1 0 1.06 1.06l3.75-3.75a.75.75 0 0 0 .012-1.056Z" clipRule="evenodd" />
-  </svg>
-);
-
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -58,19 +50,18 @@ const Navbar: React.FC = () => {
   const pathname = usePathname();
 
   const isHomePage = pathname === '/' || pathname === '/home';
-
   const isTransparentState = isHomePage && !isScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      setIsScrolled(scrollPosition > 100); 
+      setIsScrolled(scrollPosition > 50);
     };
 
     if (isHomePage) {
       window.addEventListener('scroll', handleScroll);
     } else {
-      setIsScrolled(true); 
+      setIsScrolled(true);
     }
 
     return () => {
@@ -80,201 +71,211 @@ const Navbar: React.FC = () => {
     };
   }, [isHomePage]);
 
-  const navbarBgClass = isTransparentState ? 'bg-transparent' : 'bg-white shadow-sm';
-  
-  const desktopNavLinkBaseColor = isTransparentState ? 'text-white' : 'text-gray-700';
-  const navLinkHoverActiveColor = 'text-green-600'; 
-
-  const mobileMenuBgColor = isTransparentState ? 'bg-white bg-opacity-80' : 'bg-white shadow-lg'; 
-  const mobileNavLinkColor = isTransparentState ? 'text-gray-600' : 'text-gray-800'; 
-
   const handleToggleMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
   };
 
-  const getNavLinkClasses = (path: string) =>
-    `relative transition-colors duration-200 
-      ${pathname === path ? `${navLinkHoverActiveColor} font-bold` : desktopNavLinkBaseColor} 
-      hover:${navLinkHoverActiveColor}`;
+  const getNavLinkClasses = (path: string) => {
+    const isActive = pathname === path;
+    return `
+      relative px-4 py-2 text-sm font-medium transition-all duration-300 ease-out
+      ${isTransparentState 
+        ? isActive 
+          ? 'text-white' 
+          : 'text-white/80 hover:text-white'
+        : isActive 
+          ? 'text-emerald-600' 
+          : 'text-gray-700 hover:text-emerald-600'
+      }
+      ${isActive ? 'after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-emerald-500 after:transform after:scale-x-100' : 'after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-emerald-500 after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'}
+    `;
+  };
 
-  const getMobileNavLinkClasses = (path: string) =>
-    `block w-full text-center py-3 px-4 text-base font-semibold transition-colors duration-200 
-      ${pathname === path ? 'bg-white text-green-700' : `${mobileNavLinkColor} hover:bg-gray-100`}`;
+  const getMobileNavLinkClasses = (path: string) => {
+    const isActive = pathname === path;
+    return `
+      block px-6 py-3 text-base font-medium transition-all duration-200
+      ${isActive 
+        ? 'text-emerald-600 bg-emerald-50 border-r-4 border-emerald-600' 
+        : 'text-gray-700 hover:text-emerald-600 hover:bg-gray-50'
+      }
+    `;
+  };
 
   return (
-    <nav className={`fixed left-0 top-0 z-50 w-full h-18 md:h-22 pt-2 md:pt-0 items-center justify-center lg:h-23 ${navbarBgClass} transition-all duration-300`}>
-      
-      <div
-        className="
-          mx-auto 
-          flex h-14 items-center justify-between
-          px-4 py-2  
-          sm:h-20 sm:px-4 sm:py-3
-          md:h-24 md:px-8 md:py-4
-          lg:px-16
-        "
-      >
-        <Link href="/">
-          <div className="flex-shrink-0">
-            
-            {isTransparentState ? (
+    <>
+      <nav className={`
+        fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out
+        ${isTransparentState 
+          ? 'bg-transparent backdrop-blur-0' 
+          : 'bg-white/95 backdrop-blur-md shadow-lg shadow-black/5 border-b border-gray-100'
+        }
+      `}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 lg:h-20">
 
-              <Image
-                src="/images/home/famtech-white-logo.png" 
-                alt="FAMTECH Smart Farming logo - White"
-                width={1600} 
-                height={1600} 
-                priority
-                className="h-[150px] w-[150px] loading-lazy fetchpriority-high" 
-              />
-            ) : (
-              
-              <Image
-                src="/images/home/famtech-logo-two.png"
-                alt="FAMTECH Smart Farming logo"
-                width={1600} 
-                height={1600} 
-                priority
-                className="h-[150px] w-[150px]" 
-              />
-            )}
+            {/* Logo */}
+            <Link href="/" className="flex-shrink-0 transition-transform duration-300 hover:scale-105">
+              <div className="relative">
+                {isTransparentState ? (
+                  <div className='h-16 w-16 lg:h-40 lg:w-40'>
+                    <Image
+                      src="/images/home/famtech-white-logo.png"
+                      alt="FAMTECH Smart Farming logo - White"
+                      width={700}
+                      height={700}
+                      priority
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                ) : (
+                  <div className='h-16 w-16 lg:h-40 lg:w-40'>
+                  <Image
+                    src="/images/home/famtech-logo-two.png"
+                    alt="FAMTECH Smart Farming logo"
+                    width={700}
+                    height={700}
+                    priority
+                    className="object-cover w-full h-full"
+                  />
+                   </div>
+                )}
+              </div>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex lg:items-center lg:space-x-8">
+              <nav className="flex items-center space-x-1">
+                <Link href="/" className={getNavLinkClasses('/')}>
+                  Home
+                </Link>
+                <Link href="/about" className={getNavLinkClasses('/about')}>
+                  About
+                </Link>
+                <Link href="/blog" className={getNavLinkClasses('/blog')}>
+                  Blog
+                </Link>
+                <Link href="/contact" className={getNavLinkClasses('/contact')}>
+                  Contact
+                </Link>
+              </nav>
+
+              {/* CTA Button */}
+              <a
+                href="mailto:famtechnologia@gmail.com"
+                className={`
+                  group relative inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold
+                  rounded-full transition-all duration-300 ease-out transform hover:scale-105
+                  ${isTransparentState
+                    ? 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-600/25'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-600/25'
+                  }
+                `}
+                aria-label="Request a demo via email"
+              >
+                <span>Request Demo</span>
+                <ArrowRightIconSVG className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={handleToggleMenu}
+              className={`
+                lg:hidden relative p-2 rounded-lg transition-all duration-300
+                ${isTransparentState 
+                  ? 'text-white hover:bg-white/10' 
+                  : 'text-gray-700 hover:bg-gray-100'
+                }
+              `}
+              aria-controls="mobile-menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-label="Toggle navigation menu"
+            >
+              <div className="relative w-6 h-6">
+                <BarsIconSVG 
+                  className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
+                    isMobileMenuOpen ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'
+                  }`} 
+                />
+                <TimesIconSVG 
+                  className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
+                    isMobileMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-45'
+                  }`} 
+                />
+              </div>
+            </button>
           </div>
-        </Link>
+        </div>
 
-        <div className="hidden items-center lg:flex lg:space-x-24">
-          <ul className="flex items-center text-sm md:text-base space-x-8">
-            <li>
-              <Link href="/" 
-              className={ getNavLinkClasses('/') } 
+        {/* Mobile Menu */}
+        <div className={`
+          lg:hidden transition-all duration-300 ease-out
+          ${isMobileMenuOpen 
+            ? 'max-h-screen opacity-100' 
+            : 'max-h-0 opacity-0 pointer-events-none'
+          }
+        `}>
+          <div className="bg-white shadow-xl border-t border-gray-100">
+            <div className="px-4 py-6 space-y-2">
+              <Link
+                href="/"
+                className={getMobileNavLinkClasses('/')}
+                onClick={handleToggleMenu}
               >
                 Home
               </Link>
-            </li>
-            <li>
-              <Link href="/about"
-                className={ getNavLinkClasses('/about') }> 
+              <Link
+                href="/about"
+                className={getMobileNavLinkClasses('/about')}
+                onClick={handleToggleMenu}
+              >
                 About
               </Link>
-            </li>
-            <li>
-              <Link href="/blog"
-                className={ getNavLinkClasses('/blog') }> 
-                
-                Blogs
+              <Link
+                href="/blog"
+                className={getMobileNavLinkClasses('/blog')}
+                onClick={handleToggleMenu}
+              >
+                Blog
               </Link>
-            </li>
-            <li>
-              <Link href="/contact"
-                className={ ` ${getNavLinkClasses('/contact')}`}> 
-                Contact Us
-                
+              <Link
+                href="/contact"
+                className={getMobileNavLinkClasses('/contact')}
+                onClick={handleToggleMenu}
+              >
+                Contact
               </Link>
-            </li>  
               
-
-          </ul>
-
-          <div
-            className={`
-              flex items-center justify-center
-              rounded-full border border-solid
-              p-2
-              transition-colors duration-200
-              md:px-4 md:py-2
-              ${isTransparentState
-                ? 'border-green-700 text-white hover:bg-white hover:text-green-700 border-2' 
-                : 'border-green-700 text-black text-gray-700 hover:bg-green-800 hover:text-white'}
-            `}
-          >
-         <a
-     href="mailto:famtechnologia@gmail.com"
-     className="flex items-center text-sm" 
-     aria-label="Request a demo via email"
->
-  Request A Demo{' '}
-  <ArrowRightCircleIconSVG 
-    className={`ml-2 w-5 h-5 
-      ${isTransparentState ? 'text-green-600' : 'text-green-600 hover:text-white'}`} 
-  />
-</a>
+              <div className="pt-4 border-t border-gray-100">
+                <a
+                  href="mailto:famtechnologia@gmail.com"
+                  className="
+                    flex items-center justify-center gap-2 w-full px-6 py-3 text-sm font-semibold
+                    bg-emerald-600 text-white rounded-lg transition-all duration-300
+                    hover:bg-emerald-700 transform hover:scale-105 shadow-lg shadow-emerald-600/25
+                  "
+                  onClick={handleToggleMenu}
+                  aria-label="Request a demo via email"
+                >
+                  <span>Request Demo</span>
+                  <ArrowRightIconSVG className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
+      </nav>
 
-        <div className="flex items-center lg:hidden">
-          <button
-            onClick={handleToggleMenu}
-            className="rounded-md p-1 focus:outline-none"
-            aria-controls="mobile-menu"
-            aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
-            aria-label='menu-button'
-          >
-            {isMobileMenuOpen ? (
-              <TimesIconSVG className={` w-7 h-7 
-      ${isTransparentState ? 'text-white' : 'text-black'}`}  />
-            ) : (
-              <BarsIconSVG className={` w-7 h-7 
-      ${isTransparentState ? 'text-white' : 'text-black'}`} />
-            )}
-          </button>
-        </div>
-      </div>
-
+      {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div
-          id="mobile-menu"
-          className={`
-            absolute left-0 top-16
-            flex h-screen w-full flex-col items-center pt-8
-            space-y-8
-            ${mobileMenuBgColor}
-            text-base font-semibold
-          `}
-        >
-          <Link
-            href="/"
-            className={ getMobileNavLinkClasses('/') } 
-            onClick={handleToggleMenu}
-          >
-            Home
-          </Link>
-          <Link
-            href="/about"
-            className={ getMobileNavLinkClasses('/about') } 
-            onClick={handleToggleMenu}
-          >
-            About
-          </Link>
-          <Link
-            href="/blog"
-            className={getMobileNavLinkClasses('/blog')}
-            onClick={handleToggleMenu}
-          >
-            Blogs
-          </Link>
-          <Link
-            href="/contact"
-            className={ ` ${getMobileNavLinkClasses('/contact')} `} 
-            onClick={handleToggleMenu}
-          >
-            Contact Us
-            
-          </Link>
-        
-
-            
-          <button
-            className={`
-              mt-2 rounded-full bg-green-700 px-6 py-3
-              transition-colors duration-200 border-1 border-green-600
-              hover:bg-green-800 text-white flex items-center text-sm
-            `}
-            onClick={handleToggleMenu}
-          >
-            Request A Demo <ArrowRightCircleIconSVG className="ml-2 w-6 h-6" />
-          </button>
-        </div>
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+          onClick={handleToggleMenu}
+          aria-hidden="true"
+        />
       )}
-    </nav>
+    </>
   );
 };
 
