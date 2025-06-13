@@ -13,7 +13,7 @@ const KeyFeatures = () => {
     <div className="relative w-full max-w-md mx-auto rounded-lg overflow-hidden lg:max-w-[350px]  p-4 pt-2">
         <div>
     <Image
-    src='/ten-million.png'
+    src='/images/home/ten-million.png'
     alt='ten million image'
     height={359}
     width={358}
