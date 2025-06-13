@@ -19,8 +19,8 @@ const App = () => {
       <SecondSection/>
       <Service/>
       <Dashboard/>
+       <Team/>
       <FourthSection/>
-      <Team/>
       <Book/>
       <Footer/>
 </div>

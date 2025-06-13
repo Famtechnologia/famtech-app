@@ -1,6 +1,6 @@
 // src/components/section/TeamMemberCard.tsx
 'use client'; 
-
+import Image from 'next/image'
 import React from 'react';
 
 export interface TeamMember {
@@ -40,7 +40,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, isHighlighted =
         ${isHighlighted ? 'scale-102 shadow-xl' : 'hover:shadow-xl hover:scale-102 hover:ring-2 hover:ring-green-500 '} 
       `}
     >
-      <div className="w-48 h-48 rounded-sm overflow-hidden mb-4 loading-lazy">
+      <div className="w-full h-70 rounded-sm overflow-hidden mb-4 loading-lazy">
         <img
           src={member.imageUrl}
           alt={member.name}
@@ -52,15 +52,15 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, isHighlighted =
         />
       </div>
 
-      <h3 className="text-xl font-bold text-gray-800 mb-2">
+      <h3 className="text-xl font-bold text-gray-800 mb-3">
         {member.name}
       </h3>
 
-      <p className="text-sm font-semibold text-green-600 mb-3">
+      <p className="text-sm font-semibold text-green-600 mb-4">
         {member.title}
       </p>
 
-      <p className="text-sm text-gray-600 flex-grow mb-4">
+      <p className="text-sm text-gray-600 flex-grow mb-6">
         {member.description}
       </p>
 
