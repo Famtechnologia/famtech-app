@@ -95,10 +95,10 @@ export const metadata: Metadata = {
   }
 };
 
-// 📱 Viewport configuration moved out of metadata (Next.js 14+ requirement) :contentReference[oaicite:1]{index=1}
+
 export const viewport: Viewport = {
-  themeColor: '#16a34a',
-  colorScheme: 'light dark',
+  themeColor: '#fffff',    
+  colorScheme: 'light',
   width: 'device-width',
   initialScale: 1,
 };
@@ -107,7 +107,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
-      <body>
+      <body className='bg-white text-gray-800 antialiased'>
         <AuthProvider>
           {children}
           <Toaster position="top-right" />
