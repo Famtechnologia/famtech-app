@@ -1,7 +1,7 @@
 'use client'
 
 import OnboardLayout from '@/components/auth/layout/onboardLayout'
-import logo from '../../../../../public/logo.png'
+import logo from '../../../../../public/images/home/logo.png'
 import Image from 'next/image'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation';

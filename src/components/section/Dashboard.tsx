@@ -121,7 +121,7 @@ const Dashboard: React.FC = () => {
                 className='text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight'
                 variants={textVariants}
               >
-                Your Farm's
+                Your Farm&apos;s
                 <span className="relative inline-block ml-3">
                   <span className="bg-gradient-to-r from-emerald-500 to-teal-600 bg-clip-text text-transparent">
                     Command Center

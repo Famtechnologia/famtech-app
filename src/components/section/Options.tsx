@@ -7,7 +7,7 @@ const Options:React.FC = () => {
     lg:max-w-[500px] md:ml-0 mx-auto bg-green-50 border border-green-400 rounded-xl 
     md:h-full max-w-7xl mx-auto'>
         <SectionTitle className='mr-0 bg-white' title='Why choose Famtech'/>
-        <p className='text-xs lg:text-base text-center '>Whether you're managing 10 hectares or 10,000, Famtech grows with you.</p>
+        <p className='text-xs lg:text-base text-center '>Whether you&apos;re managing 10 hectares or 10,000, Famtech grows with you.</p>
         <div className=' space-y-4 md:space-y-10 lg:space-y-8'>
             <p className='inline-flex rounded-full text-center text-[9px] lg:text-sm p-1 lg:p-2 border border-gray-400
              text-gray-700'>Offline-first tech for rural areas</p>

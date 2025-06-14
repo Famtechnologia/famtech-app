@@ -63,12 +63,12 @@ const Book = () => {
 
           {/* Main Heading */}
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-            We're not just building{' '}
+            We&apos;re not just building{' '}
             <span className="bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent animate-gradient">
               software
             </span>
             <br />
-            — we're building the{' '}
+            — we&apos;re building the{' '}
             <span className="relative">
               future
               <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full transform scale-x-0 animate-scale-x"></div>

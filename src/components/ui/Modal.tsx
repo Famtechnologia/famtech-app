@@ -3,6 +3,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import Img from 'next/image';
 
 interface SleekModalProps {
   isOpen: boolean;
@@ -210,9 +211,11 @@ export const TeamMemberModal: React.FC<{
         <div className="flex flex-col md:flex-row gap-6 items-start">
           <div className="flex-shrink-0">
             <div className="relative">
-              <img
+              <Img
                 src={member.imageUrl}
                 alt={member.name}
+                width={160}
+                height={160}
                 className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover shadow-xl"
               />
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-transparent" />
