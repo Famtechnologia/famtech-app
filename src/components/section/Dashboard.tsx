@@ -3,6 +3,8 @@ import React from 'react';
 import Image from 'next/image';
 import { FaAngleRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import dashboardImage from '../../../public/images/home/dashboard-preview.png';
+
 
 const SectionTitle = ({ title }) => (
   <div className="relative">
@@ -218,7 +220,7 @@ const Dashboard: React.FC = () => {
                   {/* Dashboard image */}
                   <div className="relative overflow-hidden rounded-2xl">
                     <Image
-                      src='/dashboard-preview.png'
+                      src={dashboardImage}
                       alt='famtech dashboard preview'
                       width={1000}
                       height={500}
