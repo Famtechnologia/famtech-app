@@ -137,7 +137,7 @@ const Footer: React.FC = () => {
                   </div>
                   <div className='flex items-start space-x-3'>
                     <div className='w-1 h-1 bg-emerald-400 rounded-full mt-2 flex-shrink-0'></div>
-                    <p className='text-slate-300 text-sm leading-relaxed'>famtechnologia@gmail.com</p>
+                    <p className='text-slate-300 text-sm leading-relaxed'>info@famtechnologia.com</p>
                   </div>
                   <div className='flex items-start space-x-3'>
                     <div className='w-1 h-1 bg-emerald-400 rounded-full mt-2 flex-shrink-0'></div>
