@@ -134,7 +134,7 @@ const PreFooter: React.FC = () => {
               variants={textVariants}
             >
               At <span className="font-semibold text-emerald-400">Famtech</span>, we believe in the power of technology to change lives.
-              Whether you're a small-scale farmer looking to increase your yield or
+              Whether you&apos;re a small-scale farmer looking to increase your yield or
               a large agribusiness in need of custom-built farm management software,
               <span className="font-semibold text-cyan-400"> Famtech is here to help you achieve more with less.</span>
             </motion.p>

@@ -83,9 +83,10 @@ export interface Report {
   type: 'monthly' | 'seasonal' | 'annual';
   period: string;
   data: {
-    weather: WeatherSummary;
-    crops: CropSummary;
-    finances: FinanceSummary;
+    // i added this as strings for now
+    weather: String;   // WeatherSummary
+    crops: String;    // CropHealthSummary
+    finances: String;  // FinancialSummary
     recommendations: string[];
   };
   generatedAt: Date;

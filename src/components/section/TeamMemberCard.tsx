@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import React from 'react';
 
+
 export interface TeamMember {
   id: string;
   name: string;
