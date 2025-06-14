@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '../components/auth/AuthProvider';
 import type { Metadata } from 'next';
 import type { Viewport } from 'next';
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
   subsets: ['latin'],
@@ -109,6 +110,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={inter.className}>
       <body className='bg-white text-gray-800 antialiased'>
         <AuthProvider>
+          <Analytics/>
           {children}
           <Toaster position="top-right" />
         </AuthProvider>
