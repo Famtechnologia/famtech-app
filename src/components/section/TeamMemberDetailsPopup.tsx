@@ -57,7 +57,8 @@ aria-label="Close popup"
  </button>
         
         {/* Member Details Content Area */}
-        <div className="flex flex-col items-center text-center lg:px-4 mt-8 px-0 py-2 overflow-y-auto custom-scrollbar flex-grow"> 
+        <div className="flex flex-col items-center text-center lg:px-4 mt-8 px-0 py-2 
+overflow-y-auto custom-scrollbar flex-grow"> 
           
           
           <h3 className="text-2xl font-bold text-gray-800 mb-0 lg:mb-1">{member.name}</h3>

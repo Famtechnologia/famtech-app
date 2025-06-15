@@ -1,17 +1,17 @@
 // src/components/section/TeamMemberCard.tsx
 'use client'; 
-import Image from 'next/image'
+import Image from 'next/image'; 
 import React from 'react';
-
 
 export interface TeamMember {
   id: string;
   name: string;
   title: string;
-  description: string; // This is your short description/excerpt
-  fullDescription: string; // Add this for the longer text
-  
+  description: string; 
+  fullDescription: string; 
   imageUrl: string;
+  email?: string; 
+  linkedinUrl?: string; // Optional LinkedIn URL property
 }
 
 interface TeamMemberCardProps {

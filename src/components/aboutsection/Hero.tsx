@@ -49,7 +49,7 @@ const Hero:React.FC = () => {
       variants={containerVariants}
     >
       <div className="max-w-full rounded-xl overflow-hidden bg-green-50 md:bg-white">
-        <div className="flex flex-col lg:flex-row gap-0 items-stretch">
+        <div className="flex flex-col space-y-6 lg:flex-row gap-0 items-stretch">
           <div className="lg:w-[700px] p-2 lg:p-4 text-left flex items-center ">
             <div>
               <motion.h2
@@ -74,7 +74,7 @@ const Hero:React.FC = () => {
           >
             <div className="relative w-full h-full md:h-[480px] rounded-xl">
                 <Image
-                    src="/images/about/Agricultural-technology.jpg"
+                    src="/images/about/agricultural-technology.png"
                     alt="A person interacting with a tablet in a farm setting"
                     width={824}
                     height={719}
