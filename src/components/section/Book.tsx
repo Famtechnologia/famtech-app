@@ -85,10 +85,13 @@ const Book = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             {/* Primary CTA */}
-            <button
-              className="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-2xl shadow-2xl shadow-green-500/25 transition-all duration-300 hover:scale-105 hover:shadow-green-500/40 overflow-hidden"
-              onMouseEnter={() => setHoveredButton('demo')}
-              onMouseLeave={() => setHoveredButton(null)}
+            <a 
+            href='mailto:famtechnologia@gmail.com'
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-2xl shadow-2xl shadow-green-500/25 transition-all duration-300 hover:scale-105 hover:shadow-green-500/40 overflow-hidden"
+            onMouseEnter={() => setHoveredButton('demo')}
+            onMouseLeave={() => setHoveredButton(null)}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative flex items-center gap-3">
@@ -99,13 +102,16 @@ const Book = () => {
                 />
               </div>
               <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-            </button>
+            </a>
 
             {/* Secondary CTA */}
-            <button
-              className="group relative px-8 py-4 bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 text-white font-semibold rounded-2xl transition-all duration-300 hover:border-green-400 hover:bg-slate-800/70 hover:scale-105"
-              onMouseEnter={() => setHoveredButton('team')}
-              onMouseLeave={() => setHoveredButton(null)}
+            <a
+            href='https://wa.me/2349127483717'
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative px-8 py-4 bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 text-white font-semibold rounded-2xl transition-all duration-300 hover:border-green-400 hover:bg-slate-800/70 hover:scale-105"
+            onMouseEnter={() => setHoveredButton('team')}
+            onMouseLeave={() => setHoveredButton(null)}
             >
               <div className="flex items-center gap-3">
                 <span className="text-lg">Talk to our team</span>
@@ -114,7 +120,7 @@ const Book = () => {
                   className={`transition-all duration-300 ${hoveredButton === 'team' ? 'translate-x-1 text-green-400' : 'text-slate-400'}`} 
                 />
               </div>
-            </button>
+            </a>
           </div>
 
           {/* Stats or Social Proof */}

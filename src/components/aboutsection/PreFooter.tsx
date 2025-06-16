@@ -145,7 +145,10 @@ const PreFooter: React.FC = () => {
               variants={buttonVariants}
             >
               {/* Primary Button */}
-              <motion.button
+              <motion.a
+              href='mailto:famtechnologia@gmail.com'
+              rel="noopener noreferrer"
+              target="_blank"
                 className="group relative overflow-hidden bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-8 py-4 rounded-2xl font-semibold text-lg shadow-2xl hover:shadow-emerald-500/25 transition-all duration-300 flex items-center space-x-3 min-w-[200px] justify-center"
                 whileHover={{ 
                   scale: 1.05,
@@ -172,10 +175,13 @@ const PreFooter: React.FC = () => {
                   whileHover={{ x: "200%" }}
                   transition={{ duration: 0.8 }}
                 />
-              </motion.button>
+              </motion.a>
 
               {/* Secondary Button */}
-              <motion.button
+              <motion.a
+              href='https://wa.me/2349127483717'
+              rel="noopener noreferrer"
+             target="_blank"
                 className="group relative bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-white/20 transition-all duration-300 flex items-center space-x-3 min-w-[200px] justify-center"
                 whileHover={{ 
                   scale: 1.05,
@@ -193,7 +199,7 @@ const PreFooter: React.FC = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>
                 </motion.div>
-              </motion.button>
+              </motion.a>
             </motion.div>
 
             {/* Trust indicators */}

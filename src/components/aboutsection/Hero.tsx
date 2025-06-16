@@ -42,18 +42,18 @@ const Hero:React.FC = () => {
 
   return (
     <motion.div
-      className="bg-white py-8 pb-4 mx-2 md:mx-15 sm:px-2 lg:mt-28 mt-8 md:mt-12"
+      className="bg-white  py-8 pb-4 mx-2 md:mx-15 sm:px-2 lg:mt-28 mt-8 md:mt-12"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}
       variants={containerVariants}
     >
       <div className="max-w-full rounded-xl overflow-hidden bg-green-50 md:bg-white">
-        <div className="flex flex-col lg:flex-row gap-0 items-stretch">
+        <div className="flex flex-col space-y-6 lg:flex-row gap-0 items-stretch">
           <div className="lg:w-[700px] p-2 lg:p-4 text-left flex items-center ">
             <div>
               <motion.h2
-                className="text-4xl md:text-5xl lg:text-5xl font-bold bg-gradient-to-r from-slate-900 via-emerald-800 to-slate-900 bg-clip-text text-transparent mb-6 leading-tight">
+                className="text-4xl md:text-5xl mt-6 lg:text-5xl font-bold bg-gradient-to-r from-slate-900 via-emerald-800 to-slate-900 bg-clip-text text-transparent mb-6 leading-tight">
                Harnessing Technology 
                 <span className="block text-emerald-600"> to Transform Agriculture</span>
         
@@ -74,7 +74,7 @@ const Hero:React.FC = () => {
           >
             <div className="relative w-full h-full md:h-[480px] rounded-xl">
                 <Image
-                    src="/images/about/Agricultural-technology.jpg"
+                    src="/images/about/agricultural-technology.png"
                     alt="A person interacting with a tablet in a farm setting"
                     width={824}
                     height={719}

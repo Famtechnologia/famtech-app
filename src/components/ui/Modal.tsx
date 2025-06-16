@@ -5,6 +5,9 @@ import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Img from 'next/image';
 
+// IMPORTANT: IMPORT TeamMember from its source (TeamMemberCard.tsx)
+import { TeamMember } from '@/components/section/TeamMemberCard'; 
+
 interface SleekModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -31,7 +34,6 @@ const SleekModal: React.FC<SleekModalProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
-  // Handle escape key
   useEffect(() => {
     if (!closeOnEscape) return;
 
@@ -47,26 +49,20 @@ const SleekModal: React.FC<SleekModalProps> = ({
     }
   }, [isOpen, onClose, closeOnEscape]);
 
-  // Handle focus management
   useEffect(() => {
     if (isOpen) {
-      // Store previously focused element
       previousFocusRef.current = document.activeElement as HTMLElement;
       
-      // Focus the modal
       setTimeout(() => {
         if (modalRef.current) {
           modalRef.current.focus();
         }
       }, 100);
 
-      // Prevent body scroll
       document.body.style.overflow = 'hidden';
     } else {
-      // Restore body scroll
       document.body.style.overflow = 'unset';
       
-      // Restore previous focus
       if (previousFocusRef.current) {
         previousFocusRef.current.focus();
       }
@@ -77,14 +73,12 @@ const SleekModal: React.FC<SleekModalProps> = ({
     };
   }, [isOpen]);
 
-  // Handle backdrop click
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (closeOnBackdropClick && e.target === e.currentTarget) {
       onClose();
     }
   };
 
-  // Size classes
   const sizeClasses = {
     sm: 'max-w-md',
     md: 'max-w-2xl',
@@ -123,14 +117,11 @@ const SleekModal: React.FC<SleekModalProps> = ({
         `}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Decorative gradient border */}
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/20 via-cyan-500/20 to-indigo-500/20 p-[1px]">
           <div className="w-full h-full bg-white/95 backdrop-blur-xl rounded-2xl" />
         </div>
 
-        {/* Content container */}
         <div className="relative z-10">
-          {/* Header */}
           {(title || showCloseButton) && (
             <div className="flex items-center justify-between p-6 pb-4 border-b border-slate-200/50">
               {title && (
@@ -169,13 +160,11 @@ const SleekModal: React.FC<SleekModalProps> = ({
             </div>
           )}
 
-          {/* Content */}
           <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
             {children}
           </div>
         </div>
 
-        {/* Animated background elements */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-400/10 to-cyan-400/10 rounded-full blur-xl transform translate-x-16 -translate-y-16 animate-pulse" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-400/10 to-purple-400/10 rounded-full blur-xl transform -translate-x-12 translate-y-12 animate-pulse animation-delay-1000" />
@@ -184,15 +173,13 @@ const SleekModal: React.FC<SleekModalProps> = ({
     </div>
   );
 
-  // Render modal in portal
   return createPortal(modalContent, document.body);
 };
 
 export default SleekModal;
 
-// Example usage component for team member details
 export const TeamMemberModal: React.FC<{
-  member: any;
+  member: TeamMember; // Type is correctly set to TeamMember
   isOpen: boolean;
   onClose: () => void;
 }> = ({ member, isOpen, onClose }) => {
@@ -207,7 +194,6 @@ export const TeamMemberModal: React.FC<{
       className="font-sans"
     >
       <div className="space-y-6">
-        {/* Member Header */}
         <div className="flex flex-col md:flex-row gap-6 items-start">
           <div className="flex-shrink-0">
             <div className="relative">
@@ -235,7 +221,6 @@ export const TeamMemberModal: React.FC<{
               </p>
             </div>
 
-            {/* Quick stats or badges */}
             <div className="flex flex-wrap gap-2">
               <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
                 Leadership
@@ -250,10 +235,8 @@ export const TeamMemberModal: React.FC<{
           </div>
         </div>
 
-        {/* Divider */}
         <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
 
-        {/* Full Description */}
         <div className="space-y-4">
           <h4 className="text-xl font-semibold text-slate-800 flex items-center gap-2">
             <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
@@ -266,23 +249,34 @@ export const TeamMemberModal: React.FC<{
           </div>
         </div>
 
-        {/* Contact Section */}
         <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 rounded-xl p-6 border border-emerald-100">
           <h5 className="font-semibold text-slate-800 mb-3">Connect with {member.name.split(' ')[0]}</h5>
           <div className="flex gap-3">
-            <button className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-200">
+            {/* Removed conditional render: Button will always show */}
+            <a
+              href={`mailto:${member.email || ''}`} // Provide empty string if email is undefined
+              className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-200"
+              target="_blank" 
+              rel="noopener noreferrer" 
+            >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                 <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
               </svg>
               Email
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+            </a>
+            {/* Removed conditional render: Button will always show */}
+            <a
+              href={member.linkedinUrl || '#'} // Provide '#' if linkedinUrl is undefined
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+              target="_blank" 
+              rel="noopener noreferrer" 
+            >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
               </svg>
               LinkedIn
-            </button>
+            </a>
           </div>
         </div>
       </div>

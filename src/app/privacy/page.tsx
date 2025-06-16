@@ -10,7 +10,7 @@ const PrivacyAndCookies: React.FC = () => {
     <Navbar/>
     <div className="max-w-5xl xl:mx-auto mx-4 px-4 md:px-20 lg:mx-28 py-12 sm:py-8">
       
-      <h1 className="md:text-3xl text-2xl font-bold mb-8 md:text-center text-left  mt-24 lg:mt-35">Famtech Privacy and Cookie Policy</h1>
+      <h1 className="md:text-3xl text-2xl font-bold mb-8 md:text-center text-left  mt-12 lg:mt-35">Famtech Privacy and Cookie Policy</h1>
 
       <section className="mb-12">
         <h2 className="text-lg md:text-2xl font-semibold mb-4">1. Privacy Policy</h2>

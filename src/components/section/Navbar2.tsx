@@ -118,7 +118,7 @@ const Navbar: React.FC = () => {
             <Link href="/" className="flex-shrink-0 transition-transform duration-300 hover:scale-105">
               <div className="relative">
                 {isTransparentState ? (
-                  <div className='h-16 w-16 lg:h-40 lg:w-40'>
+                  <div className='h-24 w-24 lg:h-40 lg:w-40'>
                     <Image
                       src="/images/home/famtech-white-logo.png"
                       alt="FAMTECH Smart Farming logo - White"
@@ -129,7 +129,7 @@ const Navbar: React.FC = () => {
                     />
                   </div>
                 ) : (
-                  <div className='h-16 w-16 lg:h-40 lg:w-40'>
+                  <div className='h-24 w-24 lg:h-40 lg:w-40'>
                   <Image
                     src="/images/home/famtech-logo-two.png"
                     alt="FAMTECH Smart Farming logo"
