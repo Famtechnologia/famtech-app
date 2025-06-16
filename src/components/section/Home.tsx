@@ -130,8 +130,6 @@ const Home: React.FC = () => {
           >
             <motion.a
               href='/auth/register'
-              target="_blank"
-              rel="noopener noreferrer"
               className="group relative inline-flex items-center justify-center px-8 py-4 bg-green-500 hover:bg-green-400 text-white font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
