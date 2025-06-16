@@ -42,7 +42,7 @@ const Hero:React.FC = () => {
 
   return (
     <motion.div
-      className="bg-white py-8 pb-4 mx-2 md:mx-15 sm:px-2 lg:mt-28 mt-8 md:mt-12"
+      className="bg-white  py-8 pb-4 mx-2 md:mx-15 sm:px-2 lg:mt-28 mt-8 md:mt-12"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}
@@ -53,7 +53,7 @@ const Hero:React.FC = () => {
           <div className="lg:w-[700px] p-2 lg:p-4 text-left flex items-center ">
             <div>
               <motion.h2
-                className="text-4xl md:text-5xl lg:text-5xl font-bold bg-gradient-to-r from-slate-900 via-emerald-800 to-slate-900 bg-clip-text text-transparent mb-6 leading-tight">
+                className="text-4xl md:text-5xl mt-6 lg:text-5xl font-bold bg-gradient-to-r from-slate-900 via-emerald-800 to-slate-900 bg-clip-text text-transparent mb-6 leading-tight">
                Harnessing Technology 
                 <span className="block text-emerald-600"> to Transform Agriculture</span>
         

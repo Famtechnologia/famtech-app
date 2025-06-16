@@ -79,7 +79,7 @@ const Footer: React.FC = () => {
                 </h3>
                 <ul className='space-y-3'>
                   {[
-                    { name: 'Book a Demo', href: '#' },
+                    { name: 'Book a Demo', href: 'mailto:famtechnologia@gmail.com'},
                     { name: 'About Us', href: '/about' },
                     { name: 'Terms & Conditions', href: '/terms' },
                     { name: 'Privacy Policy', href: '/privacy' }

@@ -32,8 +32,8 @@ const Team: React.FC = () => {
       description: 'Developing robust software solutions for scalable agriculture.',
       fullDescription: `SAMUEL OLUWATOBI (COO) Oluwatobi has consistently empowered farmers, cooperatives, and agribusinesses to increase productivity, improve operational efficiency, and build more resilient and profitable enterprises. He holds a Master's degree in agronomy and has close to a decade of hands-on experience in farm establishment, management, and agricultural consulting. Oluwatobi is a strategic thinker and values-driven leader who believes that Africa holds the potential for true economic liberation if the continent fully harnesses the vast opportunities within its agricultural sector. The Founder/CEO of Farmdev Consult, a trailblazing agricultural consulting firm dedicated to transforming Africa's agribusiness landscape through innovation, sustainability, and technology-driven solutions, his values-driven approach is rooted in excellence, integrity, productivity, and inclusive growth, making him a respected voice in Africa's agricultural transformation.`,
       imageUrl: '/images/home/tobiii.jpg',
-      email: '',
-      linkedinUrl: '' 
+      email: 'soluwatobiemmanuel@gmail.com',
+      linkedinUrl: 'https://www.linkedin.com/in/oluwatobi-samuel-2934b0113?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' 
     },
     {
       id: '3',
