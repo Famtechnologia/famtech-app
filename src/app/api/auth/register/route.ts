@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase/admin';
-import { FieldValue } from 'firebase-admin/firestore';
-import { Timestamp } from "firebase-admin/firestore";
+import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 
 interface RegistrationData {
   uid: string;
@@ -39,11 +38,9 @@ export async function POST(request: NextRequest) {
       'farmName', 'farmType', 'farmSize', 'state', 'city', 'address'
     ];
     for (const field of requiredFields) {
-      if (
-        !data[field as keyof RegistrationData] ||
-        (typeof data[field as keyof RegistrationData] === 'string' &&
-          !(data[field as keyof RegistrationData] as string).trim())
-      ) {
+      if (!data[field as keyof RegistrationData] ||
+          (typeof data[field as keyof RegistrationData] === 'string' &&
+            !(data[field as keyof RegistrationData] as string).trim())) {
         return NextResponse.json({ error: `${field} is required` }, { status: 400 });
       }
     }
@@ -56,14 +53,12 @@ export async function POST(request: NextRequest) {
     const farmId = `farm_${data.uid}`;
     const fullName = `${data.firstName.trim()} ${data.lastName.trim()}`;
 
-    // Assign Firebase custom claims
     await adminAuth.setCustomUserClaims(data.uid, {
       role: 'farmer',
       subRole: 'admin',
       farmId
     });
 
-    // User document
     const userRef = adminDb.collection('users').doc(data.uid);
     batch.set(userRef, {
       uid: data.uid,
@@ -107,7 +102,6 @@ export async function POST(request: NextRequest) {
       updatedAt: FieldValue.serverTimestamp()
     });
 
-    // Farm document
     const farmRef = adminDb.collection('farms').doc(farmId);
     batch.set(farmRef, {
       id: farmId,
@@ -126,12 +120,10 @@ export async function POST(request: NextRequest) {
         state: data.state,
         city: data.city.trim(),
         address: data.address.trim(),
-        coordinates: data.coordinates?.lat && data.coordinates?.lng
-          ? {
-              latitude: parseFloat(data.coordinates.lat),
-              longitude: parseFloat(data.coordinates.lng)
-            }
-          : null,
+        coordinates: data.coordinates?.lat && data.coordinates?.lng ? {
+          latitude: parseFloat(data.coordinates.lat),
+          longitude: parseFloat(data.coordinates.lng)
+        } : null,
         timezone: data.timezone
       },
       ownership: {
@@ -173,16 +165,8 @@ export async function POST(request: NextRequest) {
         totalExpenses: 0,
         profitMargin: 0,
         budgetCategories: [
-          'Seeds & Seedlings',
-          'Fertilizers',
-          'Pesticides',
-          'Equipment',
-          'Labor',
-          'Utilities',
-          'Transportation',
-          'Storage',
-          'Marketing',
-          'Other'
+          'Seeds & Seedlings', 'Fertilizers', 'Pesticides', 'Equipment',
+          'Labor', 'Utilities', 'Transportation', 'Storage', 'Marketing', 'Other'
         ]
       },
       subscription: {
@@ -213,7 +197,6 @@ export async function POST(request: NextRequest) {
       updatedAt: FieldValue.serverTimestamp()
     });
 
-    // Farm analytics
     const analyticsRef = adminDb.collection('farmAnalytics').doc(farmId);
     batch.set(analyticsRef, {
       farmId,
@@ -269,7 +252,6 @@ export async function POST(request: NextRequest) {
       updatedAt: FieldValue.serverTimestamp()
     });
 
-    // Default inventory categories
     const inventoryCategories = [
       { name: 'Seeds & Seedlings', type: 'input', icon: '🌱' },
       { name: 'Fertilizers', type: 'input', icon: '🧪' },
@@ -291,46 +273,15 @@ export async function POST(request: NextRequest) {
       });
     });
 
-    // Setup checklist
     const checklistRef = adminDb.collection('farmSetupChecklists').doc(farmId);
     batch.set(checklistRef, {
       farmId,
       items: [
-        {
-          id: 'profile_complete',
-          title: 'Complete Farm Profile',
-          description: 'Add farm description, photos, and detailed information',
-          completed: false,
-          category: 'setup'
-        },
-        {
-          id: 'first_field',
-          title: 'Add Your First Field',
-          description: 'Map out your farming areas and crop zones',
-          completed: false,
-          category: 'fields'
-        },
-        {
-          id: 'team_invite',
-          title: 'Invite Team Members',
-          description: 'Add staff, workers, or collaborators to your farm',
-          completed: false,
-          category: 'team'
-        },
-        {
-          id: 'first_season',
-          title: 'Plan Your First Season',
-          description: 'Set up planting schedules and crop rotations',
-          completed: false,
-          category: 'planning'
-        },
-        {
-          id: 'inventory_setup',
-          title: 'Set Up Inventory',
-          description: 'Add your seeds, tools, and supplies to track',
-          completed: false,
-          category: 'inventory'
-        }
+        { id: 'profile_complete', title: 'Complete Farm Profile', description: 'Add farm description, photos, and detailed information', completed: false, category: 'setup' },
+        { id: 'first_field', title: 'Add Your First Field', description: 'Map out your farming areas and crop zones', completed: false, category: 'fields' },
+        { id: 'team_invite', title: 'Invite Team Members', description: 'Add staff, workers, or collaborators to your farm', completed: false, category: 'team' },
+        { id: 'first_season', title: 'Plan Your First Season', description: 'Set up planting schedules and crop rotations', completed: false, category: 'planning' },
+        { id: 'inventory_setup', title: 'Set Up Inventory', description: 'Add your seeds, tools, and supplies to track', completed: false, category: 'inventory' }
       ],
       completedCount: 0,
       totalCount: 5,
@@ -339,15 +290,33 @@ export async function POST(request: NextRequest) {
       updatedAt: FieldValue.serverTimestamp()
     });
 
-    // ✅ Commit all batched writes
     await batch.commit();
+
+  
+    try {
+      await fetch('https://api.substack.com/v1/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.SUBSTACK_API_KEY}`
+        },
+        body: JSON.stringify({
+          email: data.email,
+          first_name: data.firstName,
+          last_name: data.lastName,
+          referrer: 'farm-registration'
+        })
+      });
+    } catch (substackErr) {
+      console.warn('Substack welcome email failed:', substackErr);
+    }
 
     return NextResponse.json({ message: 'Farm and user registration successful' }, { status: 201 });
   } catch (error) {
     console.error('Registration error:', error);
-    return NextResponse.json(
-      { error: 'Registration failed', details: error instanceof Error ? error.message : String(error) },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      error: 'Registration failed',
+      details: error instanceof Error ? error.message : String(error)
+    }, { status: 500 });
   }
 }

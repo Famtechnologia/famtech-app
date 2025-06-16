@@ -1,15 +1,18 @@
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
-import { ServiceAccount } from 'firebase-admin';
-import serviceAccount from '../../../serviceAccountKey.json';
 
+if (!process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY || !process.env.FIREBASE_PROJECT_ID) {
+  throw new Error('Missing Firebase Admin env vars');
+}
 
-
-const adminApp = getApps().length === 0 
+const adminApp = getApps().length === 0
   ? initializeApp({
-      credential: cert(serviceAccount as ServiceAccount),
-      projectId: serviceAccount.project_id,
+      credential: cert({
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        projectId: process.env.FIREBASE_PROJECT_ID,
+      }),
     })
   : getApps()[0];
 
