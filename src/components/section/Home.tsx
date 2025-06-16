@@ -4,6 +4,7 @@ import { BsDot } from "react-icons/bs";
 import { FaAngleRight, FaPlay } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // Import the original FarmOverviewCard component
 import FarmOverviewCard from './FarmOverviewCard';
@@ -128,18 +129,17 @@ const Home: React.FC = () => {
             variants={itemVariants}
             className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4"
           >
-            <motion.a
-              href='/auth/register'
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative inline-flex items-center justify-center px-8 py-4 bg-green-500 hover:bg-green-400 text-white font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="relative z-10">Join Waitlist</span>
-              <FaAngleRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-              <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-green-400 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </motion.a>
+           <Link href="/auth/register" passHref>
+             <motion.span
+               className="group relative inline-flex items-center justify-center px-8 py-4 bg-green-500 hover:bg-green-400 text-white font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
+               whileHover={{ scale: 1.05 }}
+               whileTap={{ scale: 0.95 }}
+             >
+               <span className="relative z-10">Join Waitlist</span>
+               <FaAngleRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+               <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-green-400 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+             </motion.span>
+            </Link>
 
             <motion.a
               href='#'
