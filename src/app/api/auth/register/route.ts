@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase/admin';
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 
+
 interface RegistrationData {
   uid: string;
   firstName: string;
@@ -29,23 +30,44 @@ interface RegistrationData {
   seasonalPattern: string;
 }
 
+async function subscribeToMailerlite(email: string, firstName: string, lastName: string) {
+  console.log('MailerLite key:', process.env.MAILERLITE_API_KEY?.slice(0, 5)); // Masked for safety
+  console.log('Group ID:', process.env.MAILERLITE_GROUP_ID);
+
+  const res = await fetch('https://connect.mailerlite.com/api/subscribers', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${process.env.MAILERLITE_API_KEY}`
+    },
+    body: JSON.stringify({
+      email,
+      fields: { name: firstName, last_name: lastName },
+      groups: [process.env.MAILERLITE_GROUP_ID]
+    })
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.message || `MailerLite error ${res.status}`);
+    
+  }
+  return data.data;
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const data: RegistrationData = await request.json();
+    const data = await request.json();
 
-    const requiredFields = [
-      'uid', 'firstName', 'lastName', 'email', 'phoneNumber',
-      'farmName', 'farmType', 'farmSize', 'state', 'city', 'address'
-    ];
-    for (const field of requiredFields) {
-      if (!data[field as keyof RegistrationData] ||
-          (typeof data[field as keyof RegistrationData] === 'string' &&
-            !(data[field as keyof RegistrationData] as string).trim())) {
-        return NextResponse.json({ error: `${field} is required` }, { status: 400 });
+    /** Validate input (only key fields shown) **/
+    const required = ['uid','firstName','lastName','email','phoneNumber','farmName','farmType','farmSize','state','city','address'];
+    for (const f of required) {
+      const v = (data as any)[f];
+      if (!v || (typeof v === 'string' && !v.trim())) {
+        return NextResponse.json({ error: `${f} is required` }, { status: 400 });
       }
     }
-
-    if (!data.primaryCrops || data.primaryCrops.length === 0) {
+    if (!Array.isArray(data.primaryCrops) || data.primaryCrops.length === 0) {
       return NextResponse.json({ error: 'At least one primary crop is required' }, { status: 400 });
     }
 
@@ -111,7 +133,7 @@ export async function POST(request: NextRequest) {
         description: data.description?.trim() || '',
         establishedYear: data.establishedYear,
         size: {
-          value: parseFloat(data.farmSize.toString()),
+          value: +data.farmSize,
           unit: data.farmSizeUnit
         }
       },
@@ -120,10 +142,9 @@ export async function POST(request: NextRequest) {
         state: data.state,
         city: data.city.trim(),
         address: data.address.trim(),
-        coordinates: data.coordinates?.lat && data.coordinates?.lng ? {
-          latitude: parseFloat(data.coordinates.lat),
-          longitude: parseFloat(data.coordinates.lng)
-        } : null,
+        coordinates: (data.coordinates?.lat && data.coordinates?.lng)
+          ? { latitude: +data.coordinates.lat, longitude: +data.coordinates.lng }
+          : null,
         timezone: data.timezone
       },
       ownership: {
@@ -133,23 +154,17 @@ export async function POST(request: NextRequest) {
         ownerPhone: data.phoneNumber.trim()
       },
       team: {
-        members: [
-          {
-            uid: data.uid,
-            name: fullName,
-            email: data.email.toLowerCase().trim(),
-            role: 'admin',
-            permissions: ['all'],
-            joinedAt: Timestamp.now(),
-            isActive: true
-          }
-        ],
+        members: [{
+          uid: data.uid,
+          name: fullName,
+          email: data.email.toLowerCase().trim(),
+          role: 'admin',
+          permissions: ['all'],
+          joinedAt: Timestamp.now(),
+          isActive: true
+        }],
         totalMembers: 1,
-        roles: {
-          admins: [data.uid],
-          staff: [],
-          finance: []
-        }
+        roles: { admins: [data.uid], staff: [], finance: [] }
       },
       production: {
         primaryCrops: data.primaryCrops,
@@ -165,8 +180,9 @@ export async function POST(request: NextRequest) {
         totalExpenses: 0,
         profitMargin: 0,
         budgetCategories: [
-          'Seeds & Seedlings', 'Fertilizers', 'Pesticides', 'Equipment',
-          'Labor', 'Utilities', 'Transportation', 'Storage', 'Marketing', 'Other'
+          'Seeds & Seedlings', 'Fertilizers', 'Pesticides',
+          'Equipment', 'Labor', 'Utilities', 'Transportation',
+          'Storage', 'Marketing', 'Other'
         ]
       },
       subscription: {
@@ -197,126 +213,58 @@ export async function POST(request: NextRequest) {
       updatedAt: FieldValue.serverTimestamp()
     });
 
-    const analyticsRef = adminDb.collection('farmAnalytics').doc(farmId);
-    batch.set(analyticsRef, {
+    batch.set(adminDb.collection('farmAnalytics').doc(farmId), {
       farmId,
-      overview: {
-        totalRevenue: 0,
-        totalExpenses: 0,
-        netProfit: 0,
-        profitMargin: 0,
-        roi: 0
-      },
-      production: {
-        totalFields: 0,
-        activeSeasons: 0,
-        totalHarvests: 0,
-        averageYield: 0,
-        bestPerformingCrop: null,
-        worstPerformingCrop: null
-      },
-      inventory: {
-        totalItems: 0,
-        lowStockItems: 0,
-        expiringSoon: 0,
-        totalValue: 0
-      },
-      team: {
-        totalMembers: 1,
-        activeMembers: 1,
-        taskCompletionRate: 0,
-        averageProductivity: 0
-      },
-      monthly: {
-        revenue: Array(12).fill(0),
-        expenses: Array(12).fill(0),
-        profit: Array(12).fill(0)
-      },
-      trends: {
-        revenueGrowth: 0,
-        expenseGrowth: 0,
-        profitGrowth: 0,
-        yieldImprovement: 0
-      },
-      goals: {
-        annualRevenue: 0,
-        yieldTargets: {},
-        costReduction: 0,
-        sustainability: {
-          waterUsageReduction: 0,
-          organicTransition: 0,
-          carbonFootprint: 0
-        }
-      },
+      overview: { totalRevenue: 0, totalExpenses: 0, netProfit: 0, profitMargin: 0, roi: 0 },
+      production: { totalFields: 0, activeSeasons: 0, totalHarvests: 0, averageYield: 0, bestPerformingCrop: null, worstPerformingCrop: null },
+      inventory: { totalItems: 0, lowStockItems: 0, expiringSoon: 0, totalValue: 0 },
+      team: { totalMembers: 1, activeMembers: 1, taskCompletionRate: 0, averageProductivity: 0 },
+      monthly: { revenue: Array(12).fill(0), expenses: Array(12).fill(0), profit: Array(12).fill(0) },
+      trends: { revenueGrowth: 0, expenseGrowth: 0, profitGrowth: 0, yieldImprovement: 0 },
+      goals: { annualRevenue: 0, yieldTargets: {}, costReduction: 0, sustainability: { waterUsageReduction: 0, organicTransition: 0, carbonFootprint: 0 } },
       createdAt: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp()
     });
 
-    const inventoryCategories = [
+    [
       { name: 'Seeds & Seedlings', type: 'input', icon: '🌱' },
       { name: 'Fertilizers', type: 'input', icon: '🧪' },
       { name: 'Pesticides', type: 'input', icon: '🔬' },
       { name: 'Tools & Equipment', type: 'asset', icon: '🛠️' },
       { name: 'Harvested Crops', type: 'output', icon: '🌾' },
       { name: 'Processed Products', type: 'output', icon: '📦' }
-    ];
-
-    inventoryCategories.forEach((category, index) => {
-      const ref = adminDb.collection('inventoryCategories').doc();
-      batch.set(ref, {
-        ...category,
-        farmId,
-        isDefault: true,
-        isActive: true,
-        order: index,
-        createdAt: FieldValue.serverTimestamp()
+    ].forEach((c,i) => {
+      batch.set(adminDb.collection('inventoryCategories').doc(), {
+        ...c, farmId, isDefault: true, isActive: true, order: i, createdAt: FieldValue.serverTimestamp()
       });
     });
 
-    const checklistRef = adminDb.collection('farmSetupChecklists').doc(farmId);
-    batch.set(checklistRef, {
+    batch.set(adminDb.collection('farmSetupChecklists').doc(farmId), {
       farmId,
       items: [
-        { id: 'profile_complete', title: 'Complete Farm Profile', description: 'Add farm description, photos, and detailed information', completed: false, category: 'setup' },
-        { id: 'first_field', title: 'Add Your First Field', description: 'Map out your farming areas and crop zones', completed: false, category: 'fields' },
-        { id: 'team_invite', title: 'Invite Team Members', description: 'Add staff, workers, or collaborators to your farm', completed: false, category: 'team' },
-        { id: 'first_season', title: 'Plan Your First Season', description: 'Set up planting schedules and crop rotations', completed: false, category: 'planning' },
-        { id: 'inventory_setup', title: 'Set Up Inventory', description: 'Add your seeds, tools, and supplies to track', completed: false, category: 'inventory' }
+        { id: 'profile_complete', title: 'Complete Farm Profile', completed: false, category: 'setup' },
+        { id: 'first_field',    title: 'Add Your First Field', completed: false, category: 'fields' },
+        { id: 'team_invite',    title: 'Invite Team Members', completed: false, category: 'team' },
+        { id: 'first_season',   title: 'Plan Your First Season', completed: false, category: 'planning' },
+        { id: 'inventory_setup',title: 'Set Up Inventory', completed: false, category: 'inventory' }
       ],
-      completedCount: 0,
-      totalCount: 5,
-      progressPercentage: 0,
-      createdAt: FieldValue.serverTimestamp(),
-      updatedAt: FieldValue.serverTimestamp()
+      completedCount: 0, totalCount: 5, progressPercentage: 0,
+      createdAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp()
     });
 
+    // ** Subscribe to newsletter **
+    await subscribeToMailerlite(data.email, data.firstName, data.lastName);
+
+    // ** Commit all writes **
     await batch.commit();
 
-  
-    try {
-      await fetch('https://api.substack.com/v1/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.SUBSTACK_API_KEY}`
-        },
-        body: JSON.stringify({
-          email: data.email,
-          first_name: data.firstName,
-          last_name: data.lastName,
-          referrer: 'farm-registration'
-        })
-      });
-    } catch (substackErr) {
-      console.warn('Substack welcome email failed:', substackErr);
-    }
-
-    return NextResponse.json({ message: 'Farm and user registration successful' }, { status: 201 });
-  } catch (error) {
-    console.error('Registration error:', error);
+    console.log('Full registration + MailerLite subscription succeeded for', data.uid);
+    return NextResponse.json({ message: 'Farm, user, and newsletter registration successful' }, { status: 201 });
+  } catch (err) {
+    console.error('Registration error:', err);
     return NextResponse.json({
       error: 'Registration failed',
-      details: error instanceof Error ? error.message : String(error)
+      details: err instanceof Error ? err.message : String(err)
     }, { status: 500 });
   }
 }
