@@ -1,15 +1,19 @@
 
-'use client';
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, User, Building2, MapPin, Settings, CheckCircle, Eye, EyeOff, Sparkles, Star, Trophy, Gift, Zap } from 'lucide-react';
+'use client'
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase/config'; // Your Firebase client config
+import { User, Building2, MapPin, Settings, CheckCircle, Sparkles, Zap, Trophy, Gift, EyeOff, Eye, ChevronLeft, ChevronRight  } from 'lucide-react';
+// import { subscribeToNewsletter } from '../../../lib/substack'; //  newsletter subscription logic
+
 
 export default function ModernFarmRegistration() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showCongrats, setShowCongrats] = useState(false);
+  const [registrationError, setRegistrationError] = useState('');
 
   const [formData, setFormData] = useState({
     // Personal Information
@@ -127,15 +131,85 @@ export default function ModernFarmRegistration() {
     if (!validateStep(currentStep)) return;
     
     setLoading(true);
+    setRegistrationError('');
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // 1. Create Firebase Auth user
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      const user = userCredential.user;
+
+      // 2. Prepare data for backend API (matching your RegistrationData interface)
+      const registrationData = {
+        uid: user.uid,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        farmName: formData.farmName,
+        farmType: formData.farmType,
+        farmSize: parseFloat(formData.farmSize),
+        farmSizeUnit: formData.farmSizeUnit,
+        establishedYear: formData.establishedYear,
+        description: formData.description,
+        country: formData.country,
+        state: formData.state,
+        city: formData.city,
+        address: formData.address,
+        coordinates: formData.coordinates.lat && formData.coordinates.lng ? {
+          lat: formData.coordinates.lat,
+          lng: formData.coordinates.lng
+        } : undefined,
+        currency: formData.currency,
+        timezone: formData.timezone,
+        primaryCrops: formData.primaryCrops,
+        farmingMethods: formData.farmingMethods,
+        seasonalPattern: formData.seasonalPattern
+      };
+
+      // 3. Call your backend API
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(registrationData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Registration failed');
+      }
+
+      // 4. Subscribe to newsletter after successful registration
+      // const newsletterResult = await subscribeToNewsletter({
+      //   email: formData.email,
+      //   firstName: formData.firstName,
+      //   lastName: formData.lastName
+      // });
+
+      // Log newsletter subscription result but don't fail registration if it fails
+      // if (!newsletterResult.success) {
+      //   console.warn('Newsletter subscription failed:', newsletterResult.message);
+      // }
+
+      // 5. Redirect to success page with user data
+      router.push(
+        `/registration-success?firstName=${encodeURIComponent(formData.firstName)}&farmName=${encodeURIComponent(formData.farmName)}&city=${encodeURIComponent(formData.city)}&state=${encodeURIComponent(formData.state)}&farmSize=${encodeURIComponent(formData.farmSize)}&farmSizeUnit=${encodeURIComponent(formData.farmSizeUnit)}&farmType=${encodeURIComponent(formData.farmType)}`
+      );
       
-      // Show congratulations page instead of routing
-      setShowCongrats(true);
+
+      router.push('/auth/register/registration-success');
+      console.log(response.message, user);
     } catch (error) {
       console.error('Registration error:', error);
+      setRegistrationError(error.message || 'Registration failed. Please try again.');
+      
+      // If Firebase user was created but backend failed, you might want to clean up
+      // This depends on your error handling strategy
     } finally {
       setLoading(false);
     }
@@ -157,121 +231,8 @@ export default function ModernFarmRegistration() {
     updateFormData('farmingMethods', updated);
   };
 
-  // Congratulations Page Component
-  const CongratulationsPage = () => (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-400 via-green-400 to-blue-500 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/5 rounded-full animate-bounce"></div>
-        <div className="absolute top-1/2 left-1/4 w-32 h-32 bg-yellow-300/20 rounded-full animate-ping"></div>
-      </div>
-
-      <div className="relative z-10 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-16 max-w-2xl w-full text-center">
-        {/* Success Animation */}
-        <div className="relative mb-8">
-          <div className="w-24 h-24 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto animate-bounce">
-            <CheckCircle className="w-12 h-12 text-white" />
-          </div>
-          <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center animate-spin">
-            <Sparkles className="w-4 h-4 text-white" />
-          </div>
-        </div>
-
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-4">
-          Congratulations!
-        </h1>
-        
-        <p className="text-xl text-gray-600 mb-2">
-          Welcome to <span className="font-bold text-emerald-600">FarmTech</span>, {formData.firstName}!
-        </p>
-        
-        <p className="text-gray-500 mb-8">
-          Your farm account has been successfully created. You're now part of a community revolutionizing agriculture and you've been added to our waitlist. We will keep you update about when we fully launch
-        </p>
-
-        {/* Feature highlights */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-2xl">
-            <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
-              <Zap className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="font-semibold text-gray-800 mb-2">Smart Analytics</h3>
-            <p className="text-sm text-gray-600">AI-powered insights for your farm</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-2xl">
-            <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
-              <Trophy className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="font-semibold text-gray-800 mb-2">Expert Support</h3>
-            <p className="text-sm text-gray-600">24/7 agricultural guidance</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl">
-            <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
-              <Gift className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="font-semibold text-gray-800 mb-2">Premium Tools</h3>
-            <p className="text-sm text-gray-600">Advanced farming features</p>
-          </div>
-        </div>
-
-        {/* Farm Details Summary */}
-        <div className="bg-gray-50 rounded-2xl p-6 mb-8 text-left">
-          <h3 className="font-semibold text-gray-800 mb-4 text-center">Your Farm Profile</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div>
-              <span className="text-gray-500">Farm Name:</span>
-              <p className="font-medium text-gray-800">{formData.farmName || 'Not specified'}</p>
-            </div>
-            <div>
-              <span className="text-gray-500">Location:</span>
-              <p className="font-medium text-gray-800">{formData.city}, {formData.state}</p>
-            </div>
-            <div>
-              <span className="text-gray-500">Size:</span>
-              <p className="font-medium text-gray-800">{formData.farmSize} {formData.farmSizeUnit}</p>
-            </div>
-            <div>
-              <span className="text-gray-500">Type:</span>
-              <p className="font-medium text-gray-800 capitalize">{formData.farmType} farming</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {/* <button 
-            onClick={() => setShowCongrats(false)}
-            className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold rounded-2xl hover:from-emerald-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
-          >
-            Explore Dashboard
-          </button> */}
-          <button 
-            onClick={router.push('/')}
-            className="px-8 py-4 bg-white text-gray-700 font-semibold rounded-2xl hover:bg-gray-50 transform hover:scale-105 transition-all duration-200 shadow-lg border-2 border-gray-200"
-          >
-            Hompage
-          </button>
-        </div>
-
-        {/* Social proof */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-            <Star className="w-4 h-4 text-yellow-400 fill-current" />
-            <span>Join 10,000+ farmers already using FarmTech</span>
-            <Star className="w-4 h-4 text-yellow-400 fill-current" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // Show congratulations page if registration is complete
-  if (showCongrats) {
-    return <CongratulationsPage />;
-  }
+ 
+  
 
   const renderStepIndicator = () => (
     <div className="flex items-center justify-center mb-12">
@@ -887,15 +848,6 @@ export default function ModernFarmRegistration() {
             )}
           </div>
         </div>
-        
-        {/* <div className="text-center mt-6">
-          <p className="text-gray-600">
-            Already have an account?{' '}
-            <a href="/auth/login" className="text-blue-600 hover:text-blue-700 font-medium">
-              Sign in here
-            </a>
-          </p>
-        </div> */}
       </div>
     </div>
   );
