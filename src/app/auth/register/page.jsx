@@ -128,24 +128,79 @@ export default function ModernFarmRegistration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateStep(currentStep)) return;
-  
+    
     setLoading(true);
     setRegistrationError('');
-  
-    let user = null;
-  
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-      user = userCredential.user;
-  
-      const registrationData = { /* same as before, plus uid: user.uid */ };
-  
-      const response = await fetch('/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(registrationData) });
+      // 1. Create Firebase Auth user
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      const user = userCredential.user;
+
+      // 2. Prepare data for backend API (matching your RegistrationData interface)
+      const registrationData = {
+        uid: user.uid,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        farmName: formData.farmName,
+        farmType: formData.farmType,
+        farmSize: parseFloat(formData.farmSize),
+        farmSizeUnit: formData.farmSizeUnit,
+        establishedYear: formData.establishedYear,
+        description: formData.description,
+        country: formData.country,
+        state: formData.state,
+        city: formData.city,
+        address: formData.address,
+        coordinates: formData.coordinates.lat && formData.coordinates.lng ? {
+          lat: formData.coordinates.lat,
+          lng: formData.coordinates.lng
+        } : undefined,
+        currency: formData.currency,
+        timezone: formData.timezone,
+        primaryCrops: formData.primaryCrops,
+        farmingMethods: formData.farmingMethods,
+        seasonalPattern: formData.seasonalPattern
+      };
+
+      // 3. Call your backend API
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(registrationData)
+      });
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Registration failed');
       }
-  
+
+      // 4. Subscribe to newsletter after successful registration
+      // const newsletterResult = await subscribeToNewsletter({
+      //   email: formData.email,
+      //   firstName: formData.firstName,
+      //   lastName: formData.lastName
+      // });
+
+      // Log newsletter subscription result but don't fail registration if it fails
+      // if (!newsletterResult.success) {
+      //   console.warn('Newsletter subscription failed:', newsletterResult.message);
+      // }
+
+      // 5. Redirect to success page with user data
+      // router.push(
+      //   `/registration-success?firstName=${encodeURIComponent(formData.firstName)}&farmName=${encodeURIComponent(formData.farmName)}&city=${encodeURIComponent(formData.city)}&state=${encodeURIComponent(formData.state)}&farmSize=${encodeURIComponent(formData.farmSize)}&farmSizeUnit=${encodeURIComponent(formData.farmSizeUnit)}&farmType=${encodeURIComponent(formData.farmType)}`
+      // );
+      
+
       const params = new URLSearchParams({
         firstName: formData.firstName,
         farmName: formData.farmName,
@@ -155,21 +210,19 @@ export default function ModernFarmRegistration() {
         farmSizeUnit: formData.farmSizeUnit,
         farmType: formData.farmType
       }).toString();
-      
       router.push(`/auth/register/registration-success?${params}`);
-  
+      
+      console.log(response.message, user);
     } catch (error) {
       console.error('Registration error:', error);
       setRegistrationError(error.message || 'Registration failed. Please try again.');
-  
-      if (user) {
-        deleteUser(user).catch(console.error);
-      }
+      
+      // If Firebase user was created but backend failed, you might want to clean up
+      // This depends on your error handling strategy
     } finally {
       setLoading(false);
     }
   };
-  
 
   const toggleCrop = (crop) => {
     const current = formData.primaryCrops;
