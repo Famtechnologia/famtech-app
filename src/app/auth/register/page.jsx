@@ -146,7 +146,16 @@ export default function ModernFarmRegistration() {
         throw new Error(errorData.error || 'Registration failed');
       }
   
-      const params = new URLSearchParams({ /* formData fields */ }).toString();
+      const params = new URLSearchParams({
+        firstName: formData.firstName,
+        farmName: formData.farmName,
+        city: formData.city,
+        state: formData.state,
+        farmSize: formData.farmSize,
+        farmSizeUnit: formData.farmSizeUnit,
+        farmType: formData.farmType
+      }).toString();
+      
       router.push(`/auth/register/registration-success?${params}`);
   
     } catch (error) {
