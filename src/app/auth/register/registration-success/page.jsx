@@ -241,6 +241,11 @@ export default function RegistrationSuccess() {
         <p className="text-center text-gray-500">
           Please check your email for further instructions.
         </p>
+        <button>
+          <a href="/" className="mt-8 inline-block px-6 py-3 bg-gradient-to-r from-emerald-500 to-blue-500 text-white rounded-lg hover:from-emerald-600 hover:to-blue-600 transition-all duration-200">
+            Go to Home
+          </a>
+        </button>
       </div>
     </div>
   );
