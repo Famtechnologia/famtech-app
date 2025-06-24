@@ -1,4 +1,3 @@
-
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -197,9 +196,9 @@ export default function ModernFarmRegistration() {
       // }
 
       // 5. Redirect to success page with user data
-      router.push(
-        `/registration-success?firstName=${encodeURIComponent(formData.firstName)}&farmName=${encodeURIComponent(formData.farmName)}&city=${encodeURIComponent(formData.city)}&state=${encodeURIComponent(formData.state)}&farmSize=${encodeURIComponent(formData.farmSize)}&farmSizeUnit=${encodeURIComponent(formData.farmSizeUnit)}&farmType=${encodeURIComponent(formData.farmType)}`
-      );
+      // router.push(
+      //   `/registration-success?firstName=${encodeURIComponent(formData.firstName)}&farmName=${encodeURIComponent(formData.farmName)}&city=${encodeURIComponent(formData.city)}&state=${encodeURIComponent(formData.state)}&farmSize=${encodeURIComponent(formData.farmSize)}&farmSizeUnit=${encodeURIComponent(formData.farmSizeUnit)}&farmType=${encodeURIComponent(formData.farmType)}`
+      // );
       
 
       router.push('/auth/register/registration-success');
