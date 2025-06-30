@@ -1,104 +1,133 @@
-// /app/(auth)/login/page.tsx
 'use client';
+import React, { useState } from 'react';
+import Image from 'next/image';
 
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
-import Link from 'next/link';
-import { useAuthStore } from '@/store/authStore';
+const FamTechLoginPage: React.FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
 
-interface LoginFormInputs {
-  email: string;
-  password: string;
-}
-
-export default function LoginPage() {
-  const router = useRouter();
-  const fetchSession = useAuthStore((s) => s.fetchSession);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginFormInputs>();
-
-  const onSubmit = async (data: LoginFormInputs) => {
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) {
-        const result = await res.json();
-        toast.error(result.error || 'Login failed');
-        return;
+  const handleSignIn = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage(null);
+    
+    setTimeout(() => {
+      if (email === 'test@example.com' && password === 'password') {
+        setMessage({ type: 'success', text: 'Login successful!' });
+        
+      } else {
+        setMessage({ type: 'error', text: 'Invalid email or password.' });
       }
-
-      await fetchSession(); // Hydrate Zustand with user and claims
-
-      const { farmId } = useAuthStore.getState().claims;
-      toast.success('Login successful!');
-      router.push(`/farm/${farmId || ''}`);
-    } catch (error: any) {
-      toast.error(error?.message || 'Login failed');
-    }
+      setLoading(false);
+    }, 1500);
   };
 
+ 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to Famtech
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Revolutionizing Agriculture with Smart Technology
-          </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <label htmlFor="email" className="sr-only">Email address</label>
-              <input
-                id="email"
-                type="email"
-                {...register('email', { required: 'Email is required' })}
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                placeholder="Email address"
-              />
-              {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>}
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">Password</label>
-              <input
-                id="password"
-                type="password"
-                {...register('password', { required: 'Password is required' })}
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                placeholder="Password"
-              />
-              {errors.password && <p className="text-sm text-red-600 mt-1">{errors.password.message}</p>}
-            </div>
+    <div className="min-h-screen flex flex-col md:flex-row bg-white font-inter lg:mx-24 lg:max-w-7xl xl:mx-auto">
+      {/* Left Section - Image */}
+      <div className="relative hidden lg:flex w-full  lg:w-1/2 bg-none  items-center justify-center p-28 lg:p-12 ">
+        <Image
+          src='/images/authlogin/Exclude.png'
+          alt="Onboarding Illustration"
+          width={629}
+          height={794}
+          className="max-w-full h-full lg:h-auto object-cover rounded-xl "
+          onError={(e) => { e.currentTarget.src = 'https://placehold.co/800x600/2d3748/cbd5e0?text=Illustration'; e.currentTarget.onerror = null; }}
+        />
+        
+      </div>
+
+      {/* Right Section - Login Form */}
+      <div className="w-full  lg:w-1/2 flex  items-center justify-center p-2 sm:p-8 bg-white">
+        <div className="w-full max-w-sm md:max-w-lg bg-white rounded-xl mx-4 mt-8 shadow-2xl p-6 md:p-12 lg:p-6 space-y-6 transform transition-all duration-300 hover:shadow-lg">
+          <div className="text-center">
+            <Image
+            src='/images/authlogin/logo.jpg'
+          alt="Onboarding Illustration"
+          width={1600}
+          height={1600}
+          className="w-30 h-30 md:w-40 md:h-40 lg:w-30 lg:h-30 items-center mx-auto object-cover"
+            />
+            <p className="text-black font-semibold text-lg md:text-xl md:mb-9 md:-mt-6">Sign in to your account</p>
           </div>
 
-          <div>
+          <form onSubmit={handleSignIn} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-500 mb-1">Email address</label>
+              <input
+                type="email"
+                id="email"
+                className="w-full px-4 py-2 bg-white border border-gray-600 rounded-lg text-gray-600 placeholder-gray-400 text-sm focus:ring-blue-500 focus:border-green-500 outline-none transition-all duration-200"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-600 mb-1">Password</label>
+              <input
+                type="password"
+                id="password"
+                className="w-full px-4 py-2 bg-white border border-gray-600 rounded-lg text-gray-500 placeholder-gray-400 focus:ring-blue-500 focus:border-green-500 outline-none transition-all duration-200"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
+              />
+            </div>
+
+            <div className="flex items-center justify-end text-sm">
+              <a href="#" className="font-medium text-blue-400 hover:text-blue-600 hover:underline transition-colors duration-200">
+                Forgot Password?
+              </a>
+            </div>
+
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+              className="w-full py-2.5 px-4 bg-gradient-to-r from-green-600 to-green-400 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading}
             >
-              {isSubmitting ? 'Signing in...' : 'Sign in'}
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin h-5 w-5 text-white mr-3" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Signing In...
+                </span>
+              ) : (
+                'Sign In'
+              )}
             </button>
-          </div>
+          </form>
 
-          <div className="text-center">
-            <Link href="/register" className="text-primary-600 hover:text-primary-500">
-              Don&apos;t have an account? Sign up
-            </Link>
+          {message && (
+            <div className={`text-center text-sm font-medium p-2 rounded-md ${
+              message.type === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'
+            }`}>
+              {message.text}
+            </div>
+          )}
+
+        
+
+          <div className="text-center text-sm text-gray-400 mt-6">
+            Don't have an account?{' '}
+            <a href="/auth/register" className="font-medium text-blue-400 hover:text-blue-600 hover:underline transition-colors duration-200">
+              Sign Up
+            </a>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default FamTechLoginPage;
