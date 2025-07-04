@@ -184,25 +184,12 @@ export default function ModernFarmRegistration() {
         throw new Error(errorData.error || 'Registration failed');
       }
 
-      // 4. Subscribe to newsletter after successful registration
-      // const newsletterResult = await subscribeToNewsletter({
-      //   email: formData.email,
-      //   firstName: formData.firstName,
-      //   lastName: formData.lastName
-      // });
-
-      // Log newsletter subscription result but don't fail registration if it fails
-      // if (!newsletterResult.success) {
-      //   console.warn('Newsletter subscription failed:', newsletterResult.message);
-      // }
-
+      
       // 5. Redirect to success page with user data
       router.push(
         `/registration-success?firstName=${encodeURIComponent(formData.firstName)}&farmName=${encodeURIComponent(formData.farmName)}&city=${encodeURIComponent(formData.city)}&state=${encodeURIComponent(formData.state)}&farmSize=${encodeURIComponent(formData.farmSize)}&farmSizeUnit=${encodeURIComponent(formData.farmSizeUnit)}&farmType=${encodeURIComponent(formData.farmType)}`
       );
       
-
-      router.push('/auth/register/registration-success');
       console.log(response.message, user);
     } catch (error) {
       console.error('Registration error:', error);
