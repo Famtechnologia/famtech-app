@@ -4,18 +4,17 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
-import { API_URL } from "@/app/config";
+import { useAuthStore, User } from "@/store/authStore";
+import { login } from "@/features/auth/authClient";
+import { toast } from "react-hot-toast";
 
 interface LoginForm {
   email: string;
   password: string;
 }
 
-
-
 const Login: React.FC = () => {
   const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -27,25 +26,30 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
-      const res = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      const res = await login(form.email, form.password);
 
-      const data = await res.json();
+      const { user: responseUser, tokens } = res.data;
 
-      if (!res.ok) {
-        setError(data.message || "Login failed");
-      } else {
-        router.push(data.redirectTo || "/farm/[farmId]");
-      }
-    } catch {
-      setError("Network error. Please try again.");
+      // Create User object matching AuthStore type
+      const user: User = {
+        id: responseUser.id,
+        email: responseUser.email,
+        role: responseUser.role ?? "user", // fallback if role is missing
+        region: responseUser.region ?? "",
+        language: responseUser.language ?? "en",
+        isVerified: responseUser.isVerified ?? false,
+      };
+
+      useAuthStore.getState().setUser(user);
+      useAuthStore.getState().setToken(tokens.accessToken);
+
+      toast.success(res.message || "Login successful!");
+      router.push("/farm");
+    } catch (error: any) {
+      toast.error(error?.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -54,11 +58,11 @@ const Login: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
-        <div className="h-24 w-24 lg:h-28 lg:w-28 flex justify-center mx-auto mt-6">
+        <div className="h-24 w-24 flex justify-center mx-auto mt-6">
           <Image
             src="/images/onboarding/Logo 1.jpg"
-            width={700}
-            height={700}
+            width={96}
+            height={96}
             alt="logo"
             className="rounded-full"
           />
@@ -66,11 +70,9 @@ const Login: React.FC = () => {
 
         <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
 
-        {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            className="w-full p-3 border-gray-600 border rounded-xl focus:outline-none focus:ring-1 focus:ring-green-300"
+            className="w-full p-3 border-gray-600 border rounded-xl"
             name="email"
             type="email"
             placeholder="Email"
@@ -81,7 +83,7 @@ const Login: React.FC = () => {
 
           <div className="relative">
             <input
-              className="w-full p-3 border-gray-600 border rounded-xl focus:outline-none focus:ring-1 focus:ring-green-300 pr-10"
+              className="w-full p-3 border-gray-600 border rounded-xl pr-10"
               name="password"
               type={showPassword ? "text" : "password"}
               placeholder="Password"
@@ -114,8 +116,11 @@ const Login: React.FC = () => {
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-4">
-          Don't have an account?{" "}
-          <a href="/onboarding/signup" className="text-green-600 hover:underline">
+          Don&apos;t have an account?{" "}
+          <a
+            href="/onboarding/signup"
+            className="text-green-600 hover:underline"
+          >
             Sign Up
           </a>
         </p>

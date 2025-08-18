@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
+import { useLogout } from '@/features/auth/authClient';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -33,20 +34,11 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children, title }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState<string[]>(['dashboard']);
-  const { user, claims, reset } = useAuth();
+  const { user, claims, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const { handleLogout } = useLogout();
 
-  const handleSignOut = async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-    } catch (err) {
-      console.error('Logout failed:', err);
-    } finally {
-      reset();
-      router.push('/auth/login');
-    }
-  };
 
   const toggleMenu = (menuName: string) => {
     setExpandedMenus(prev => 
@@ -171,6 +163,8 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
     return children.some(child => pathname === child.href);
   };
 
+    
+
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
@@ -273,16 +267,16 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
               <User size={16} className="text-white" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">
+              {/* <p className="text-sm font-medium text-gray-900 truncate">
                 {user?.fullName || 'John Farmer'}
-              </p>
+              </p> */}
               <p className="text-xs text-gray-500 capitalize">
                 {claims?.role} {claims?.subRole && `- ${claims?.subRole}`}
               </p>
             </div>
           </div>
           <button
-            onClick={handleSignOut}
+            onClick={handleLogout}  // ✅ use the hook here
             className="flex items-center w-full px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
           >
             <LogOut size={16} className="mr-3" />

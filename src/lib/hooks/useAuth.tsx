@@ -1,12 +1,25 @@
-// /lib/hooks/useAuth.ts
+// lib/hooks/useAuth.ts
 import { useAuthStore } from '@/store/authStore';
+import { useEffect } from 'react';
 
-export function useAuth() {
-  const user = useAuthStore((s) => s.user);
-  const claims = useAuthStore((s) => s.claims);
-  const loading = useAuthStore((s) => s.loading);
-  const fetchSession = useAuthStore((s) => s.fetchSession);
-  const reset = useAuthStore((s) => s.reset);
+export const useAuth = () => {
+  const { user, token, claims, loading, initializeAuth, clearUser } = useAuthStore();
 
-  return { user, claims, loading, fetchSession, reset };
-}
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
+
+  const logout = () => {
+    clearUser();
+    if (typeof window !== 'undefined') localStorage.removeItem('token');
+  };
+
+  return {
+    user,
+    token,
+    claims: claims || { role: '', subRole: '' },
+    loading,
+    isAuthenticated: !!user && !!token,
+    logout,
+  };
+};

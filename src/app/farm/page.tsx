@@ -4,6 +4,7 @@ import DashboardLayout from '@/components/auth/layout/DashboardLayout';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from "@/store/authStore";
 import { 
   Cloud, 
   Activity, 
@@ -69,6 +70,7 @@ export default function FarmerAdminDashboard() {
   const { farmID: farmId } = useParams();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
+   const { user } = useAuthStore();
 
   useEffect(() => {
     // Simulate API call - replace with actual data fetching
@@ -181,13 +183,15 @@ export default function FarmerAdminDashboard() {
     }
   };
 
+ 
+
   return (
-    <ProtectedRoute requiredRole="farmer" requiredSubRole="admin">
+    <ProtectedRoute requiredRole="farmer">
       <DashboardLayout title="Dashboard">
         <div className="space-y-6">
           {/* Welcome Message */}
           <div className="mb-6">
-            <p className="text-gray-600">Welcome back, John! Here's what's happening on your farm today.</p>
+            <p className="text-gray-600">Welcome back, {user?.role ?? 'Farmer'}! Here's what's happening on your farm today.</p>
           </div>
 
           {/* Main Grid */}

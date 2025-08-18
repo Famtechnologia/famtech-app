@@ -1,74 +1,53 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-interface UserInfo {
-  uid: string;
+export interface User {
+  id: string;
   email: string;
-  fullName: string;
+  role: string;
+  region: string;
+  language: string;
+  isVerified: boolean;
 }
 
-interface AuthState {
-  user: UserInfo | null;
-  claims: {
-    role?: string;
-    subRole?: string;
-    farmId?: string;
-  };
+export interface AuthState {
+  user: User | null;
+  token: string | null;
+  claims: { role: string; subRole?: string } | null;
   loading: boolean;
-  fetchSession: () => Promise<void>;
-  signOut: () => Promise<void>;
-  reset: () => void;
+
+  setUser: (user: User) => void;
+  setToken: (token: string) => void;
+  setClaims: (claims: { role: string; subRole?: string } | null) => void;
+  setLoading: (loading: boolean) => void;
+  initializeAuth: () => void;
+  clearUser: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
-      claims: {},
+      token: null,
+      claims: null,
       loading: true,
 
-      fetchSession: async () => {
-        set({ loading: true });
-        try {
-          const res = await fetch('/api/auth/me');
-          if (res.ok) {
-            const data = await res.json();
-            set({
-              user: {
-                uid: data.uid,
-                email: data.email,
-                fullName: data.fullName,
-              },
-              claims: {
-                role: data.role,
-                subRole: data.subRole,
-                farmId: data.farmId,
-              },
-            });
-          } else {
-            set({ user: null, claims: {} });
-          }
-        } catch {
-          set({ user: null, claims: {} });
-        } finally {
+      setUser: (user) => set({ user }),
+      setToken: (token) => set({ token }),
+      setClaims: (claims) => set({ claims }),
+      setLoading: (loading) => set({ loading }),
+
+      initializeAuth: () => {
+        const { user, token } = get();
+        if (user && token) {
+          set({ claims: { role: user.role }, loading: false });
+        } else {
           set({ loading: false });
         }
       },
 
-      signOut: async () => {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        set({ user: null, claims: {} });
-        localStorage.removeItem('auth-storage'); // optional: clear persisted store
-        window.location.href = '/auth/login';
-      },
-
-      reset: () => {
-        set({ user: null, claims: {}, loading: false });
-        localStorage.removeItem('auth-storage');
-      },
+      clearUser: () => set({ user: null, token: null, claims: null }),
     }),
-    {
-      name: 'auth-storage',
-    }
+    { name: "auth-storage" }
   )
 );

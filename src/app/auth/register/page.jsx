@@ -2,8 +2,6 @@
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase/config'; // Your Firebase client config
 import { User, Building2, MapPin, Settings, CheckCircle, Sparkles, Zap, Trophy, Gift, EyeOff, Eye, ChevronLeft, ChevronRight  } from 'lucide-react';
 // import { subscribeToNewsletter } from '../../../lib/substack'; //  newsletter subscription logic
 
