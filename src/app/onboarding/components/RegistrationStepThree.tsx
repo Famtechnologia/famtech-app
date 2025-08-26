@@ -45,6 +45,7 @@ const plans = [
   },
 ];
 
+
 const RegistrationThree = () => {
   const [selectedPlan, setSelectedPlan] = useState('Enterprise Plan (Current Plan)');
 

@@ -1,4 +1,4 @@
-"use client";
+{/*"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -24,7 +24,7 @@ export default function VerifyEmailPage() {
         const res = await fetch(`${API_URL}/auth/verify-email?token=${token}`);
         if (res.ok) {
           setStatus("success");
-          setShowModal(true); // Show modal after success
+          setShowModal(true); 
           setTimeout(() => {
             setShowModal(false);
             router.push("/farm/farmID"); // Redirect after modal disappears
@@ -47,7 +47,7 @@ export default function VerifyEmailPage() {
         <p className="text-red-500">Verification failed. Please try again.</p>
       )}
 
-      {/* Success Modal */}
+      
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-2xl shadow-lg p-6 w-[90%] max-w-md text-center">
@@ -63,3 +63,4 @@ export default function VerifyEmailPage() {
     </div>
   );
 }
+*/}

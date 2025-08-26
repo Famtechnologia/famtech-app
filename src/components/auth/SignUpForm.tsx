@@ -1,4 +1,4 @@
-{/*"use client";
+"use client";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -29,48 +29,56 @@ export default function SignupPage() {
     formState: { errors, isSubmitting },
   } = useForm<SignupFormInputs>();
 
-// inside onSubmit
-const onSubmit = async (data: SignupFormInputs) => {
-  if (data.password !== data.confirmPassword) {
-    toast.error("Passwords do not match");
-    return;
-  }
+  const onSubmit = async (data: SignupFormInputs) => {
+    if (data.password !== data.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
 
-  try {
-    const res = await signupRequest({
-      email: data.email,
-      password: data.password,
-      region: data.region,
-      language: data.language,
-    });
+    try {
+      const res = await signupRequest({
+        email: data.email,
+        password: data.password,
+        region: data.region,
+        language: data.language,
+      });
 
-    console.log("Signup response:", res);
+      console.log("Signup response:", res);
 
-    // Correct destructuring
-    const { data: resData, message } = res;
-    const { user: responseUser, tokens } = resData;
+      // ---
+      // CORRECTED CODE: We are no longer destructuring `tokens`
+      // from the response because the API documentation doesn't show it
+      // as part of a successful signup response.
+      // ---
+      const { data: resData, message } = res;
+      const { user: responseUser } = resData;
 
-    if (!responseUser) throw new Error("No user returned from server");
+      if (!responseUser) {
+        throw new Error("No user returned from server");
+      }
 
-    const user: User = {
-      id: responseUser.id,
-      email: responseUser.email,
-      role: responseUser.role ?? "user",
-      region: responseUser.region ?? "",
-      language: responseUser.language ?? "en",
-      isVerified: responseUser.isVerified ?? false,
-    };
+      const user: User = {
+        id: responseUser.id,
+        email: responseUser.email,
+        role: responseUser.role ?? "user",
+        region: responseUser.region ?? "",
+        language: responseUser.language ?? "en",
+        isVerified: responseUser.isVerified ?? false,
+      };
 
-    useAuthStore.getState().setUser(user);
-    if (tokens?.accessToken) useAuthStore.getState().setToken(tokens.accessToken);
+      useAuthStore.getState().setUser(user);
+      
+      // We are not getting a token after signup.
+      // The user will get a verification email and will be redirected to the verification page
+      // so no need to set a token here.
 
-    toast.success(message || "Signup successful!");
-    router.push("/onboarding/verify-email");
-  } catch (err: any) {
-    console.error("Signup failed:", err);
-    toast.error(err.message || "Something went wrong");
-  }
-};
+      toast.success(message || "Signup successful!");
+      router.push("/auth/verify-email");
+    } catch (err: any) {
+      console.error("Signup failed:", err);
+      toast.error(err.message || "Something went wrong");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
@@ -90,7 +98,7 @@ const onSubmit = async (data: SignupFormInputs) => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* email */}
-       {/*  <input
+          <input
             type="email"
             placeholder="Email"
             {...register("email", { required: "Email is required" })}
@@ -100,7 +108,7 @@ const onSubmit = async (data: SignupFormInputs) => {
             <p className="text-red-600 text-sm">{errors.email.message}</p>
           )}
 
-          {/* password *
+          {/* password */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -122,7 +130,7 @@ const onSubmit = async (data: SignupFormInputs) => {
             </span>
           </div>
 
-          {/* confirm password *
+          {/* confirm password */}
           <div className="relative">
             <input
               type={showConfirmPassword ? "text" : "password"}
@@ -140,7 +148,7 @@ const onSubmit = async (data: SignupFormInputs) => {
             </span>
           </div>
 
-          {/* region *
+          {/* region */}
           <input
             type="text"
             placeholder="Region"
@@ -148,7 +156,7 @@ const onSubmit = async (data: SignupFormInputs) => {
             className="w-full p-3 border-gray-600 border rounded-xl"
           />
 
-          {/* language *
+          {/* language */}
           <select
             {...register("language", { required: "Language is required" })}
             className="w-full p-3 border-gray-600 border rounded-xl"
@@ -172,11 +180,11 @@ const onSubmit = async (data: SignupFormInputs) => {
 
         <p className="text-center text-sm text-gray-500 mt-4">
           Already have an account?{" "}
-          <Link href="/onboarding/login" className="text-green-600">
+          <Link href="/auth/login" className="text-green-600">
             Sign in
           </Link>
         </p>
       </div>
     </div>
   );
-}*/}
+}
