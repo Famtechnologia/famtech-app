@@ -1,25 +1,21 @@
-
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, Building2, MapPin, Settings, CheckCircle, Sparkles, Zap, Trophy, Gift, EyeOff, Eye, ChevronLeft, ChevronRight  } from 'lucide-react';
-// import { subscribeToNewsletter } from '../../../lib/substack'; //  newsletter subscription logic
-
+import { User, Building2, MapPin, Settings, CheckCircle, ChevronLeft, ChevronRight  } from 'lucide-react';
+import {API_URL} from '../../config'
+import {useAuthStore} from "../../../store/authStore"
 
 export default function ModernFarmRegistration() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [registrationError, setRegistrationError] = useState('');
+  const { token } = useAuthStore()
 
   const [formData, setFormData] = useState({
     // Personal Information
     firstName: '',
     lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
     phoneNumber: '',
     
     // Farm Information
@@ -27,22 +23,22 @@ export default function ModernFarmRegistration() {
     farmType: 'crop',
     farmSize: '',
     farmSizeUnit: 'hectares',
-    establishedYear: new Date().getFullYear(),
-    description: '',
+    establishedYear: '', // Changed to empty string to make it truly optional
     
     // Location Information
-    country: 'Nigeria',
+    country: '', // Changed from hardcoded 'Nigeria' to empty string
     state: '',
     city: '',
     address: '',
-    coordinates: { lat: '', lng: '' },
+    coordinates: { latitude: '', longitude: '' },
     
     // Farm Settings
     currency: 'NGN',
     timezone: 'Africa/Lagos',
     primaryCrops: [],
     farmingMethods: [],
-    seasonalPattern: 'year-round'
+    seasonalPattern: 'year-round',
+    language: 'en'
   });
 
   const [errors, setErrors] = useState({});
@@ -58,11 +54,14 @@ export default function ModernFarmRegistration() {
     'Maize/Corn', 'Rice', 'Yam', 'Cassava', 'Cocoa', 'Oil Palm', 'Plantain', 'Tomatoes', 
     'Pepper', 'Onions', 'Beans', 'Groundnuts', 'Millet', 'Sorghum', 'Sweet Potato', 'Other'
   ];
+// will be used later on
+  // const farmingMethodOptions = [
+  //   'Organic', 'Conventional', 'Integrated Pest Management', 'Precision Agriculture', 
+  //   'Greenhouse', 'Hydroponics', 'Sustainable', 'Traditional'
+  // ];
 
-  const farmingMethodOptions = [
-    'Organic', 'Conventional', 'Integrated Pest Management', 'Precision Agriculture', 
-    'Greenhouse', 'Hydroponics', 'Sustainable', 'Traditional'
-  ];
+   const farmingMethodOptions = ["organic", "irrigation", "mechanized", "manual"] ;
+
 
   const nigerianStates = [
     'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',
@@ -84,29 +83,140 @@ export default function ModernFarmRegistration() {
     
     switch (step) {
       case 1:
-        if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-        if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-        if (!formData.email.trim()) newErrors.email = 'Email is required';
-        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email';
-        if (!formData.password) newErrors.password = 'Password is required';
-        else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
-        if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
-        if (!formData.phoneNumber.trim()) newErrors.phoneNumber = 'Phone number is required';
+        // Personal Information validation - exact match to backend
+        if (!formData.firstName || formData.firstName.toString().trim() === '') {
+          newErrors.firstName = 'First name is required';
+        }
+        if (!formData.lastName || formData.lastName.toString().trim() === '') {
+          newErrors.lastName = 'Last name is required';
+        }
+        if (!formData.phoneNumber || formData.phoneNumber.toString().trim() === '') {
+          newErrors.phoneNumber = 'Phone number is required';
+        }
         break;
         
       case 2:
-        if (!formData.farmName.trim()) newErrors.farmName = 'Farm name is required';
-        if (!formData.farmSize || formData.farmSize <= 0) newErrors.farmSize = 'Farm size is required';
+        // Farm Details validation - exact match to backend
+        if (!formData.farmName || formData.farmName.toString().trim() === '') {
+          newErrors.farmName = 'Farm name is required';
+        }
+        if (!formData.farmType || formData.farmType.toString().trim() === '') {
+          newErrors.farmType = 'Farm type is required';
+        }
+        if (!formData.farmSize || formData.farmSize.toString().trim() === '') {
+          newErrors.farmSize = 'Farm size is required';
+        } else if (isNaN(parseFloat(formData.farmSize)) || parseFloat(formData.farmSize) <= 0) {
+          newErrors.farmSize = 'Farm size must be a positive number';
+        }
+        if (!formData.farmSizeUnit || formData.farmSizeUnit.toString().trim() === '') {
+          newErrors.farmSizeUnit = 'Farm size unit is required';
+        }
+        
+        // Enhanced validation for establishedYear - matches backend exactly
+        if (formData.establishedYear && formData.establishedYear.toString().trim() !== '') {
+          const year = parseInt(formData.establishedYear);
+          if (isNaN(year) || year < 1900 || year > new Date().getFullYear()) {
+            newErrors.establishedYear = 'Established year must be a valid year between 1900 and current year';
+          }
+        }
         break;
         
       case 3:
-        if (!formData.state) newErrors.state = 'State is required';
-        if (!formData.city.trim()) newErrors.city = 'City is required';
-        if (!formData.address.trim()) newErrors.address = 'Address is required';
+        // Location validation - exact match to backend
+        if (!formData.country || formData.country.toString().trim() === '') {
+          newErrors.country = 'Country is required';
+        }
+        if (!formData.state || formData.state.toString().trim() === '') {
+          newErrors.state = 'State is required';
+        }
+        if (!formData.city || formData.city.toString().trim() === '') {
+          newErrors.city = 'City is required';
+        }
+        if (!formData.address || formData.address.toString().trim() === '') {
+          newErrors.address = 'Address is required';
+        }
+        
+        // Enhanced coordinates validation - matches backend exactly
+        if (formData.coordinates) {
+          const lat = formData.coordinates.latitude || formData.coordinates.lat;
+          const lng = formData.coordinates.longitude || formData.coordinates.lng;
+
+          if (lat || lng) {
+            if (!lat || !lng) {
+              newErrors.coordinates = 'Both latitude and longitude are required when coordinates are provided';
+            } else if (isNaN(parseFloat(lat)) || isNaN(parseFloat(lng))) {
+              newErrors.coordinates = 'Latitude and longitude must be valid decimal numbers';
+            } else {
+              const latitude = parseFloat(lat);
+              const longitude = parseFloat(lng);
+
+              if (latitude < -90 || latitude > 90) {
+                newErrors.coordinates = 'Latitude must be between -90 and 90 degrees';
+              } else if (longitude < -180 || longitude > 180) {
+                newErrors.coordinates = 'Longitude must be between -180 and 180 degrees';
+              }
+            }
+          }
+        }
         break;
         
       case 4:
-        if (formData.primaryCrops.length === 0) newErrors.primaryCrops = 'Select at least one crop';
+        // Preferences validation - exact match to backend
+        if (!formData.currency || formData.currency.toString().trim() === '') {
+          newErrors.currency = 'Currency is required';
+        }
+        if (!formData.timezone || formData.timezone.toString().trim() === '') {
+          newErrors.timezone = 'Timezone is required';
+        }
+        if (!formData.language || formData.language.toString().trim() === '') {
+          newErrors.language = 'Language is required';
+        } else if (!/^[a-z]{2}$/.test(formData.language.toLowerCase())) {
+          newErrors.language = 'Language must be a valid ISO 639-1 code (e.g., en, yo, fr, es)';
+        }
+        
+        // Enhanced seasonal pattern validation - matches backend
+        if (!formData.seasonalPattern || 
+            (Array.isArray(formData.seasonalPattern) && formData.seasonalPattern.length === 0) ||
+            (typeof formData.seasonalPattern === 'string' && formData.seasonalPattern.trim() === '')) {
+          newErrors.seasonalPattern = 'Seasonal pattern is required';
+        }
+        
+        // Enhanced array validations - matches backend exactly
+        if (formData.primaryCrops) {
+          if (!Array.isArray(formData.primaryCrops)) {
+            newErrors.primaryCrops = 'Primary crops must be an array';
+          } else if (formData.primaryCrops.length === 0) {
+            newErrors.primaryCrops = 'At least one primary crop is required';
+          } else {
+            // Check for empty or invalid crop names
+            const invalidCrops = formData.primaryCrops.filter(
+              (crop) => !crop || typeof crop !== 'string' || crop.trim() === ''
+            );
+            if (invalidCrops.length > 0) {
+              newErrors.primaryCrops = 'All primary crops must be non-empty strings';
+            }
+          }
+        } else {
+          newErrors.primaryCrops = 'At least one primary crop is required';
+        }
+
+        if (formData.farmingMethods) {
+          if (!Array.isArray(formData.farmingMethods)) {
+            newErrors.farmingMethods = 'Farming methods must be an array';
+          } else if (formData.farmingMethods.length === 0) {
+            newErrors.farmingMethods = 'At least one farming method is required';
+          } else {
+            // Check for empty or invalid method names
+            const invalidMethods = formData.farmingMethods.filter(
+              (method) => !method || typeof method !== 'string' || method.trim() === ''
+            );
+            if (invalidMethods.length > 0) {
+              newErrors.farmingMethods = 'All farming methods must be non-empty strings';
+            }
+          }
+        } else {
+          newErrors.farmingMethods = 'At least one farming method is required';
+        }
         break;
     }
     
@@ -132,69 +242,64 @@ export default function ModernFarmRegistration() {
     setRegistrationError('');
 
     try {
-      // 1. Create Firebase Auth user
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      const user = userCredential.user;
-
-      // 2. Prepare data for backend API (matching your RegistrationData interface)
+      // Prepare data for backend API - matches backend expectations exactly
       const registrationData = {
-        uid: user.uid,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phoneNumber: formData.phoneNumber,
-        farmName: formData.farmName,
-        farmType: formData.farmType,
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        phoneNumber: formData.phoneNumber.trim(),
+        farmName: formData.farmName.trim(),
+        farmType: formData.farmType.trim(),
         farmSize: parseFloat(formData.farmSize),
-        farmSizeUnit: formData.farmSizeUnit,
-        establishedYear: formData.establishedYear,
-        description: formData.description,
-        country: formData.country,
-        state: formData.state,
-        city: formData.city,
-        address: formData.address,
-        coordinates: formData.coordinates.lat && formData.coordinates.lng ? {
-          lat: formData.coordinates.lat,
-          lng: formData.coordinates.lng
-        } : undefined,
-        currency: formData.currency,
-        timezone: formData.timezone,
-        primaryCrops: formData.primaryCrops,
-        farmingMethods: formData.farmingMethods,
-        seasonalPattern: formData.seasonalPattern
+        farmSizeUnit: formData.farmSizeUnit.trim(),
+        // Only include establishedYear if it has a value
+        ...(formData.establishedYear && formData.establishedYear.toString().trim() !== '' && {
+          establishedYear: parseInt(formData.establishedYear)
+        }),
+        country: formData.country.trim(),
+        state: formData.state.trim(),
+        city: formData.city.trim(),
+        address: formData.address.trim(),
+        // Only include coordinates if both latitude and longitude are provided
+        ...(formData.coordinates.latitude && formData.coordinates.longitude && {
+          coordinates: {
+            latitude: parseFloat(formData.coordinates.latitude),
+            longitude: parseFloat(formData.coordinates.longitude)
+          }
+        }),
+        currency: formData.currency.trim(),
+        timezone: formData.timezone.trim(),
+        primaryCrops: formData.primaryCrops.map(crop => crop.trim()).filter(crop => crop !== ''),
+        farmingMethods: formData.farmingMethods.map(method => method.trim()).filter(method => method !== ''),
+        seasonalPattern: Array.isArray(formData.seasonalPattern)
+          ? formData.seasonalPattern[0].trim()
+          : formData.seasonalPattern.trim(),
+        language: formData.language.trim().toLowerCase() // Ensure lowercase for ISO format
       };
 
-      // 3. Call your backend API
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch(`${API_URL}/api/create-farm-profile`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(registrationData)
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Registration failed');
+        throw new Error(errorData.message || errorData.errors?.join(', ') || 'Registration failed');
       }
 
+      const result = await response.json();
       
-      // 5. Redirect to success page with user data
       router.push(
         `/registration-success?firstName=${encodeURIComponent(formData.firstName)}&farmName=${encodeURIComponent(formData.farmName)}&city=${encodeURIComponent(formData.city)}&state=${encodeURIComponent(formData.state)}&farmSize=${encodeURIComponent(formData.farmSize)}&farmSizeUnit=${encodeURIComponent(formData.farmSizeUnit)}&farmType=${encodeURIComponent(formData.farmType)}`
       );
       
-      console.log(response.message, user);
+      console.log('Registration successful:', result);
     } catch (error) {
       console.error('Registration error:', error);
       setRegistrationError(error.message || 'Registration failed. Please try again.');
-      
-      // If Firebase user was created but backend failed, you might want to clean up
-      // This depends on your error handling strategy
     } finally {
       setLoading(false);
     }
@@ -215,9 +320,6 @@ export default function ModernFarmRegistration() {
       : [...current, method];
     updateFormData('farmingMethods', updated);
   };
-
- 
-  
 
   const renderStepIndicator = () => (
     <div className="flex items-center justify-center mb-12">
@@ -304,20 +406,6 @@ export default function ModernFarmRegistration() {
       </div>
       
       <div className="space-y-2">
-        <label className="block text-sm font-semibold text-gray-700">Email Address</label>
-        <input
-          type="email"
-          className={`w-full px-5 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
-            errors.email ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
-          }`}
-          placeholder="Enter your email address"
-          value={formData.email}
-          onChange={(e) => updateFormData('email', e.target.value)}
-        />
-        {errors.email && <p className="text-red-500 text-sm font-medium">{errors.email}</p>}
-      </div>
-      
-      <div className="space-y-2">
         <label className="block text-sm font-semibold text-gray-700">Phone Number</label>
         <input
           type="tel"
@@ -329,45 +417,6 @@ export default function ModernFarmRegistration() {
           onChange={(e) => updateFormData('phoneNumber', e.target.value)}
         />
         {errors.phoneNumber && <p className="text-red-500 text-sm font-medium">{errors.phoneNumber}</p>}
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label className="block text-sm font-semibold text-gray-700">Password</label>
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              className={`w-full px-5 py-4 pr-14 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
-                errors.password ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
-              }`}
-              placeholder="Create a strong password"
-              value={formData.password}
-              onChange={(e) => updateFormData('password', e.target.value)}
-            />
-            <button
-              type="button"
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-          {errors.password && <p className="text-red-500 text-sm font-medium">{errors.password}</p>}
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-semibold text-gray-700">Confirm Password</label>
-          <input
-            type="password"
-            className={`w-full px-5 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
-              errors.confirmPassword ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
-            }`}
-            placeholder="Confirm your password"
-            value={formData.confirmPassword}
-            onChange={(e) => updateFormData('confirmPassword', e.target.value)}
-          />
-          {errors.confirmPassword && <p className="text-red-500 text-sm font-medium">{errors.confirmPassword}</p>}
-        </div>
       </div>
     </div>
   );
@@ -405,11 +454,11 @@ export default function ModernFarmRegistration() {
           value={formData.farmType}
           onChange={(e) => updateFormData('farmType', e.target.value)}
         >
-          <option value="crop">🌾 Crop Farming</option>
-          <option value="livestock">🐄 Livestock</option>
-          <option value="mixed">🌾🐄 Mixed Farming</option>
-          <option value="aquaculture">🐟 Aquaculture</option>
-          <option value="poultry">🐔 Poultry</option>
+          <option value="crop">Crop Farming</option>
+          <option value="livestock">Livestock</option>
+          <option value="mixed">Mixed Farming</option>
+          <option value="aquaculture">Aquaculture</option>
+          <option value="poultry">Poultry</option>
         </select>
       </div>
       
@@ -445,26 +494,22 @@ export default function ModernFarmRegistration() {
       </div>
       
       <div className="space-y-2">
-        <label className="block text-sm font-semibold text-gray-700">Established Year</label>
+        <label className="block text-sm font-semibold text-gray-700">
+          Established Year 
+          <span className="text-gray-400 text-xs ml-1">(Optional)</span>
+        </label>
         <input
           type="number"
           min="1900"
           max={new Date().getFullYear()}
-          className="w-full px-5 py-4 border-2 border-gray-200 bg-gray-50 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 hover:bg-white hover:border-gray-300 transition-all duration-200"
+          className={`w-full px-5 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 ${
+            errors.establishedYear ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
+          }`}
+          placeholder="Enter establishment year (optional)"
           value={formData.establishedYear}
-          onChange={(e) => updateFormData('establishedYear', parseInt(e.target.value))}
+          onChange={(e) => updateFormData('establishedYear', e.target.value)}
         />
-      </div>
-      
-      <div className="space-y-2">
-        <label className="block text-sm font-semibold text-gray-700">Farm Description <span className="text-gray-400 font-normal">(Optional)</span></label>
-        <textarea
-          rows="4"
-          className="w-full px-5 py-4 border-2 border-gray-200 bg-gray-50 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 hover:bg-white hover:border-gray-300 transition-all duration-200 resize-none"
-          placeholder="Brief description of your farm operations..."
-          value={formData.description}
-          onChange={(e) => updateFormData('description', e.target.value)}
-        />
+        {errors.establishedYear && <p className="text-red-500 text-sm font-medium">{errors.establishedYear}</p>}
       </div>
     </div>
   );
@@ -482,7 +527,40 @@ export default function ModernFarmRegistration() {
       </div>
       
       <div className="p-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="group">
+            <label className="block text-sm font-semibold text-gray-800 mb-3 tracking-wide">Country</label>
+            <div className="relative">
+              <select
+                className={`w-full px-5 py-4 bg-white border-2 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 appearance-none cursor-pointer shadow-sm hover:shadow-md ${
+                  errors.country ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200 hover:border-gray-300'
+                }`}
+                value={formData.country}
+                onChange={(e) => updateFormData('country', e.target.value)}
+              >
+                <option value="">Select country</option>
+                <option value="Nigeria">Nigeria</option>
+                <option value="Ghana">Ghana</option>
+                <option value="Kenya">Kenya</option>
+                <option value="South Africa">South Africa</option>
+                <option value="Uganda">Uganda</option>
+                <option value="Tanzania">Tanzania</option>
+                <option value="Other">Other</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            {errors.country && (
+              <p className="text-red-500 text-sm mt-2 flex items-center">
+                <span className="mr-1">⚠️</span>
+                {errors.country}
+              </p>
+            )}
+          </div>
+
           <div className="group">
             <label className="block text-sm font-semibold text-gray-800 mb-3 tracking-wide">State</label>
             <div className="relative">
@@ -568,8 +646,8 @@ export default function ModernFarmRegistration() {
                 step="any"
                 className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md placeholder-gray-400"
                 placeholder="e.g., 6.5244"
-                value={formData.coordinates.lat}
-                onChange={(e) => updateFormData('coordinates', { ...formData.coordinates, lat: e.target.value })}
+                value={formData.coordinates.latitude}
+                onChange={(e) => updateFormData('coordinates', { ...formData.coordinates, latitude: e.target.value })}
               />
             </div>
             
@@ -580,11 +658,18 @@ export default function ModernFarmRegistration() {
                 step="any"
                 className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md placeholder-gray-400"
                 placeholder="e.g., 3.3792"
-                value={formData.coordinates.lng}
-                onChange={(e) => updateFormData('coordinates', { ...formData.coordinates, lng: e.target.value })}
+                value={formData.coordinates.longitude}
+                onChange={(e) => updateFormData('coordinates', { ...formData.coordinates, longitude: e.target.value })}
               />
             </div>
           </div>
+          
+          {errors.coordinates && (
+            <p className="text-red-500 text-sm mt-3 flex items-center">
+              <span className="mr-1">⚠️</span>
+              {errors.coordinates}
+            </p>
+          )}
         </div>
         
         <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100">
@@ -613,7 +698,7 @@ export default function ModernFarmRegistration() {
     <div className="space-y-8 max-w-4xl mx-auto">
       <div className="text-center mb-10">
         <div className="w-20 h-20 bg-gradient-to-r from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <MapPin className="w-10 h-10 text-white" />
+          <Settings className="w-10 h-10 text-white" />
         </div>
         <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
            Farm Preferences
@@ -699,9 +784,15 @@ export default function ModernFarmRegistration() {
               </label>
             ))}
           </div>
+          {errors.farmingMethods && (
+            <p className="text-red-500 text-sm mt-3 flex items-center">
+              <span className="mr-1">⚠️</span>
+              {errors.farmingMethods}
+            </p>
+          )}
         </div>
   
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="group">
             <label className="block text-sm font-semibold text-gray-800 mb-3 tracking-wide flex items-center">
               <svg className="w-4 h-4 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -737,7 +828,9 @@ export default function ModernFarmRegistration() {
             </label>
             <div className="relative">
               <select
-                className="w-full px-5 py-4 bg-white border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 appearance-none cursor-pointer shadow-sm hover:shadow-md"
+                className={`w-full px-5 py-4 bg-white border-2 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 appearance-none cursor-pointer shadow-sm hover:shadow-md ${
+                  errors.seasonalPattern ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200'
+                }`}
                 value={formData.seasonalPattern}
                 onChange={(e) => updateFormData('seasonalPattern', e.target.value)}
               >
@@ -752,6 +845,47 @@ export default function ModernFarmRegistration() {
                 </svg>
               </div>
             </div>
+            {errors.seasonalPattern && (
+              <p className="text-red-500 text-sm mt-2 flex items-center">
+                <span className="mr-1">⚠️</span>
+                {errors.seasonalPattern}
+              </p>
+            )}
+          </div>
+
+          <div className="group">
+            <label className="block text-sm font-semibold text-gray-800 mb-3 tracking-wide flex items-center">
+              <svg className="w-4 h-4 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+              </svg>
+              Language
+            </label>
+            <div className="relative">
+              <select
+                className={`w-full px-5 py-4 bg-white border-2 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 appearance-none cursor-pointer shadow-sm hover:shadow-md ${
+                  errors.language ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200'
+                }`}
+                value={formData.language}
+                onChange={(e) => updateFormData('language', e.target.value)}
+              >
+                <option value="en">English</option>
+                <option value="yo">Yoruba</option>
+                <option value="ig">Igbo</option>
+                <option value="ha">Hausa</option>
+                <option value="fr">French</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            {errors.language && (
+              <p className="text-red-500 text-sm mt-2 flex items-center">
+                <span className="mr-1">⚠️</span>
+                {errors.language}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -771,20 +905,26 @@ export default function ModernFarmRegistration() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-      <h2 className="text-4xl text-center md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-900 via-emerald-800 to-slate-900 bg-clip-text text-transparent mb-6 leading-tight">
-              Welcome to 
-              <span className=" text-emerald-600"> FamTech</span>
-            </h2>
-            
-            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed text-center mb-8">
-              Our diverse team of experts combines decades of experience in agriculture, technology, 
-              and business to revolutionize farming through innovation.
-            </p>
+        <h2 className="text-4xl text-center md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-900 via-emerald-800 to-slate-900 bg-clip-text text-transparent mb-6 leading-tight">
+          Welcome to 
+          <span className=" text-emerald-600"> Famtech</span>
+        </h2>
+        
+        <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed text-center mb-8">
+          Our diverse team of experts combines decades of experience in agriculture, technology, 
+          and business to revolutionize farming through innovation.
+        </p>
         
         {renderStepIndicator()}
         
         <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12">
           {renderCurrentStep()}
+          
+          {registrationError && (
+            <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <p className="text-red-600 text-sm font-medium">{registrationError}</p>
+            </div>
+          )}
           
           <div className="flex items-center justify-between mt-12 pt-8 border-t border-gray-200">
             <button

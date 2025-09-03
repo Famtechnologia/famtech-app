@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { useProfile } from '@/contexts/ProfileContext';
 import {
   LayoutDashboard,
   Tractor,
@@ -20,7 +21,9 @@ import {
   Bell,
   ChevronRight,
   ChevronDown,
-  User
+  User,
+  PanelLeftClose,
+  PanelLeftOpen
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -33,19 +36,31 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children, title }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState<string[]>(['dashboard']);
   const { user, claims, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const { handleLogout } = useLogout();
-
+  const { profile, loading, error, refetchProfile } = useProfile();
 
   const toggleMenu = (menuName: string) => {
+    // Don't expand/collapse menus when sidebar is collapsed
+    if (sidebarCollapsed) return;
+    
     setExpandedMenus(prev => 
       prev.includes(menuName) 
         ? prev.filter(name => name !== menuName)
         : [...prev, menuName]
     );
+  };
+
+  const toggleSidebarCollapse = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+    // Close all expanded menus when collapsing
+    if (!sidebarCollapsed) {
+      setExpandedMenus([]);
+    }
   };
 
   const getNavItems = () => {
@@ -56,7 +71,7 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
       return [
         { 
           name: 'Dashboard', 
-          href: `/dashboard/farmer/${subRole}`, 
+          href: `/farm/${subRole}`, 
           icon: LayoutDashboard,
           key: 'dashboard',
           expandable: false
@@ -155,6 +170,12 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
 
   const isActive = (href?: string) => {
     if (!href) return false;
+    
+    // Special case: if href is /farm/{subRole} and pathname is /farm, consider it active
+    if (href.startsWith('/farm/') && pathname === '/farm') {
+      return true;
+    }
+    
     return pathname === href;
   };
 
@@ -163,29 +184,55 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
     return children.some(child => pathname === child.href);
   };
 
-    
-
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 border-r border-gray-200`}>
+      <div className={`${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      } fixed inset-y-0 left-0 z-50 ${
+        sidebarCollapsed ? 'w-16' : 'w-64'
+      } bg-white shadow-lg transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 border-r border-gray-200`}>
         
         {/* Logo */}
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-          <div className="flex items-center space-x-2">
+          <div className={`flex items-center ${sidebarCollapsed ? 'justify-center w-full' : 'space-x-2'}`}>
             <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">F</span>
             </div>
-            <h1 className="text-xl font-bold text-gray-900">FAMTECH</h1>
+            {!sidebarCollapsed && (
+              <h1 className="text-xl font-bold text-gray-900">FAMTECH</h1>
+            )}
           </div>
-          <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
+          
+          {/* Mobile close button */}
+          <button onClick={() => setSidebarOpen(false)} className="md:hidden">
             <X size={20} />
           </button>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 px-4 py-4 overflow-y-auto">
-          <div className="space-y-1">
+          <div className="space-y-2">
+            {/* Collapse Toggle - only show on desktop/tablet */}
+            <div className="hidden md:block">
+              <button 
+                onClick={toggleSidebarCollapse}
+                className={`w-full flex items-center justify-end px-3 py-3 rounded-lg text-sm font-medium transition-colors hover:cursor-pointer`}
+                title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              >
+                <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : ''}`}>
+                  {sidebarCollapsed ? (
+                    <PanelLeftOpen size={18} />
+                  ) : (
+                    <>
+                      <PanelLeftClose size={18} className="mr-3" />
+        
+                    </>
+                  )}
+                </div>
+              </button>
+            </div>
+
             {navItems.map((item) => {
               const Icon = item.icon;
               const isExpanded = expandedMenus.includes(item.key);
@@ -194,65 +241,79 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
               return (
                 <div key={item.key}>
                   {item.expandable ? (
-                    <button
-                      onClick={() => toggleMenu(item.key)}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        itemIsActive
-                          ? 'bg-green-50 text-green-700'
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`}
-                    >
-                      <div className="flex items-center">
-                        <Icon size={18} className="mr-3" />
-                        <span>{item.name}</span>
-                        {item.premium && (
-                          <span className="ml-2 px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">
-                            Premium
-                          </span>
+                    <div>
+                      <button
+                        onClick={() => toggleMenu(item.key)}
+                        className={`w-full flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
+                          itemIsActive
+                            ? 'bg-green-50 text-green-700'
+                            : 'text-gray-700 hover:bg-gray-100'
+                        } ${sidebarCollapsed ? 'justify-center' : ''}`}
+                        title={sidebarCollapsed ? item.name : undefined}
+                      >
+                        <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : ''}`}>
+                          <Icon size={18} className={sidebarCollapsed ? '' : 'mr-3'} />
+                          {!sidebarCollapsed && (
+                            <>
+                              <span>{item.name}</span>
+                              {item.premium && (
+                                <span className="ml-2 px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">
+                                  Premium
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </div>
+                        {!sidebarCollapsed && (
+                          isExpanded ? (
+                            <ChevronDown size={16} />
+                          ) : (
+                            <ChevronRight size={16} />
+                          )
                         )}
-                      </div>
-                      {isExpanded ? (
-                        <ChevronDown size={16} />
-                      ) : (
-                        <ChevronRight size={16} />
+                      </button>
+                      
+                      {/* Submenu - only show when not collapsed */}
+                      {!sidebarCollapsed && item.expandable && isExpanded && item.children && (
+                        <div className="ml-6 mt-1 space-y-1">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
+                                isActive(child.href)
+                                  ? 'bg-green-50 text-green-700 font-medium'
+                                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                              }`}
+                            >
+                              {child.name}
+                            </Link>
+                          ))}
+                        </div>
                       )}
-                    </button>
+                    </div>
                   ) : (
                     <Link
                       href={item.href || '#'}
-                      className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      className={`flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
                         itemIsActive
                           ? 'bg-green-50 text-green-700'
                           : 'text-gray-700 hover:bg-gray-100'
-                      }`}
+                      } ${sidebarCollapsed ? 'justify-center' : ''}`}
+                      title={sidebarCollapsed ? item.name : undefined}
                     >
-                      <Icon size={18} className="mr-3" />
-                      <span>{item.name}</span>
-                      {item.premium && (
-                        <span className="ml-2 px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">
-                          Premium
-                        </span>
+                      <Icon size={18} className={sidebarCollapsed ? '' : 'mr-3'} />
+                      {!sidebarCollapsed && (
+                        <>
+                          <span>{item.name}</span>
+                          {item.premium && (
+                            <span className="ml-2 px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">
+                              Premium
+                            </span>
+                          )}
+                        </>
                       )}
                     </Link>
-                  )}
-                  
-                  {/* Submenu */}
-                  {item.expandable && isExpanded && item.children && (
-                    <div className="ml-6 mt-1 space-y-1">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                            isActive(child.href)
-                              ? 'bg-green-50 text-green-700 font-medium'
-                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                          }`}
-                        >
-                          {child.name}
-                        </Link>
-                      ))}
-                    </div>
                   )}
                 </div>
               );
@@ -262,25 +323,27 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
 
         {/* User Profile & Sign Out */}
         <div className="border-t border-gray-200 p-4">
-          <div className="flex items-center space-x-3 mb-3">
+          <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'space-x-3'} mb-3`}>
             <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
               <User size={16} className="text-white" />
             </div>
-            <div className="flex-1 min-w-0">
-              {/* <p className="text-sm font-medium text-gray-900 truncate">
-                {user?.fullName || 'John Farmer'}
-              </p> */}
-              <p className="text-xs text-gray-500 capitalize">
-                {claims?.role} {claims?.subRole && `- ${claims?.subRole}`}
-              </p>
-            </div>
+            {!sidebarCollapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-gray-500 capitalize">
+                  {profile?.owner.firstName} 
+                </p>
+              </div>
+            )}
           </div>
           <button
-            onClick={handleLogout}  // ✅ use the hook here
-            className="flex items-center w-full px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
+            onClick={handleLogout}
+            className={`flex items-center w-full px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 transition-colors ${
+              sidebarCollapsed ? 'justify-center' : ''
+            }`}
+            title={sidebarCollapsed ? 'Sign out' : undefined}
           >
-            <LogOut size={16} className="mr-3" />
-            Sign out
+            <LogOut size={16} className={sidebarCollapsed ? '' : 'mr-3'} />
+            {!sidebarCollapsed && 'Sign out'}
           </button>
         </div>
       </div>
@@ -315,7 +378,7 @@ export default function DashboardLayout({ children, title }: DashboardLayoutProp
                 <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                   <User size={16} className="text-white" />
                 </div>
-                <span className="text-sm font-medium text-gray-900">John Farmer</span>
+                <span className="text-sm font-medium text-gray-900">{profile?.owner.firstName}</span>
                 <ChevronDown size={16} className="text-gray-500" />
               </div>
             </div>

@@ -101,3 +101,35 @@ export interface DashboardStats {
   weatherAlerts: number;
   monthlyGrowth: number;
 }
+
+export interface ProfileResponse {
+  data: any
+  farmProfile: any
+  id: string;
+  uid: string;
+  farmName: string;
+  farmType: string;
+  farmSize: number;
+  farmSizeUnit: string;
+  establishedYear: number;
+  location: {
+    country: string;
+    state: string;
+    city: string;
+    address: string;
+    coordinates: [number, number]; // [longitude, latitude] or adjust as needed
+  };
+  currency: string;
+  timezone: string;
+  primaryCrops: string[];
+  farmingMethods: string[];
+  seasonalPattern: string;
+  language: string;
+  owner: {
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+  };
+  createdAt: string; // or Date if you parse it
+  updatedAt: string; // or Date if you parse it
+}

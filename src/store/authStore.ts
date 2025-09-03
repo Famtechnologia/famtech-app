@@ -12,12 +12,14 @@ export interface User {
 
 export interface AuthState {
   user: User | null;
-  token: string | null;
+  token: string | null; // accessToken
+  refreshToken: string | null;
   claims: { role: string; subRole?: string } | null;
   loading: boolean;
 
   setUser: (user: User) => void;
   setToken: (token: string) => void;
+  setRefreshToken: (token: string) => void;
   setClaims: (claims: { role: string; subRole?: string } | null) => void;
   setLoading: (loading: boolean) => void;
   initializeAuth: () => void;
@@ -29,11 +31,13 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       user: null,
       token: null,
+      refreshToken: null,
       claims: null,
       loading: true,
 
       setUser: (user) => set({ user }),
       setToken: (token) => set({ token }),
+      setRefreshToken: (refreshToken) => set({ refreshToken }),
       setClaims: (claims) => set({ claims }),
       setLoading: (loading) => set({ loading }),
 
@@ -46,7 +50,7 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      clearUser: () => set({ user: null, token: null, claims: null }),
+      clearUser: () => set({ user: null, token: null, refreshToken: null, claims: null }),
     }),
     { name: "auth-storage" }
   )
