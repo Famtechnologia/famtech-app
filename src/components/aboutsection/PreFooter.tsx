@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion';
-
+import Image from 'next/image';
 const PreFooter: React.FC = () => {
   const textVariants = {
     hidden: { opacity: 0, y: 40 },
@@ -245,9 +245,11 @@ const PreFooter: React.FC = () => {
                   transition: { duration: 0.4 }
                 }}
               >
-                <img
+                <Image
                   src="/images/prefooter/famtech-farmer-using-app.jpg"
                   alt="Farmer using Famtech application"
+                  width={400}
+                  height={500}
                   className="w-full h-full object-cover rounded-2xl"
                   style={{ width: '400px', height: '500px' }}
                   onError={(e) => { 

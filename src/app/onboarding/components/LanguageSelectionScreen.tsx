@@ -70,7 +70,7 @@ const Container = () => {
             }`}
           >
             <div className="flex items-center gap-3">
-              <img src={lang.flag} alt={lang.name} className="w-6 h-6" />
+              <Image src={lang.flag} alt={lang.name} width={200} height={200} className="w-6 h-6" />
               <span>{lang.name}</span>
             </div>
             {selectedLang === lang.code && (

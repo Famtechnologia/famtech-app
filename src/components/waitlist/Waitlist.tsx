@@ -69,7 +69,7 @@ const WaitlistForm = () => {
           </p>
           
           <p className="text-gray-600 mb-8 leading-relaxed">
-            You've successfully joined our waitlist. We'll notify you at{' '}
+            You&39;ve successfully joined our waitlist. We&39;ll notify you at{' '}
             <span className="font-medium text-green-600">{email}</span> when we launch.
           </p>
           

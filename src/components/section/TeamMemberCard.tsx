@@ -42,9 +42,11 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, isHighlighted =
       `}
     >
       <div className="w-full h-70 rounded-sm overflow-hidden mb-4 loading-lazy">
-        <img
+        <Image
           src={member.imageUrl}
           alt={member.name}
+          width={128}
+          height={128}
           className="w-full h-full object-cover"
           onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
             e.currentTarget.src = 'https://placehold.co/128x128/cccccc/333333?text=User'; 

@@ -93,7 +93,7 @@ const RegStepTwo = () => {
         {/* Specify Interests */}
         <div>
           <h4 className="text-base font-medium mb-1">Specify</h4>
-          <p className="text-gray-500 text-sm mb-2">Select services you're interested in</p>
+          <p className="text-gray-500 text-sm mb-2">Select services you&#39;re interested in</p>
           <div className="grid grid-cols-2 gap-2 md:gap-3">
             {[
               'Poultry',

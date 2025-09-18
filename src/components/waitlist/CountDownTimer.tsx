@@ -62,7 +62,7 @@ const CountdownTimer = () => {
           </div>
           
           <h2 className="text-4xl sm:text-6xl font-bold text-green-600 mb-4">
-            🎉 We're Live!
+            🎉 We&#39;re Live!
           </h2>
           
           <p className="text-xl sm:text-2xl text-gray-700 mb-8 max-w-2xl mx-auto">

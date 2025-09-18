@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-
+import Image from 'next/image';
 // Modern SectionTitle component with enhanced styling
 const ModernSectionTitle = ({ title }) => (
   <div className="relative mb-8">
@@ -135,9 +135,11 @@ const ModernImageCard = ({ src, alt, index }) => {
     >
       {/* Image with overlay effects */}
       <div className="relative w-full h-full overflow-hidden">
-        <img
+        <Image
           src={src}
           alt={alt}
+          width={600}
+          height={400}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           onError={(e) => { 
             e.currentTarget.src = `https://placehold.co/600x400/e5e7eb/6b7280?text=${encodeURIComponent(alt)}`; 

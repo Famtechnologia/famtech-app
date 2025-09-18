@@ -51,7 +51,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     fetchProfile();
-  }, [token]);
+  },);
 
   return (
     <ProfileContext.Provider value={{ profile, loading, error, refetchProfile: fetchProfile }}>
