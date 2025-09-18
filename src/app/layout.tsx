@@ -6,6 +6,7 @@ import { AuthProvider } from '../components/auth/AuthProvider';
 import type { Metadata } from 'next';
 import type { Viewport } from 'next';
 import { Analytics } from "@vercel/analytics/next"
+import { ProfileProvider } from "@/contexts/ProfileContext";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -111,7 +112,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className='bg-white text-gray-800 antialiased'>
         <AuthProvider>
           <Analytics/>
-          {children}
+          <ProfileProvider>
+           {children}
+          </ProfileProvider>
           <Toaster position="top-right" />
         </AuthProvider>
       </body>

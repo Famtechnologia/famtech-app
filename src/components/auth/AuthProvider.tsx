@@ -1,15 +1,21 @@
+// 3. Create/Update AuthProvider component
+// components/auth/AuthProvider.tsx
 'use client';
 
 import { useEffect } from 'react';
 import { useAuthStore } from '@/store/authStore';
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  // Grab fetchSession from the store
-  const fetchSession = useAuthStore((state) => state.fetchSession);
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const { initializeAuth } = useAuthStore();
 
   useEffect(() => {
-    fetchSession(); // fetch session on app load
-  }, [fetchSession]);
+    initializeAuth();
+  }, [initializeAuth]);
 
   return <>{children}</>;
 }
+

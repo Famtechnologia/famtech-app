@@ -31,7 +31,7 @@ export default function ProtectedRoute({
         return;
       }
       
-      if (requiredSubRole && claims.subRole !== requiredSubRole) {
+     if (claims.role?.toLowerCase() !== requiredRole.toLowerCase()) {
         router.push('/unauthorized');
         return;
       }

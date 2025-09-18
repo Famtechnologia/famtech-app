@@ -37,7 +37,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/layout.ts", "src/app/auth/register/[successPage]/page.jsx"  ],
+, "src/app/layout.ts", "src/app/auth/complete-farm-profile/[successPage]/page.jsx", "src/app/auth/login/page.jsx"  ],
   "exclude": [
     "node_modules"
   ]
