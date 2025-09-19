@@ -22,7 +22,7 @@ const WaitlistForm = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('http://api-famtech-backend-app.onrender.com/api/waitlist', {
+      const response = await fetch('https://api-famtech-backend-app.onrender.com/api/waitlist', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
