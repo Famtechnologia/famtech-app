@@ -4,6 +4,7 @@ import { Sprout, Users, TrendingUp, Leaf, Target, Clock } from 'lucide-react';
 import CountdownTimer from '@/components/waitlist/CountDownTimer';
 import WaitlistForm from '@/components/waitlist/Waitlist';
 import Navbar from '@/components/section/Navbar2';
+import Footer from '@/components/section/Footer'
 
 const Index = () => {
   const features = [
@@ -92,14 +93,10 @@ const Index = () => {
             ))}
           </div>
 
-          {/* Footer */}
-          <footer className="mt-20 pt-8 border-t border-green-500/20">
-            <p className="text-gray-600 text-sm">
-              © 2025 Famtech. Transforming agriculture through innovation.
-            </p>
-          </footer>
+          
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };
