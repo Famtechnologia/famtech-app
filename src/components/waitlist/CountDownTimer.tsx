@@ -72,7 +72,7 @@ const CountdownTimer = () => {
           <button 
             onClick={() => {
               // User will change this route
-              window.location.href = '/https://app.famtechnologia.com'; 
+              window.location.href = 'https://app.famtechnologia.com'; 
             }}
             className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 inline-flex items-center gap-3"
           >
