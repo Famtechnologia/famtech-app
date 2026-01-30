@@ -25,7 +25,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "plugins": [
       {
         "name": "next"
@@ -36,8 +36,12 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/app/layout.ts", "src/app/auth/complete-farm-profile/[successPage]/page.jsx", "src/app/auth/login/page.jsx"  ],
+    "**/*.tsx",
+    "src/app/layout.ts",
+    "src/app/auth/complete-farm-profile/[successPage]/page.jsx",
+    "src/app/auth/login/page.jsx",
+    ".next/dev/types/**/*.ts"
+  ],
   "exclude": [
     "node_modules"
   ]
