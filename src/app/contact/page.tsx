@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: 'Contact Us | Famtech',
     description: 'Reach out to Famtech for support or demos of smart agriculture solutions.',
     type: 'website',
-    url: 'https://famtech.llc.com/contact',
+    url: 'https://famtech.llc/contact',
     images: [
       {
         url: '/images/contact-og.jpg',
@@ -37,13 +37,13 @@ const contactJsonLd = {
   '@type': 'ContactPage',
   mainEntityOfPage: {
     '@type': 'WebPage',
-    '@id': 'https://famtech.llc.com/contact'
+    '@id': 'https://famtech.llc/contact'
   },
   publisher: {
     '@type': 'Organization',
-    '@id': 'https://famtech.llc.com',
+    '@id': 'https://famtech.llc',
     name: 'Famtech',
-    logo: 'https://famtech.llc.com/images/logo.png',
+    logo: 'https://famtech.llc/images/logo.png',
     telephone: '+2349127483717',
     email: 'info@famtech.llc',
     sameAs: [
@@ -61,9 +61,9 @@ const contactJsonLd = {
       addressCountry: 'NG'
     }
   },
-  url: 'https://famtech.llc.com/contact',
+  url: 'https://famtech.llc/contact',
   description: 'Contact Famtech for smart farming solutions.',
-  image: 'https://famtech.llc.com/images/contact-og.jpg'
+  image: 'https://famtech.llc/images/contact-og.jpg'
 };
 
 export default function ContactPage() {
