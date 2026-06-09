@@ -66,7 +66,7 @@ const PrivacyAndCookies: React.FC = () => {
           <li>Object to or restrict certain types of processing;</li>
           <li>Withdraw previously given consent.</li>
         </ul>
-        <p className="text-base leading-relaxed mb-4">To exercise these rights, please contact us at <strong>info@famtechnologia.com</strong>.</p>
+        <p className="text-base leading-relaxed mb-4">To exercise these rights, please contact us at <strong>info@famtech.llc</strong>.</p>
 
         <h3 className="text-lg font-semibold mb-2">1.7. Data Retention</h3>
         <p className="text-base leading-relaxed mb-4">We retain your data only as long as necessary to provide the Services, comply with legal obligations, resolve disputes, and enforce our agreements.</p>
@@ -108,7 +108,7 @@ const PrivacyAndCookies: React.FC = () => {
 
         <p className="text-base leading-relaxed mt-8">If you have any questions or concerns regarding these policies, please contact us at:</p>
         <ul className="list-disc pl-5 text-base leading-relaxed space-y-1 mt-2">
-          <li><strong>Email:</strong> <a href="mailto:info@famtechnologia.com" className="text-blue-600 hover:underline">info@famtechnologia.com</a></li>
+          <li><strong>Email:</strong> <a href="mailto:info@famtech.llc" className="text-blue-600 hover:underline">info@famtech.llc</a></li>
           <li><strong>Phone:+2349127483717</strong></li>
           <li><strong>Address:16, Wisdom Estate, Akobo, Ibadan, Oyo State, Nigeria</strong></li>
         </ul>

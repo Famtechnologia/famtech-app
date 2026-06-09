@@ -45,7 +45,7 @@ const contactJsonLd = {
     name: 'Famtech',
     logo: 'https://famtech.llc.com/images/logo.png',
     telephone: '+2349127483717',
-    email: 'info@famtechnologia.com',
+    email: 'info@famtech.llc',
     sameAs: [
       'https://www.instagram.com/_famtech',
       'https://www.facebook.com/famtechnologia',
