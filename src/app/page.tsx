@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://famtech.llc',
+    url: 'https://www.famtech.llc',
     siteName: 'Famtech',
     title: 'Famtech - Smart Farming Solutions | Bridging Tradition and Technology',
     description:
@@ -82,10 +82,10 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: 'https://famtech.llc',
+    canonical: 'https://www.famtech.llc',
     languages: {
-      'en-US': 'https://famtech.llc',
-      'en-GB': 'https://famtech.llc/en-gb'
+      'en-US': 'https://www.famtech.llc',
+      'en-GB': 'https://www.famtech.llc/en-gb'
     }
   },
 
@@ -139,8 +139,8 @@ const jsonLd = {
   name: 'Famtechnologia',
   description:
     'Innovative digital farming solutions bridging tradition and technology for modern agriculture.',
-  url: 'https://famtech.llc',
-  logo: 'https://famtech.llc/images/logo.png',
+  url: 'https://www.famtech.llc',
+  logo: 'https://www.famtech.llc/images/logo.png',
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: '+234-912-748-3717',

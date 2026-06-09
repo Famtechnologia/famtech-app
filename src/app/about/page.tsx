@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: 'About Us | Famtech',
     description: 'Discover the Famtech story and our mission to revolutionize modern farming.',
     type: 'website',
-    url: 'https://famtech.llc/about',
+    url: 'https://www.famtech.llc/about',
     images: [{ url: '/images/about-og.jpg', width: 1200, height: 630, alt: 'Famtech Team' }],
   },
   twitter: {

@@ -15,7 +15,7 @@ const inter = Inter({
 
 // 🌐 SEO & Social Metadata
 export const metadata: Metadata = {
-  metadataBase: new URL('https://famtech.llc'),
+  metadataBase: new URL('https://www.famtech.llc'),
   title: 'Famtech: Smart Farming Solutions | Bridging Tradition and Technology',
   description: 'Famtech reimagines farming for a connected world...',
 
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://famtech.llc',
+    url: 'https://www.famtech.llc',
     siteName: 'Famtech',
     title: 'Famtech: Smart Farming Solutions',
     description: 'Revolutionary digital farming solutions...',
@@ -70,8 +70,8 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: 'https://famtech.llc',
-    languages: { 'en-US': 'https://famtech.llc', 'en-GB': 'https://famtech.llc/en-gb' }
+    canonical: 'https://www.famtech.llc',
+    languages: { 'en-US': 'https://www.famtech.llc', 'en-GB': 'https://www.famtech.llc/en-gb' }
   },
 
   appleWebApp: { capable: true, statusBarStyle: 'default', title: 'Famtech' },
