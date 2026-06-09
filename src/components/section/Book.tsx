@@ -86,7 +86,7 @@ const Book = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             {/* Primary CTA */}
             <a 
-            href='mailto:famtechnologia@gmail.com'
+            href='mailto:info@famtech.llc'
             target="_blank"
             rel="noopener noreferrer"
             className="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-2xl shadow-2xl shadow-green-500/25 transition-all duration-300 hover:scale-105 hover:shadow-green-500/40 overflow-hidden"

@@ -146,7 +146,7 @@ const PreFooter: React.FC = () => {
             >
               {/* Primary Button */}
               <motion.a
-              href='mailto:famtechnologia@gmail.com'
+              href='mailto:info@famtech.llc'
               rel="noopener noreferrer"
               target="_blank"
                 className="group relative overflow-hidden bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-8 py-4 rounded-2xl font-semibold text-lg shadow-2xl hover:shadow-emerald-500/25 transition-all duration-300 flex items-center space-x-3 min-w-[200px] justify-center"

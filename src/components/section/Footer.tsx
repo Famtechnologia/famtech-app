@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
                   {[
                     { icon: FaLinkedin, href: "https://www.linkedin.com/company/famtechnologia/", label: "LinkedIn" },
                     { icon: FaInstagram, href: "https://www.instagram.com/_famtech?igsh=dHN5cnI4ZjR6aXAy", label: "Instagram" },
-                    { icon: CgMail, href: "mailto:famtechnologia@gmail.com", label: "Email" },
+                    { icon: CgMail, href: "mailto:info@famtech.llc", label: "Email" },
                     { icon: FaWhatsapp, href: "https://wa.me/2349127483717", label: "WhatsApp" },
                     { icon: FaFacebook, href: "https://www.facebook.com/share/1AnR1tyTV4/", label: "Facebook" },
                     { icon: FaTiktok, href: "https://www.tiktok.com/@_famtech?_t=ZM-8x5LEUoa1Ru&_r=1", label: "TikTok" }
@@ -79,7 +79,7 @@ const Footer: React.FC = () => {
                 </h3>
                 <ul className='space-y-3'>
                   {[
-                    { name: 'Book a Demo', href: 'mailto:famtechnologia@gmail.com'},
+                    { name: 'Book a Demo', href: 'mailto:info@famtech.llc'},
                     { name: 'About Us', href: '/about' },
                     { name: 'Terms & Conditions', href: '/terms' },
                     { name: 'Privacy Policy', href: '/privacy' }
@@ -106,7 +106,7 @@ const Footer: React.FC = () => {
                 </h3>
                 <ul className='space-y-3'>
                   {[
-                    { name: 'FarmOS', href: '#' },
+                    { name: 'FamOS', href: '#' },
                     { name: 'SmartFarm', href: '#' },
                     { name: 'AgriTrade', href: '#' }
                   ].map(({ name, href }) => (

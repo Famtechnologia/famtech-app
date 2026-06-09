@@ -162,7 +162,7 @@ const Navbar: React.FC = () => {
 
               {/* CTA Button */}
               <a
-                href="mailto:famtechnologia@gmail.com"
+                href="mailto:info@famtech.llc"
                 className={`
                   group relative inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold
                   rounded-full transition-all duration-300 ease-out transform hover:scale-105
@@ -249,7 +249,7 @@ const Navbar: React.FC = () => {
               
               <div className="pt-4 border-t border-gray-100">
                 <a
-                  href="mailto:famtechnologia@gmail.com"
+                  href="mailto:info@famtech.llc"
                   className="
                     flex items-center justify-center gap-2 w-full px-6 py-3 text-sm font-semibold
                     bg-emerald-600 text-white rounded-lg transition-all duration-300
