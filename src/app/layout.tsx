@@ -16,7 +16,7 @@ const inter = Inter({
 // 🌐 SEO & Social Metadata
 export const metadata: Metadata = {
   metadataBase: new URL('https://famtechnologia.com'),
-  title: 'Famtech – Smart Farming Solutions | Bridging Tradition and Technology',
+  title: 'Famtech: Smart Farming Solutions | Bridging Tradition and Technology',
   description: 'Famtech reimagines farming for a connected world...',
 
   keywords: ['smart farming', 'agriculture technology', 'digital farming', 'agtech'],
@@ -36,13 +36,13 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://famtechnologia.com',
     siteName: 'Famtech',
-    title: 'Famtech – Smart Farming Solutions',
+    title: 'Famtech: Smart Farming Solutions',
     description: 'Revolutionary digital farming solutions...',
     images: [
       {
         url: '/images/home/agriculture-healthy-food.jpg',
         width: 1200, height: 630,
-        alt: 'Famtech – Modern Agriculture Technology',
+        alt: 'Famtech: Modern Agriculture Technology',
         type: 'image/jpeg'
       },
       {
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@famtech',
     creator: '@famtech',
-    title: 'Famtech – Smart Farming Solutions',
+    title: 'Famtech: Smart Farming Solutions',
     description: 'Digital farming solutions for modern agriculture.',
     images: ['/images/home/agriculture-healthy-food.jpg']
   },

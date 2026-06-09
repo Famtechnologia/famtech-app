@@ -112,7 +112,7 @@ const FourthSection = () => {
                   className='text-lg font-medium leading-relaxed max-w-xs'
                   variants={itemVariants}
                 >
-                  Of customers recommend Famtech service
+                  of customers recommend Famtech&apos;s services
                 </motion.p>
               </div>
 
@@ -174,7 +174,7 @@ const FourthSection = () => {
                   className='text-xl lg:text-2xl font-semibold leading-tight'
                   variants={itemVariants}
                 >
-                  How to control the cost of curing rice pest today farm...
+                  How to control the cost of curing rice pests on your farm today...
                 </motion.h3>
 
                 {/* Blog Image */}

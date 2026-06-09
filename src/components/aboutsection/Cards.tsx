@@ -255,7 +255,7 @@ const WhyChooseFamtechSection = () => {
             className="mt-8 text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-tight"
             variants={textVariants}
           >
-            Smart Farming Starts Here –{' '}
+            Smart Farming Starts Here:{' '}
             <span className="bg-gradient-to-r from-emerald-600 via-cyan-600 to-blue-600 bg-clip-text text-transparent">
               Innovate, Optimize,
             </span>{' '}

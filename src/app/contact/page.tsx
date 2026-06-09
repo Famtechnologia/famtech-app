@@ -6,7 +6,7 @@ import ContactSection from '@/components/section/ContactSection'; // Your animat
 
 // 🌟 SEO Metadata for the page
 export const metadata: Metadata = {
-  title: 'Contact Us | Famtech – Smart Farming Solutions',
+  title: 'Contact Us | Famtech: Smart Farming Solutions',
   description: 'Reach out to Famtech for support, demos, or enquiries about our smart farming solutions.',
   openGraph: {
     title: 'Contact Us | Famtech',

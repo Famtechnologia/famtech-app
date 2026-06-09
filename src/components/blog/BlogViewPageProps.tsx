@@ -142,7 +142,7 @@ const allBlogPosts: BlogPost[] = [
     date: '4 days ago',
     fullContent: `The global population is projected to reach nearly 10 billion by 2050, putting immense pressure on our food systems.
       Traditional agricultural methods, while foundational, are increasingly challenged by climate change, resource scarcity,
-      and growing demand. This is where **AgriTech** steps in – a burgeoning sector that leverages technology to transform
+      and growing demand. This is where **AgriTech** steps in, a burgeoning sector that leverages technology to transform
       how we produce, process, and distribute food. It's not just the future; it's the present imperative for food security.
 
       At its core, AgriTech encompasses a wide array of innovations, from **precision agriculture** to **biotechnology** and
@@ -228,7 +228,7 @@ const allBlogPosts: BlogPost[] = [
       The system typically involves **soil moisture sensors** strategically placed throughout fields. These sensors continuously
       monitor the moisture content at various depths, sending this data wirelessly to a central control unit or cloud platform.
       Alongside, **weather stations** collect data on rainfall, temperature, humidity, and wind speed, providing crucial
-      information about evapotranspiration rates – the amount of water lost from the soil and plants.
+      information about evapotranspiration rates, the amount of water lost from the soil and plants.
 
       All this real-time data is then analyzed by **IoT platforms and AI algorithms**. These systems can calculate the
       exact water requirements for different sections of a field, taking into account crop type, growth stage, soil type,

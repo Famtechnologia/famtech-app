@@ -80,7 +80,7 @@ const PrivacyAndCookies: React.FC = () => {
         <section className="mb-12">
         <h2 className="text-xl md:text-3xl font-semibold mb-4">2. Disclaimer</h2>
         <p className="text-base leading-relaxed mb-4">The content provided on the Famtech platform is for general informational purposes only. While we make every effort to ensure the accuracy and reliability of the information presented, we do not guarantee its completeness or applicability to your specific situation.</p>
-        <p className="text-base leading-relaxed mb-4">Nothing on this platform constitutes professional advice — including but not limited to agricultural, financial, legal, or technical advice — and should not be relied upon as such. You should always consult a qualified professional for advice tailored to your circumstances.</p>
+        <p className="text-base leading-relaxed mb-4">Nothing on this platform constitutes professional advice, including but not limited to agricultural, financial, legal, or technical advice, and should not be relied upon as such. You should always consult a qualified professional for advice tailored to your circumstances.</p>
         <p className="text-base leading-relaxed mb-4">Famtech shall not be liable for any loss or damage arising from the use or reliance on the information available through our Services.</p>
       </section>
       <hr className="my-12 border-t border-gray-200" />

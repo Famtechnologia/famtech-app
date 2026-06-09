@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Users, Rocket, Wheat } from 'lucide-react';
 
 const FirstSection: React.FC = () => {
   const containerVariants = {
@@ -71,20 +72,23 @@ const FirstSection: React.FC = () => {
     {
       number: '30+',
       label: 'Professional Teams',
-      icon: '👥',
-      gradient: 'from-emerald-500 to-teal-600'
+      icon: Users,
+      gradient: 'from-emerald-500 to-teal-600',
+      shadow: 'shadow-emerald-500/30'
     },
     {
       number: '177+',
       label: 'Active Users',
-      icon: '🚀',
-      gradient: 'from-blue-500 to-cyan-600'
+      icon: Rocket,
+      gradient: 'from-blue-500 to-cyan-600',
+      shadow: 'shadow-blue-500/30'
     },
     {
       number: '2K+',
       label: 'Managing Acres of Land',
-      icon: '🌾',
-      gradient: 'from-amber-500 to-orange-600'
+      icon: Wheat,
+      gradient: 'from-amber-500 to-orange-600',
+      shadow: 'shadow-amber-500/30'
     }
   ];
 
@@ -122,21 +126,21 @@ const FirstSection: React.FC = () => {
                 {/* Gradient border effect */}
                 <div className={`absolute inset-0 bg-gradient-to-r ${stat.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500 rounded-2xl`} />
                 
-                {/* Icon */}
-                <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
-                  {stat.icon}
+                {/* Icon badge */}
+                <div className={`mb-5 inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.gradient} shadow-lg ${stat.shadow} ring-1 ring-white/40 transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300`}>
+                  <stat.icon className="w-7 h-7 text-white" strokeWidth={2.25} />
                 </div>
-                
+
                 {/* Number */}
                 <motion.div
-                  className={`text-4xl lg:text-5xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-3`}
+                  className={`text-4xl lg:text-5xl font-extrabold tracking-tight bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-2`}
                   variants={numberVariants}
                 >
                   {stat.number}
                 </motion.div>
-                
+
                 {/* Label */}
-                <p className="text-slate-600 font-medium text-sm lg:text-base leading-relaxed">
+                <p className="text-slate-500 font-semibold text-sm lg:text-base leading-relaxed">
                   {stat.label}
                 </p>
 
@@ -187,23 +191,6 @@ const FirstSection: React.FC = () => {
             </span>.
           </motion.p>
 
-          {/* Call to action hint */}
-          <motion.div
-            className="mt-12 flex items-center justify-center space-x-2 text-slate-500"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
-          >
-            <span className="text-sm font-medium">Transforming Agriculture</span>
-            <motion.div
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </motion.div>
-          </motion.div>
         </motion.div>
       </div>
 

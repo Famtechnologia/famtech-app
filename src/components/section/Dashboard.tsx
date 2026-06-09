@@ -141,7 +141,7 @@ const Dashboard: React.FC = () => {
                 className='text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg'
                 variants={textVariants}
               >
-                Digitize your daily operations with a platform designed to manage crops, livestock, teams, finances, and records—all in one place.
+                Digitize your daily operations with a platform designed to manage crops, livestock, teams, finances, and records, all in one place.
               </motion.p>
             </div>
 

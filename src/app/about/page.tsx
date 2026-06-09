@@ -10,7 +10,7 @@ import PreFooter from '@/components/aboutsection/PreFooter';
 import Footer from '@/components/section/Footer';
 
 export const metadata: Metadata = {
-  title: 'About Us | Famtech – Smart Farming Solutions',
+  title: 'About Us | Famtech: Smart Farming Solutions',
   description: 'Learn about Famtech’s mission, vision, and team driving innovation in smart agriculture.',
   openGraph: {
     title: 'About Us | Famtech',

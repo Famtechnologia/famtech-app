@@ -100,7 +100,7 @@ const SecondSection = () => {
         <motion.div variants={textVariants} className="text-center">
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Whether you are running a small farm or managing large-scale agribusiness,{' '}
-            <span className="font-semibold text-gray-800">Famtech</span> delivers technology you can trust—and{' '}
+            <span className="font-semibold text-gray-800">Famtech</span> delivers technology you can trust, and{' '}
             <span className="font-semibold text-emerald-600">results you can measure</span>.
           </p>
         </motion.div>

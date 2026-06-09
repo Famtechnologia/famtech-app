@@ -8,7 +8,6 @@ import Service from './section/Service'
 import Dashboard from './section/Dashboard';
 import Book from './section/Book';
 import Footer from './section/Footer';
-import Team from './section/Team';
 import FourthSection from './section/FourthSection'
 const App = () => {
   return (
@@ -19,7 +18,6 @@ const App = () => {
       <SecondSection/>
       <Service/>
       <Dashboard/>
-       <Team/>
       <FourthSection/>
       <Book/>
       <Footer/>

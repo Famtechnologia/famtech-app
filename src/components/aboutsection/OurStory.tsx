@@ -177,7 +177,7 @@ const OurStory = () => {
             <p className="text-lg md:text-xl text-gray-700 font-medium relative z-10">
               Today, <span className="font-bold text-emerald-700">Famtech</span> is at the forefront of 
               agritech innovation, providing cutting-edge software solutions that help farmers track weather conditions, 
-              prevent livestock diseases, monitor crop growth, and automate farm reports—all from a single, 
+              prevent livestock diseases, monitor crop growth, and automate farm reports, all from a single,
               easy-to-use platform.
             </p>
           </motion.div>

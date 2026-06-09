@@ -150,8 +150,8 @@ const Service = () => {
                   <div className="w-full">
                     <ContentCardtwo
                       stepNumber={1}
-                      heading="FamOS — Farm Operating System"
-                      description="Digitize your daily operations with a platform designed to manage crops, livestock, teams, finances, and records—all in one place."
+                      heading="FamOS: Farm Operating System"
+                      description="Digitize your daily operations with a platform designed to manage crops, livestock, teams, finances, and records, all in one place."
                       buttonText="Get Started"
                       buttonHref="https://wa.me/2349127483717"
                     />
@@ -204,7 +204,7 @@ const Service = () => {
                   <div className="w-full">
                     <ContentCardtwo
                       stepNumber={2}
-                      heading="SmartFarm — Precision Farming Suite"
+                      heading="SmartFarm: Precision Farming Suite"
                       description="From real-time field monitoring to AI-powered forecasts, SmartFarm puts intelligence at the heart of your agricultural strategy."
                       buttonText="Get Started"
                       buttonHref="https://wa.me/2349127483717"
@@ -258,7 +258,7 @@ const Service = () => {
                   <div className="w-full">
                     <ContentCardtwo
                       stepNumber={3}
-                      heading="AgriTrade — Smart Agro-Commerce Platform"
+                      heading="AgriTrade: Smart Agro-Commerce Platform"
                       description="Connect. Trade. Thrive. AgriTrade digitizes trade relationships, simplifies transactions, and scales your market reach."
                       buttonText="Get Started"
                       buttonHref="https://wa.me/2349127483717"

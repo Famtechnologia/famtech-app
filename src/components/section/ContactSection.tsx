@@ -53,9 +53,10 @@ const ContactSection: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-2 max-w-7xl ">
+    <div className="flex flex-col w-full">
       <Navbar />
 
+      <div className="w-full max-w-7xl mx-auto px-4 flex flex-col space-y-2">
       <motion.div
         variants={imageHeroVariants}
         initial="hidden"
@@ -132,6 +133,7 @@ const ContactSection: React.FC = () => {
           </motion.form>
         </motion.div>
       </motion.section>
+      </div>
 
       <Footer />
     </div>

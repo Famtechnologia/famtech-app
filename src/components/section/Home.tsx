@@ -120,7 +120,7 @@ const Home: React.FC = () => {
             variants={itemVariants}
             className="text-white/80 text-lg md:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed"
           >
-            Famtech is reimagining farming for a connected world—bringing innovative digital solutions to fields, markets, and communities everywhere.
+            Famtech is reimagining farming for a connected world, bringing innovative digital solutions to fields, markets, and communities everywhere.
           </motion.p>
 
           {/* CTA Buttons */}
