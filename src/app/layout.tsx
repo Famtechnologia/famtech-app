@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     description: 'Revolutionary digital farming solutions...',
     images: [
       {
-        url: '/images/home/agriculture-healthy-food.jpg',
+        url: '/og-home.jpg',
         width: 1200, height: 630,
         alt: 'Famtech: Modern Agriculture Technology',
         type: 'image/jpeg'
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     creator: '@famtech',
     title: 'Famtech: Smart Farming Solutions',
     description: 'Digital farming solutions for modern agriculture.',
-    images: ['/images/home/agriculture-healthy-food.jpg']
+    images: ['/og-home.jpg']
   },
 
   verification: {

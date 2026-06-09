@@ -37,7 +37,7 @@ export const metadata: Metadata = {
       'Revolutionary digital farming solutions helping farmers optimize crop yields, reduce costs, and build sustainable agricultural practices.',
     images: [
       {
-        url: '/images/home/agriculture-healthy-food.jpg',
+        url: '/og-home.jpg',
         width: 1200,
         height: 630,
         alt: 'Famtech - Modern Agriculture Technology',
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     title: 'Famtech - Smart Farming Solutions',
     description:
       'Revolutionary digital farming solutions for modern agriculture. Join 500+ farms using our smart technology.',
-    images: ['/images/home/agriculture-healthy-food.jpg']
+    images: ['/og-home.jpg']
   },
 
   robots: {
