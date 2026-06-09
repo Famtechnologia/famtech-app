@@ -77,7 +77,7 @@ const WaitlistForm = () => {
           <button 
             onClick={() => {
               // User will change this route
-              window.location.href = 'https://famtechnologia.com';
+              window.location.href = 'https://famtech.llc.com';
             }}
             className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 inline-flex items-center gap-2 text-sm sm:text-base"
           >
