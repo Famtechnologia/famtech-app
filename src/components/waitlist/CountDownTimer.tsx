@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Rocket, Sparkles } from 'lucide-react';
+import { Rocket } from 'lucide-react';
 
 interface TimeLeft {
   days: number;
@@ -46,15 +46,6 @@ const CountdownTimer = () => {
   if (isLive) {
     return (
       <div className="text-center">
-        {/* Animated background elements */}
-        <div className="relative mb-8">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Sparkles className="w-8 h-8 text-green-500/40 animate-pulse" />
-            <Sparkles className="w-6 h-6 text-green-500/60 animate-bounce ml-4 mt-2" />
-            <Sparkles className="w-4 h-4 text-green-500/50 animate-pulse ml-2 -mt-3" />
-          </div>
-        </div>
-
         {/* Main live message */}
         <div className="bg-gradient-to-r from-green-500/10 via-green-400/10 to-emerald-500/10 backdrop-blur-sm rounded-3xl p-8 sm:p-12 border border-green-500/30 shadow-2xl mb-8">
           <div className="flex items-center justify-center mb-6">
@@ -81,22 +72,6 @@ const CountdownTimer = () => {
           </button>
         </div>
 
-        {/* Celebration animation */}
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            {[...Array(6)].map((_, i) => (
-              <Sparkles 
-                key={i}
-                className={`w-4 h-4 text-green-500/60 absolute animate-ping`}
-                style={{
-                  animationDelay: `${i * 0.2}s`,
-                  left: `${20 + i * 15}%`,
-                  top: `${10 + (i % 2) * 20}%`
-                }}
-              />
-            ))}
-          </div>
-        </div>
       </div>
     );
   }
