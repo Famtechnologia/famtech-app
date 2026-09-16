@@ -1,133 +1,230 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 
+/* ============================================================
+   FAMTECH — Design System
+   Direction: Ink + Lime + Terracotta
+   Premium · Modern · African · Technology-driven
+   ============================================================ */
 
- @tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+  /* Neutrals — warm ink + paper */
+  --color-ink: #0A100D;          /* near-black forest */
+  --color-ink-2: #101815;        /* raised dark surface */
+  --color-ink-3: #18211D;        /* cards on dark */
+  --color-paper: #F6F3EC;        /* warm off-white ground */
+  --color-paper-2: #FFFFFF;
+  --color-sand: #ECE6D8;         /* warm border / panel */
+  --color-sand-2: #E2DACA;
+
+  /* Brand accents */
+  --color-brand: #16A34A;        /* refined signal green */
+  --color-brand-600: #128A42;
+  --color-lime: #35D07F;         /* bright lime for glows */
+  --color-lime-soft: #C9F2D8;
+  --color-terra: #E4682E;        /* African sun / soil terracotta */
+  --color-terra-soft: #F6C9AE;
+  --color-gold: #E9A93B;
+
+  /* ----------------------------------------------------------
+     Remap Tailwind's built-in `green` + `emerald` scales to the
+     homepage green family (lime #35D07F @500, brand #16A34A @600).
+     The redesigned homepage uses design tokens (lime/brand), not
+     these scales, so this only re-tints the legacy pages
+     (About / Blog / Contact / Waitlist …) to match the homepage.
+     ---------------------------------------------------------- */
+  --color-green-50: #ECFCF1;
+  --color-green-100: #D6F7E0;
+  --color-green-200: #AEEDC5;
+  --color-green-300: #7EE0A5;
+  --color-green-400: #4FD68A;
+  --color-green-500: #35D07F;
+  --color-green-600: #16A34A;
+  --color-green-700: #128A42;
+  --color-green-800: #0F6E36;
+  --color-green-900: #0C592D;
+  --color-green-950: #06381D;
+
+  --color-emerald-50: #ECFCF1;
+  --color-emerald-100: #D6F7E0;
+  --color-emerald-200: #AEEDC5;
+  --color-emerald-300: #7EE0A5;
+  --color-emerald-400: #4FD68A;
+  --color-emerald-500: #35D07F;
+  --color-emerald-600: #16A34A;
+  --color-emerald-700: #128A42;
+  --color-emerald-800: #0F6E36;
+  --color-emerald-900: #0C592D;
+  --color-emerald-950: #06381D;
+
+  /* ----------------------------------------------------------
+     Remap the cool families (blue / sky / cyan / indigo /
+     purple / violet) to the warm brand ramp (gold #E9A93B →
+     terracotta #E4682E). Legacy gradients like emerald→cyan
+     now read green→gold instead of green→blue. Redesign uses
+     no cool colors, so the homepage is unaffected.
+     ---------------------------------------------------------- */
+  --color-blue-50: #FBEFE2;   --color-cyan-50: #FBEFE2;   --color-sky-50: #FBEFE2;
+  --color-blue-100: #F7DCC2;  --color-cyan-100: #F7DCC2;  --color-sky-100: #F7DCC2;
+  --color-blue-200: #F3C9A2;  --color-cyan-200: #F3C9A2;  --color-sky-200: #F3C9A2;
+  --color-blue-300: #EFB877;  --color-cyan-300: #EFB877;  --color-sky-300: #EFB877;
+  --color-blue-400: #EBA94B;  --color-cyan-400: #EBA94B;  --color-sky-400: #EBA94B;
+  --color-blue-500: #E9A93B;  --color-cyan-500: #E9A93B;  --color-sky-500: #E9A93B;
+  --color-blue-600: #E4682E;  --color-cyan-600: #E4682E;  --color-sky-600: #E4682E;
+  --color-blue-700: #C4551F;  --color-cyan-700: #C4551F;  --color-sky-700: #C4551F;
+  --color-blue-800: #9E4419;  --color-cyan-800: #9E4419;  --color-sky-800: #9E4419;
+  --color-blue-900: #7C3514;  --color-cyan-900: #7C3514;  --color-sky-900: #7C3514;
+  --color-blue-950: #4A200C;  --color-cyan-950: #4A200C;  --color-sky-950: #4A200C;
+
+  --color-indigo-50: #FBEFE2;   --color-purple-50: #FBEFE2;   --color-violet-50: #FBEFE2;
+  --color-indigo-100: #F7DCC2;  --color-purple-100: #F7DCC2;  --color-violet-100: #F7DCC2;
+  --color-indigo-200: #F3C9A2;  --color-purple-200: #F3C9A2;  --color-violet-200: #F3C9A2;
+  --color-indigo-300: #EFB877;  --color-purple-300: #EFB877;  --color-violet-300: #EFB877;
+  --color-indigo-400: #EBA94B;  --color-purple-400: #EBA94B;  --color-violet-400: #EBA94B;
+  --color-indigo-500: #E9A93B;  --color-purple-500: #E9A93B;  --color-violet-500: #E9A93B;
+  --color-indigo-600: #E4682E;  --color-purple-600: #E4682E;  --color-violet-600: #E4682E;
+  --color-indigo-700: #C4551F;  --color-purple-700: #C4551F;  --color-violet-700: #C4551F;
+  --color-indigo-800: #9E4419;  --color-purple-800: #9E4419;  --color-violet-800: #9E4419;
+  --color-indigo-900: #7C3514;  --color-purple-900: #7C3514;  --color-violet-900: #7C3514;
+  --color-indigo-950: #4A200C;  --color-purple-950: #4A200C;  --color-violet-950: #4A200C;
+
+  /* Text */
+  --color-muted: #5B655F;        /* muted on paper */
+  --color-muted-2: #8A938C;
+  --color-chalk: #E8ECE8;        /* light text on ink */
+  --color-chalk-2: #A6B0AA;      /* muted light text */
+
+  /* Type */
+  --font-display: var(--font-space), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Radii */
+  --radius-xl2: 1.75rem;
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 @layer base {
+  :root {
+    color-scheme: light;
+  }
+
   html {
-    font-family: var(--font-inter);
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-lime-soft);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 }
 
 @layer components {
+  /* Legacy buttons kept for other pages that still reference them */
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-md transition-colors;
+    @apply bg-brand hover:bg-brand-600 text-white font-medium py-2 px-4 rounded-md transition-colors;
   }
-
   .btn-secondary {
-    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors;
+    @apply bg-sand hover:bg-sand-2 text-ink font-medium py-2 px-4 rounded-md transition-colors;
   }
 }
 
-/* @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-} */
-/* 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.13 0.028 261.692);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.13 0.028 261.692);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.13 0.028 261.692);
-  --primary: oklch(0.21 0.034 264.665);
-  --primary-foreground: oklch(0.985 0.002 247.839);
-  --secondary: oklch(0.967 0.003 264.542);
-  --secondary-foreground: oklch(0.21 0.034 264.665);
-  --muted: oklch(0.967 0.003 264.542);
-  --muted-foreground: oklch(0.551 0.027 264.364);
-  --accent: oklch(0.967 0.003 264.542);
-  --accent-foreground: oklch(0.21 0.034 264.665);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.928 0.006 264.531);
-  --input: oklch(0.928 0.006 264.531);
-  --ring: oklch(0.707 0.022 261.325);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0.002 247.839);
-  --sidebar-foreground: oklch(0.13 0.028 261.692);
-  --sidebar-primary: oklch(0.21 0.034 264.665);
-  --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-accent: oklch(0.967 0.003 264.542);
-  --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
-  --sidebar-border: oklch(0.928 0.006 264.531);
-  --sidebar-ring: oklch(0.707 0.022 261.325);
-} */
-/* 
-.dark {
-  --background: oklch(0.13 0.028 261.692);
-  --foreground: oklch(0.985 0.002 247.839);
-  --card: oklch(0.21 0.034 264.665);
-  --card-foreground: oklch(0.985 0.002 247.839);
-  --popover: oklch(0.21 0.034 264.665);
-  --popover-foreground: oklch(0.985 0.002 247.839);
-  --primary: oklch(0.928 0.006 264.531);
-  --primary-foreground: oklch(0.21 0.034 264.665);
-  --secondary: oklch(0.278 0.033 256.848);
-  --secondary-foreground: oklch(0.985 0.002 247.839);
-  --muted: oklch(0.278 0.033 256.848);
-  --muted-foreground: oklch(0.707 0.022 261.325);
-  --accent: oklch(0.278 0.033 256.848);
-  --accent-foreground: oklch(0.985 0.002 247.839);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.034 264.665);
-  --sidebar-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-accent: oklch(0.278 0.033 256.848);
-  --sidebar-accent-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
-} */
+@layer utilities {
+  /* Section rhythm */
+  .section {
+    @apply px-5 sm:px-8 lg:px-10;
+  }
+  .container-x {
+    @apply mx-auto w-full max-w-[1220px];
+  }
+
+  /* Fluid display type */
+  .display-1 {
+    font-size: clamp(2.6rem, 6.2vw, 5.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+  }
+  .display-2 {
+    font-size: clamp(2rem, 4.4vw, 3.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.22em];
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    background: linear-gradient(100deg, var(--color-lime) 0%, var(--color-gold) 55%, var(--color-terra) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Grain overlay */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  }
+
+  /* Premium card on paper */
+  .card-paper {
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-sand);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 18px 40px -28px rgba(10,16,13,0.35);
+  }
+
+  /* Hairline dividers */
+  .hairline { border-color: color-mix(in srgb, var(--color-ink) 10%, transparent); }
+  .hairline-light { border-color: rgba(255,255,255,0.10); }
+
+  /* Radial glow helpers */
+  .glow-lime {
+    background: radial-gradient(closest-side, rgba(53,208,127,0.35), transparent);
+  }
+  .glow-terra {
+    background: radial-gradient(closest-side, rgba(228,104,46,0.30), transparent);
+  }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  @keyframes float-y {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+  .animate-float { animation: float-y 7s var(--ease-out-expo) infinite; }
+
+  @keyframes dash-move {
+    to { stroke-dashoffset: -1000; }
+  }
+  .animate-dash { animation: dash-move 18s linear infinite; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-marquee { animation: marquee 32s linear infinite; }
+}
 
 .onboarding {
   background-image: url('/public/onboard-layout.png');

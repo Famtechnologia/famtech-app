@@ -6,9 +6,9 @@ import App from '../components/App';
 
 // 🔍 SEO & Social Metadata
 export const metadata: Metadata = {
-  title: 'Famtech - Smart Farming Solutions | Bridging Tradition and Technology',
+  title: 'Famtech | The operating system for African farms',
   description:
-    'Famtech reimagines farming for a connected world with innovative digital solutions for fields, markets, and communities. Join 500+ active farms using smart agriculture technology.',
+    'Famtech is the operating system for African farms. Manage your farm, keep records and turn everyday work into verified data, intelligent insight and access to finance, plus smart tools like sprayer drones, planters and harvesters.',
   keywords: [
     'smart farming',
     'agriculture technology',
@@ -32,9 +32,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://www.famtech.llc',
     siteName: 'Famtech',
-    title: 'Famtech - Smart Farming Solutions | Bridging Tradition and Technology',
+    title: 'Famtech | The operating system for African farms',
     description:
-      'Revolutionary digital farming solutions helping farmers optimize crop yields, reduce costs, and build sustainable agricultural practices.',
+      'Manage your farm, keep records and turn everyday work into verified data, intelligent insight and access to finance. Built in Africa, for African agriculture.',
     images: [
       {
         url: '/og-home.jpg',

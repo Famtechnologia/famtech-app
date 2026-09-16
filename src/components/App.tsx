@@ -1,28 +1,31 @@
 'use client';
-import React from 'react'
-import Navbar from './section/Navbar2';
-import Home from './section/Home';
-import FirstSection from './section/FirstSection';
-import SecondSection from './section/SecondSection';
-import Service from './section/Service'
-import Dashboard from './section/Dashboard';
-import Book from './section/Book';
-import Footer from './section/Footer';
-import FourthSection from './section/FourthSection'
+import React from 'react';
+import Nav from './redesign/Nav';
+import Hero from './redesign/Hero';
+import Problem from './redesign/Problem';
+import Platform from './redesign/Platform';
+import Marketplace from './redesign/Marketplace';
+import HowItWorks from './redesign/HowItWorks';
+import WhyFamtech from './redesign/WhyFamtech';
+import FinalCTA from './redesign/FinalCTA';
+import Footer from './redesign/Footer';
+
 const App = () => {
   return (
-    <div>
-      <Navbar/>
-      <Home/>
-      <FirstSection/>
-      <SecondSection/>
-      <Service/>
-      <Dashboard/>
-      <FourthSection/>
-      <Book/>
-      <Footer/>
-</div>
-  )
-}
+    <div className="bg-paper">
+      <Nav />
+      <main>
+        <Hero />
+        <Problem />
+        <Platform />
+        <Marketplace />
+        <HowItWorks />
+        <WhyFamtech />
+        <FinalCTA />
+      </main>
+      <Footer />
+    </div>
+  );
+};
 
-export default App
+export default App;

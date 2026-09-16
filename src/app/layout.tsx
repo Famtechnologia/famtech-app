@@ -1,6 +1,6 @@
 // app/layout.tsx
-import './styles/special.css';
-import { Inter } from 'next/font/google';
+import './globals.css';
+import { Inter, Space_Grotesk } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import type { Metadata } from 'next';
 import type { Viewport } from 'next';
@@ -13,11 +13,19 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-space',
+});
+
 // 🌐 SEO & Social Metadata
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.famtech.llc'),
-  title: 'Famtech: Smart Farming Solutions | Bridging Tradition and Technology',
-  description: 'Famtech reimagines farming for a connected world...',
+  title: 'Famtech | The operating system for African farms',
+  description:
+    'The operating system for African farms. Manage your farm, keep records and turn everyday work into verified data, intelligent insight and access to finance.',
 
   keywords: ['smart farming', 'agriculture technology', 'digital farming', 'agtech'],
   authors: [{ name: 'Famtech Team' }],
@@ -98,7 +106,7 @@ export const metadata: Metadata = {
 
 
 export const viewport: Viewport = {
-  themeColor: '#fffff',    
+  themeColor: '#0A100D',
   colorScheme: 'light',
   width: 'device-width',
   initialScale: 1,
@@ -107,8 +115,8 @@ export const viewport: Viewport = {
 // RootLayout with global styles and providers
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.className}>
-      <body className='bg-white text-gray-800 antialiased'>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      <body className='bg-paper text-ink antialiased'>
           <Analytics/>
            {children}
           <Toaster position="top-right" />

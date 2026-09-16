@@ -246,7 +246,7 @@ const PreFooter: React.FC = () => {
                 }}
               >
                 <Image
-                  src="/images/prefooter/famtech-farmer-using-app.jpg"
+                  src="/images/about/famtech-farmer-monitoring-crops-tablet.jpg"
                   alt="Farmer using Famtech application"
                   width={400}
                   height={500}
